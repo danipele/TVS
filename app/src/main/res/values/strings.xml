@@ -1,3 +1,111 @@
 <resources>
-    <string name="app_name">TVS</string>
+    <string name="app_name" translatable="false">T.V. Series</string>
+    <string name="add">Add</string>
+    <string name="addSeason"><u>Add a season</u></string>
+    <string name="addEpisode"><u>Add an episode</u></string>
+    <string name="IMDBLink">IMDb link: </string>
+    <string name="linkStandard">https://imdb.com/title/</string>
+    <string name="close">Close</string>
+    <string name="episodeNr">Episode\'s number: </string>
+    <string name="seasonNr">Season\'s number: </string>
+    <string name="Seasons">Seasons</string>
+    <string name="Episodes">Episodes</string>
+    <string name="IMDb">IMDb</string>
+    <string name="Poster">Poster</string>
+    <string name="eye">Eye Icon</string>
+    <string name="goTo">\></string>
+    <string name="adding">Adding&#8230;</string>
+    <string name="added">Added</string>
+    <string name="calendar">Calendar</string>
+    <string name="time">Time</string>
+    <string name="forSeasonLink">episodes?season=</string>
+    <string name="nameFinder">&lt;div class=\"title_wrapper\"&gt;</string>
+    <string name="namePattern">&gt;(.*)&amp;nbsp;</string>
+    <string name="originalNameFinder">originalTitle</string>
+    <string name="originalNamePattern">originalTitle\"&gt;(.*)&lt;span</string>
+    <string name="dateFinder">See more release dates</string>
+    <string name="datePattern">\\((.*)\\)</string>
+    <string name="nrSeasonsFinder">seasons-and-year-nav</string>
+    <string name="nrSeasonsFindingCond">&lt;a href=</string>
+    <string name="nrSeasonPattern">season=(\\d+)&amp;</string>
+    <string name="episodeItemFinder">ipl-rating-widget</string>
+    <string name="episodeItemEmptyPattern">placeholder</string>
+    <string name="nrEpisodesFinder">Episode Guide</string>
+    <string name="nrEpisodesPattern">&gt;(\\d+)\\sepisodes&lt;</string>
+    <string name="IMDbRatingFinder1">based on</string>
+    <string name="IMDbRatingFinder2">user ratings</string>
+    <string name="IMDbRatingPattern">((\\d|\\.)*) based on</string>
+    <string name="imageLinkFinder">Poster\" title="</string>
+    <string name="imageLinkPattern">src=\"(.*)\"</string>
+    <string name="addingTVSeriesError">Unable to add T.V. Series. Check the network connection and try again.</string>
+    <string name="episodeItemAirdateFinder">&lt;div class=\"airdate\"&gt;</string>
+    <string name="episodeItemAirdatePattern">(\\d{4})</string>
+    <string name="addingSeasonError">Unable to add season. Check the network connection and try again.</string>
+    <string name="sharingTVSeriesId">TVSERIES_ID</string>
+    <string name="sharingSeasonId">SEASON_ID</string>
+    <string name="DbName">TVSeriesDB</string>
+    <string name="episodeItemIdOdd">list_item odd</string>
+    <string name="episodeItemIdEven">list_item even</string>
+    <string name="episodeFinder">episodeNumber</string>
+    <string name="episodeLinkPattern">&lt;div data-const=\"(.*)\" class=</string>
+    <string name="IMDbSiteLink">https://www.imdb.com/title/</string>
+    <string name="episodeAirdateFinder">Episode aired</string>
+    <string name="episodeAirdatePattern">Episode aired (.*)</string>
+    <string name="episodeDurationFinder">&lt;time datetime</string>
+    <string name="episodeDurationPattern">(\\d.*)</string>
+    <string name="episodeImageLinkFinder">&lt;div class=\"poster\"&gt;</string>
+    <string name="src">src=</string>
+    <string name="imageLinkEnd">&lt;/a&gt;</string>
+    <string name="episodeDescriptionFinder">&lt;h2&gt;Storyline&lt;/h2&gt;</string>
+    <string name="episodeDescriptionPattern">&gt;(.*)&lt;/span&gt;</string>
+    <string name="episodeDescriptionPatternNotFinished">&gt;(.*)\\.</string>
+    <string name="addingEpisodeError">Unable to add episode. Check the network connection and try again.</string>
+    <string name="alreadyExists">Unable to add T.V. Series. Already exists.</string>
+    <string name="episode0FinderInSeason">content=\"0\"</string>
+    <string name="episodeIndexMatcher">content=\"(\\d+)\"</string>
+    <string name="IMDbRatingInSeasonFinder">ipl-rating-star__rating</string>
+    <string name="IMDbRatingInSeasonPattern">&gt;((\\d|\\.)*)&lt;</string>
+    <string name="back">Back</string>
+    <string name="updating">Updating&#8230;</string>
+    <string name="updated">Updated</string>
+    <string name="update">Update</string>
+    <string name="sort">Sort</string>
+    <string name="search">Search</string>
+    <string name="delete">Delete</string>
+    <string name="noTVSeries">No T.V. Series.\n\nPress Add button to add a T.V. Series.</string>
+    <string name="theEnd">• The end •</string>
+    <string name="noSeason">No season.\n\nPress Add button to add a season.</string>
+    <string name="upArrow">Up arrow</string>
+    <string name="noEpisode">No episode.\n\nPress Add button to add an episode.</string>
+    <string name="sentenceFinder">(?&lt;=[^A-Z]{4})(?=\\.\\s)</string>
+    <string name="onGoing">ON GOING</string>
+    <string name="inStandBy">IN STAND BY</string>
+    <string name="FINISHED">FINISHED</string>
+    <string name="finished">• Finished •</string>
+    <string name="upToDate">• Up-To-Date •</string>
+    <string name="unknownValue">\\N</string>
+    <string name="updatingError">Unable to update T.V. Series.</string>
+    <string name="tvSeries">tvSeries</string>
+    <string name="tvMiniSeries">tvMiniSeries</string>
+    <string name="dbFileLink">https://datasets.imdbws.com/title.basics.tsv.gz</string>
+    <string name="UTF8">utf-8</string>
+    <string name="newLine">\\n</string>
+    <string name="dbFileHeader">tconst\\ttitleType\\tprimaryTitle\\toriginalTitle\\tisAdult\\tstartYear\\tendYear\\truntimeMinutes\\tgenres</string>
+    <string name="startsWithIdMatcher">^tt[\\\\d]{7}</string>
+    <string name="tab">\\t</string>
+    <string name="Documentary">Documentary</string>
+    <string name="News">News</string>
+    <string name="Short">Short</string>
+    <string name="Animation">Animation</string>
+    <string name="Music">Music</string>
+    <string name="Biography">Biography</string>
+    <string name="Adult">Adult</string>
+    <string name="Sport">Sport</string>
+    <string name="RealityTV">Reality-TV</string>
+    <string name="GameShow">Game-Show</string>
+    <string name="TalkShow">Talk-Show</string>
+    <string name="seasonUnknownFinder">episode_top</string>
+    <string name="seasonUnknownPattern">Unknown</string>
+    <string name="updateString">Are you sure you want to update the TV Series list?\nThe update will begin in 2 minutes.\nDo not close the app.</string>
+    <string name="acceptUpdate">Yes</string>
 </resources>

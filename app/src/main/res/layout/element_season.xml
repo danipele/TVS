@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/elementSeason"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/elemList">
+
+    <TextView
+        android:id="@+id/nrSeasonElemSeasonTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/yearsElemSeasonTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="12dp"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nrSeasonElemSeasonTextView"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toStartOf="@+id/episodesSeenElemSeasonLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/episodesElemSeasonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:text="@string/Episodes"
+            android:textColor="@color/background"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SmallSp" />
+
+        <View
+            android:id="@+id/episodesElemSeasonLineView"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/background"
+            android:layout_marginTop="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodesElemSeasonTextView"/>
+
+        <TextView
+            android:id="@+id/nrEpisodesElemSeasonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textColor="@color/background"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodesElemSeasonLineView" />
+
+        <TextView
+            android:id="@+id/nrEpisodesTotalElemSeasonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginBottom="2dp"
+            android:textColor="@color/background"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/nrEpisodesElemSeasonTextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/episodesSeenElemSeasonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toStartOf="@+id/goToEpisodesElemSeasonButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/episodesSeenElemSeasonImageView"
+            android:layout_width="34dp"
+            android:layout_height="12dp"
+            android:src="@drawable/eye"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:contentDescription="@string/eye"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:id="@+id/episodesSeenElemSeasonLineView"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/background"
+            android:layout_marginTop="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodesSeenElemSeasonImageView"/>
+
+        <TextView
+            android:id="@+id/nrEpisodesSeenElemSeasonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:textColor="@color/background"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodesSeenElemSeasonLineView" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/goToEpisodesElemSeasonButton"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:background="@color/header"
+        android:fontFamily="monospace"
+        android:textColor="@color/elemList"
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:text="@string/goTo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkForDeleteSeasonsCheckBox"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:background="@color/header"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

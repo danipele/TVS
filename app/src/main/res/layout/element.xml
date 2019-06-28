@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/element"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/elemList">
+
+    <ImageView
+        android:id="@+id/posterElemImageView"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/loading_image"
+        android:contentDescription="@string/Poster"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/numberElemTextView"
+        app:layout_constraintTop_toTopOf="@+id/numberElemTextView" />
+
+    <TextView
+        android:id="@+id/numberElemTextView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/elem_number_style"
+        android:paddingTop="5dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nameElemTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/goToSeasonElemButton"
+        app:layout_constraintStart_toEndOf="@+id/posterElemImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/yearsElemTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/goToSeasonElemButton"
+        app:layout_constraintStart_toEndOf="@+id/posterElemImageView"
+        app:layout_constraintTop_toBottomOf="@+id/nameElemTextView" />
+
+    <Button
+        android:id="@+id/goToSeasonElemButton"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:background="@color/header"
+        android:fontFamily="monospace"
+        android:textColor="@color/elemList"
+        android:textSize="40sp"
+        android:text="@string/goTo"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkForDeleteTVSeriesCheckBox"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:background="@color/header"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/seasonsElemLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/posterElemImageView"
+        app:layout_constraintTop_toBottomOf="@+id/yearsElemTextView">
+
+        <TextView
+            android:id="@+id/seasonsElemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:text="@string/Seasons"
+            android:textColor="@color/background"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SmallSp" />
+
+        <View
+            android:id="@+id/seasonsElemLineView"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/background"
+            android:layout_marginTop="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seasonsElemTextView"/>
+
+        <TextView
+            android:id="@+id/nrSeasonsElemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:textColor="@color/background"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seasonsElemLineView" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/seasonsElemLayout"
+        app:layout_constraintTop_toBottomOf="@+id/yearsElemTextView">
+
+        <TextView
+            android:id="@+id/episodesElemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:text="@string/Episodes"
+            android:textColor="@color/background"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SmallSp" />
+
+        <View
+            android:id="@+id/episodesElemLineView"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/background"
+            android:layout_marginTop="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodesElemTextView"/>
+
+        <TextView
+            android:id="@+id/nrEpisodesElemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:textColor="@color/background"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodesElemLineView" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="15dp"
+        app:layout_constraintStart_toEndOf="@+id/posterElemImageView"
+        app:layout_constraintTop_toBottomOf="@+id/seasonsElemLayout">
+
+        <ImageView
+            android:id="@+id/seenElemImageView"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/eye"
+            android:contentDescription="@string/eye"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/seenYearsElemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="13sp"
+            android:textColor="@color/background"
+            app:layout_constraintStart_toEndOf="@+id/seenElemImageView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:id="@+id/seenElemLineView1"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/background"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/seenYearsElemTextView"/>
+
+        <TextView
+            android:id="@+id/seenSeasonsElemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textSize="13sp"
+            android:textColor="@color/background"
+            app:layout_constraintStart_toEndOf="@+id/seenElemLineView1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:id="@+id/seenElemLineView2"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/background"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/seenSeasonsElemTextView"/>
+
+        <TextView
+            android:id="@+id/seenEpisodesElemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textSize="13sp"
+            android:textColor="@color/background"
+            app:layout_constraintStart_toEndOf="@+id/seenElemLineView2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/note_style"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/goToSeasonElemButton"
+        app:layout_constraintTop_toBottomOf="@+id/yearsElemTextView">
+
+        <ImageView
+            android:id="@+id/IMDBElemImageView"
+            android:layout_width="25dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="8dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="2dp"
+            android:contentDescription="@string/IMDb"
+            android:background="@drawable/i_m_d_b_style"
+            android:src="@drawable/i_m_d_b_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/IMDBElemPointView1"/>
+
+        <View
+            android:id="@+id/IMDBElemPointView1"
+            android:layout_width="2dp"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="3dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="3dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/IMDBElemImageView"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <View
+            android:id="@+id/IMDBElemLineView"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"
+            android:layout_marginTop="1dp"
+            app:layout_constraintTop_toBottomOf="@+id/IMDBElemImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/IMDBTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textAlignment="center"
+            android:textColor="@color/IMDBColor"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/IMDBElemLineView"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/stateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/state_style"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/goToSeasonElemButton"
+        tools:ignore="SmallSp" />
+
+    <ImageView
+        android:id="@+id/seenStateImageView"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@string/upToDate"
+        app:layout_constraintEnd_toStartOf="@+id/goToSeasonElemButton"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/elementEpisode"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/elemList">
+
+    <TextView
+        android:id="@+id/numberElemEpisodeTextView"
+        android:layout_width="60dp"
+        android:layout_height="15dp"
+        android:background="@drawable/elem_episode_index_style"
+        android:paddingStart="3dp"
+        android:paddingEnd="0dp"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nameElemEpisodeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/posterElemEpisodeImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/posterElemEpisodeImageView"
+        android:layout_width="80dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/loading_image"
+        android:contentDescription="@string/Poster"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberElemEpisodeTextView" />
+
+    <TextView
+        android:id="@+id/descriptionElemEpisodeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:paddingBottom="20dp"
+        android:textColor="@color/background"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/posterElemEpisodeImageView"
+        app:layout_constraintTop_toBottomOf="@+id/IMDBElemEpisodeLayout" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/infoElemEpisodeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/posterElemEpisodeImageView"
+        app:layout_constraintTop_toBottomOf="@+id/nameElemEpisodeTextView"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/dateElemEpisodeImageView"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/calendar"
+            android:contentDescription="@string/calendar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/dateElemEpisodeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/dateElemEpisodeImageView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:id="@+id/seenElemEpisodeLineView1"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/background"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dateElemEpisodeTextView"/>
+
+        <ImageView
+            android:id="@+id/durationElemEpisodeImageView"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/time"
+            android:layout_marginStart="6dp"
+            android:contentDescription="@string/time"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/seenElemEpisodeLineView1"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/durationElemEpisodeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/durationElemEpisodeImageView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/IMDBElemEpisodeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/posterElemEpisodeImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoElemEpisodeLayout">
+
+        <ImageView
+            android:id="@+id/IMDBElemEpisodeImageView"
+            android:layout_width="30dp"
+            android:layout_height="12dp"
+            android:src="@drawable/i_m_d_b_icon"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/i_m_d_b_style"
+            android:layout_marginStart="6dp"
+            android:contentDescription="@string/IMDb"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/IMDBElemEpisodeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textSize="20sp"
+            android:textColor="@color/IMDBColor"
+            app:layout_constraintStart_toEndOf="@+id/IMDBElemEpisodeImageView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/star"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/eye"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/IMDBElemEpisodeTextView"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <CheckBox
+        android:id="@+id/checkForDeleteEpisodeCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/posterElemEpisodeImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/IMDBElemEpisodeLayout"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -88,6 +88,7 @@ public class UpdateTVSeriesService extends Service {
                                                         htmlLine = seasonScanner.nextLine();
                                                         if (!htmlLine.contains(context.getString(R.string.episodeItemEmptyPattern))) {
                                                             unreleased = false;
+                                                            break;
                                                         }
                                                     }
                                                     htmlLine = seasonScanner.nextLine();
@@ -205,6 +206,7 @@ public class UpdateTVSeriesService extends Service {
                                                     htmlLine = seasonScanner.nextLine();
                                                     if (!htmlLine.contains(context.getString(R.string.episodeItemEmptyPattern))) {
                                                         unreleased = false;
+                                                        break;
                                                     }
                                                 }
                                                 htmlLine = seasonScanner.nextLine();

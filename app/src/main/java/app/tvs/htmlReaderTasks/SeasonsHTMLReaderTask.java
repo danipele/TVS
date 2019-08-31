@@ -79,6 +79,7 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
                                     htmlLine = seasonScanner.nextLine();
                                     if (!htmlLine.contains(activity.getString(R.string.episodeItemEmptyPattern))) {
                                         unreleased = false;
+                                        break;
                                     }
                                 }
                                 htmlLine = seasonScanner.nextLine();

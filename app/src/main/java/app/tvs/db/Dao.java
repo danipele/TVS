@@ -176,7 +176,7 @@ public interface Dao {
     @Query("select * from TVSeriesShort where name like :search order by name")
     List<TVSeriesShort> getTVSeriesShortLike(String search);
 
-    @Query("select * from TVSeriesShort order by id desc limit :limit")
+    @Query("select * from TVSeriesShort order by yearStart desc limit :limit")
     List<TVSeriesShort> getTVSeriesShortWithLimit(int limit);
 
 }

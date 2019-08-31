@@ -79,10 +79,20 @@ public class UpdateTVSeriesService extends Service {
                                         Scanner seasonScanner = new Scanner(new URL(tvSeries.getIMDBLink() + context.getString(R.string.forSeasonLink) + TVSeriesNrSeasons).openStream());
                                         while (seasonScanner.hasNext()) {
                                             htmlLine = seasonScanner.nextLine();
-                                            if (htmlLine.contains(context.getString(R.string.episodeItemFinder))) {
+                                            if(htmlLine.contains(context.getString(R.string.episodeItemIdOdd)) || htmlLine.contains(context.getString(R.string.episodeItemIdEven))) {
                                                 nrEpisodesFound++;
+                                                boolean unreleased = true;
                                                 htmlLine = seasonScanner.nextLine();
-                                                if (htmlLine.contains(context.getString(R.string.episodeItemEmptyPattern))) {
+                                                while (!htmlLine.contains(context.getString(R.string.searchUntil))) {
+                                                    if (htmlLine.contains(context.getString(R.string.episodeItemFinder))) {
+                                                        htmlLine = seasonScanner.nextLine();
+                                                        if (!htmlLine.contains(context.getString(R.string.episodeItemEmptyPattern))) {
+                                                            unreleased = false;
+                                                        }
+                                                    }
+                                                    htmlLine = seasonScanner.nextLine();
+                                                }
+                                                if (unreleased) {
                                                     nrEpisodesFromLastSeasonToDelete++;
                                                 }
                                             }
@@ -188,10 +198,18 @@ public class UpdateTVSeriesService extends Service {
                                         matcher = Pattern.compile(context.getString(R.string.episodeIndexMatcher)).matcher(htmlLine);
                                         if (matcher.find()) {
                                             episodeIndex = Integer.parseInt(matcher.group(1));
-                                            while (!htmlLine.contains(context.getString(R.string.episodeItemFinder)))
-                                                htmlLine = seasonScanner.nextLine();
+                                            boolean unreleased = true;
                                             htmlLine = seasonScanner.nextLine();
-                                            if (!htmlLine.contains(context.getString(R.string.episodeItemEmptyPattern))) {
+                                            while (!htmlLine.contains(context.getString(R.string.searchUntil))) {
+                                                if (htmlLine.contains(context.getString(R.string.episodeItemFinder))) {
+                                                    htmlLine = seasonScanner.nextLine();
+                                                    if (!htmlLine.contains(context.getString(R.string.episodeItemEmptyPattern))) {
+                                                        unreleased = false;
+                                                    }
+                                                }
+                                                htmlLine = seasonScanner.nextLine();
+                                            }
+                                            if (!unreleased) {
                                                 SeasonNrEpisodes++;
                                                 for (Episode episode : episodesList) {
                                                     if (episodeIndex == episode.getIndex()) {

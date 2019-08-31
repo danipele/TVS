@@ -72,11 +72,18 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
                                     endYear = Integer.parseInt(matcher.group(1));
                                 }
                             }
-                            while (!htmlLine.contains(activity.getString(R.string.episodeItemFinder))) {
+                            boolean unreleased = true;
+                            htmlLine = seasonScanner.nextLine();
+                            while (!htmlLine.contains(activity.getString(R.string.searchUntil))) {
+                                if (htmlLine.contains(activity.getString(R.string.episodeItemFinder))) {
+                                    htmlLine = seasonScanner.nextLine();
+                                    if (!htmlLine.contains(activity.getString(R.string.episodeItemEmptyPattern))) {
+                                        unreleased = false;
+                                    }
+                                }
                                 htmlLine = seasonScanner.nextLine();
                             }
-                            htmlLine = seasonScanner.nextLine();
-                            if (!htmlLine.contains(activity.getString(R.string.episodeItemEmptyPattern))) {
+                            if (!unreleased) {
                                 nrEpisodes++;
                             }
                         }

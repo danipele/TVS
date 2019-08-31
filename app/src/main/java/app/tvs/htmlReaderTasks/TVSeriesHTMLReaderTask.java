@@ -111,10 +111,20 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                             Scanner seasonScanner = new Scanner(new URL(url+activity.getString(R.string.forSeasonLink)+nrSeasons).openStream());
                             while(seasonScanner.hasNext()) {
                                 htmlLine = seasonScanner.nextLine();
-                                if(htmlLine.contains(activity.getString(R.string.episodeItemFinder))) {
+                                if(htmlLine.contains(activity.getString(R.string.episodeItemIdOdd)) || htmlLine.contains(activity.getString(R.string.episodeItemIdEven))) {
                                     nrEpisodesFound++;
+                                    boolean unreleased = true;
                                     htmlLine = seasonScanner.nextLine();
-                                    if(htmlLine.contains(activity.getString(R.string.episodeItemEmptyPattern))) {
+                                    while (!htmlLine.contains(activity.getString(R.string.searchUntil))) {
+                                        if (htmlLine.contains(activity.getString(R.string.episodeItemFinder))) {
+                                            htmlLine = seasonScanner.nextLine();
+                                            if (!htmlLine.contains(activity.getString(R.string.episodeItemEmptyPattern))) {
+                                                unreleased = false;
+                                            }
+                                        }
+                                        htmlLine = seasonScanner.nextLine();
+                                    }
+                                    if (unreleased) {
                                         nrEpisodesFromLastSeasonToDelete++;
                                     }
                                 }

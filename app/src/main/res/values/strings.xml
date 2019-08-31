@@ -106,6 +106,6 @@
     <string name="TalkShow">Talk-Show</string>
     <string name="seasonUnknownFinder">episode_top</string>
     <string name="seasonUnknownPattern">Unknown</string>
-    <string name="updateString">Are you sure you want to update the TV Series list?\nThe update will begin in 2 minutes.\nDo not close the app.</string>
+    <string name="updateString">Are you sure you want to update the TV Series list?\nThe update will begin in 10 seconds.\nDo not close the app.</string>
     <string name="acceptUpdate">Yes</string>
 </resources>

@@ -43,7 +43,7 @@ public class UpdateTVSeriesService extends Service {
                 List<TVSeries> TVSeriesList = database.dao().getTVSeries();
                 Matcher matcher;
                 String htmlLine;
-                boolean updated[] = new boolean[TVSeriesList.size()];
+                boolean[] updated = new boolean[TVSeriesList.size()];
                 int updatedIndex = 0;
 
                 for (TVSeries tvSeries : TVSeriesList) {

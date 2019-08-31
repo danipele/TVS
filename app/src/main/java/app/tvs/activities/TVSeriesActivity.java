@@ -98,7 +98,7 @@ public class TVSeriesActivity extends MainActivity {
             public void onClick(View v) {
                 Calendar calendarTVSeries = Calendar.getInstance();
                 calendarTVSeries.setTimeInMillis(new Date().getTime());
-                calendarTVSeries.add(Calendar.MINUTE, 2);
+                calendarTVSeries.add(Calendar.SECOND, 10);
                 ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, calendarTVSeries.getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesBroadcastReceiver.class), 0));
                 closeForm();
             }

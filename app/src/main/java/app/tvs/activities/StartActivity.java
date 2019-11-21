@@ -48,10 +48,10 @@ public class StartActivity extends Activity {
     private void setScheduledTasks() {
         Calendar calendarTVSeriesShort = Calendar.getInstance();
         calendarTVSeriesShort.setTimeInMillis(new Date().getTime());
-        if(calendarTVSeriesShort.get(Calendar.HOUR_OF_DAY) >= 8) {
+        if(calendarTVSeriesShort.get(Calendar.HOUR_OF_DAY) >= 7) {
             calendarTVSeriesShort.add(Calendar.DATE, 1);
         }
-        calendarTVSeriesShort.set(Calendar.HOUR_OF_DAY, 8);
+        calendarTVSeriesShort.set(Calendar.HOUR_OF_DAY, 7);
         calendarTVSeriesShort.set(Calendar.MINUTE, 0);
         calendarTVSeriesShort.set(Calendar.SECOND, 0);
         ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, calendarTVSeriesShort.getTimeInMillis(), PendingIntent.getBroadcast(this, 1, new Intent(this, UpdateTVSeriesShortBroadcastReceiver.class), 0));

@@ -86,7 +86,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                             String years[] = matcher.group(1).split("–");
                             startYear = Integer.parseInt(years[0]);
                             if(years[1].equals(" ") || years[1].equals("")) {
-                                endYear = Global.currentYear;
+                                endYear = new Date().getYear();
                             }
                             else {
                                 endYear = Integer.parseInt(years[1]);

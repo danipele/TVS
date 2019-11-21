@@ -147,8 +147,8 @@ public class UpdateTVSeriesService extends Service {
                                             updated[updatedIndex] = true;
                                         }
                                         if(years[1].equals(" ") || years[1].equals("")) {
-                                            if(tvSeries.getEndYear() != Global.currentYear) {
-                                                tvSeries.setEndYear(Global.currentYear);
+                                            if(tvSeries.getEndYear() != new Date().getYear()) {
+                                                tvSeries.setEndYear(new Date().getYear());
                                                 tvSeries.setLastTimeUpdated(new Date().getTime());
                                                 updated[updatedIndex] = true;
                                             }

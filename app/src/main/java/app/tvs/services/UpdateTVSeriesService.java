@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -147,8 +148,8 @@ public class UpdateTVSeriesService extends Service {
                                             updated[updatedIndex] = true;
                                         }
                                         if(years[1].equals(" ") || years[1].equals("")) {
-                                            if(tvSeries.getEndYear() != new Date().getYear()) {
-                                                tvSeries.setEndYear(new Date().getYear());
+                                            if(tvSeries.getEndYear() != Calendar.getInstance().get(Calendar.YEAR)) {
+                                                tvSeries.setEndYear(Calendar.getInstance().get(Calendar.YEAR));
                                                 tvSeries.setLastTimeUpdated(new Date().getTime());
                                                 updated[updatedIndex] = true;
                                             }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
@@ -86,7 +87,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                             String years[] = matcher.group(1).split("–");
                             startYear = Integer.parseInt(years[0]);
                             if(years[1].equals(" ") || years[1].equals("")) {
-                                endYear = new Date().getYear();
+                                endYear = Calendar.getInstance().get(Calendar.YEAR);
                             }
                             else {
                                 endYear = Integer.parseInt(years[1]);

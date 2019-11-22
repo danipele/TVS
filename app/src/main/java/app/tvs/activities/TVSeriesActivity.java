@@ -118,7 +118,18 @@ public class TVSeriesActivity extends MainActivity {
                 if(searchMode)
                     searchedTVSeries.addAll(Global.database.dao().getTVSeriesSortedAscByNameThatContains("%" + s.toString().toLowerCase() + "%"));
                 else {
-                    searchedForAddTVSeries.addAll(Global.database.dao().getTVSeriesShortLike("%" + s.toString().toLowerCase() + "%"));
+                    List<TVSeriesShort> foundTVSeriesShort = Global.database.dao().getTVSeriesShortLike("%" + s.toString().toLowerCase() + "%");
+                    List<TVSeriesShort> toRemoveFromFoundTVSeriesShort = new ArrayList<>();
+                    for (TVSeriesShort tvSeriesShort : foundTVSeriesShort) {
+                        if (tvSeriesShort.getName().equalsIgnoreCase(s.toString())) {
+                            searchedForAddTVSeries.add(tvSeriesShort);
+                            toRemoveFromFoundTVSeriesShort.add(tvSeriesShort);
+                        }
+                    }
+                    for (TVSeriesShort tvSeriesShort : toRemoveFromFoundTVSeriesShort) {
+                        foundTVSeriesShort.remove(tvSeriesShort);
+                    }
+                    searchedForAddTVSeries.addAll(foundTVSeriesShort);
                     if (searchedForAddTVSeries.size() < 6) {
                         searchedForAddTVSeries.addAll(Global.database.dao().getTVSeriesShortWithLimit(6 - searchedForAddTVSeries.size()));
                     }

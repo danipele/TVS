@@ -172,7 +172,11 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
             }
             nrEpisodes -= nrEpisodesToDelete;
 
-            if(name.equals("") || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0 || imageLink.equals(""))
+            if(imageLink.equals("")) {
+                imageLink = "https://semantic-ui.com/images/wireframe/image.png";
+            }
+
+            if(name.equals("") || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0)
                 throw new Exception();
             else {
                 TVSeries toAddTVSeries = new TVSeries(url, name, startYear, endYear, nrSeasons, nrEpisodes, 0, 0, 0, 0, IMDBRating, state, Global.SEENSTATES.PAUSE, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), new Date().getTime(), Long.MIN_VALUE);

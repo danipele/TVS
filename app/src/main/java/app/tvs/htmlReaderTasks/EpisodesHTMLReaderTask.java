@@ -162,7 +162,11 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                 }
             }
 
-            if(name.equals("") || releaseDate.equals("") || duration.equals("") || IMDb == 0 || imageLink.equals("") || description.equals(""))
+            if(imageLink.equals("")) {
+                imageLink = "https://semantic-ui.com/images/wireframe/image.png";
+            }
+
+            if(name.equals("") || releaseDate.equals("") || duration.equals("") || IMDb == 0 || description.equals(""))
                 throw new Exception();
             else {
                 Long now = new Date().getTime();

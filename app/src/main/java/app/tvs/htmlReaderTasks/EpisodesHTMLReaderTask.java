@@ -32,7 +32,7 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
 
     @Override
     protected void onPreExecute() {
-        ((EpisodesActivity) activity).closeForm();
+        activity.closeForm();
         super.onPreExecute();
     }
 
@@ -131,7 +131,7 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                                     matcher = Pattern.compile(activity.getString(R.string.episodeDescriptionPattern)).matcher(htmlLine);
                                     if (matcher.find()) {
                                         description = matcher.group(1);
-                                        String sentences[] = description.split(activity.getString(R.string.sentenceFinder));
+                                        String[] sentences = description.split(activity.getString(R.string.sentenceFinder));
                                         for(int i = 0; i < sentences.length; i++) {
                                             if(sentences[i].contains("</")) {
                                                 String result = sentences[i].substring(0,sentences[i].indexOf('<')).concat(sentences[i].substring(sentences[i].indexOf('>') + 1));
@@ -169,7 +169,7 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
             if(name.equals("") || releaseDate.equals("") || duration.equals("") || IMDb == 0 || description.equals(""))
                 throw new Exception();
             else {
-                Long now = new Date().getTime();
+                long now = new Date().getTime();
                 Global.database.dao().addEpisodes(new Episode(index, name, releaseDate, duration, description, IMDb, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), parent.getId(), now));
                 Season season = Global.database.dao().getSeasonById(parent.getId());
                 season.setNrEpisodesSeen();

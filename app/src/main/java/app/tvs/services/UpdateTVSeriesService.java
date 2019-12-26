@@ -141,7 +141,7 @@ public class UpdateTVSeriesService extends Service {
                                 matcher = Pattern.compile(context.getString(R.string.datePattern)).matcher(htmlLine);
                                 if (matcher.find()) {
                                     if(matcher.group(1).contains("–")) {
-                                        String years[] = matcher.group(1).split("–");
+                                        String[] years= matcher.group(1).split("–");
                                         if(tvSeries.getStartYear() != Integer.parseInt(years[0])) {
                                             tvSeries.setStartYear(Integer.parseInt(years[0]));
                                             tvSeries.setLastTimeUpdated(new Date().getTime());

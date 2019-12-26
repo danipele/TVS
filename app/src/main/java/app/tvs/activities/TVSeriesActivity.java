@@ -27,6 +27,7 @@ import app.tvs.adapters.SearchAdapter;
 import app.tvs.adapters.SortAdapter;
 import app.tvs.adapters.TVSeriesAdapter;
 import app.tvs.broadcastReceivers.UpdateTVSeriesBroadcastReceiver;
+import app.tvs.broadcastReceivers.UpdateTVSeriesShortBroadcastReceiver;
 import app.tvs.entities.TVSeries;
 import app.tvs.entities.TVSeriesShort;
 import app.tvs.sorts.LastTimeEpisodeSeenSort;
@@ -49,8 +50,11 @@ public class TVSeriesActivity extends MainActivity {
     protected ImageView sortButton;
     protected ImageView searchButton;
     protected ImageView updateButton;
+    protected ImageView updateDBButton;
     protected TextView updateTextView;
+    protected TextView updateDBTextView;
     protected Button acceptUpdateButton;
+    protected Button acceptUpdateDBButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +97,30 @@ public class TVSeriesActivity extends MainActivity {
             }
         });
 
+        updateDBButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formLayout.setVisibility(View.VISIBLE);
+                setButtonsClickable(false);
+                updateDBTextView.setVisibility(View.VISIBLE);
+                addInForm.setVisibility(View.INVISIBLE);
+                acceptUpdateDBButton.setVisibility(View.VISIBLE);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         acceptUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendarTVSeries = Calendar.getInstance();
-                calendarTVSeries.setTimeInMillis(new Date().getTime());
-                calendarTVSeries.add(Calendar.SECOND, 10);
-                ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, calendarTVSeries.getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesBroadcastReceiver.class), 0));
+                ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, setCalendarForUpdate().getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesBroadcastReceiver.class), 0));
+                closeForm();
+            }
+        });
+
+        acceptUpdateDBButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, setCalendarForUpdate().getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesShortBroadcastReceiver.class), 0));
                 closeForm();
             }
         });
@@ -177,6 +198,7 @@ public class TVSeriesActivity extends MainActivity {
         sortButton.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
         updateButton.setVisibility(View.VISIBLE);
+        updateDBButton.setVisibility(View.VISIBLE);
         if(searchMode) {
             closeSearchView();
             searchMode = false;
@@ -223,13 +245,16 @@ public class TVSeriesActivity extends MainActivity {
         sortButton = findViewById(R.id.sortButton);
         searchButton = findViewById(R.id.searchButton);
         updateButton = findViewById(R.id.updateButton);
+        updateDBButton = findViewById(R.id.updateDBButton);
         sortListView = findViewById(R.id.sortListView);
         TVSeriesSearchEditText = TVSeriesSearchView.findViewById(R.id.search_src_text);
         TVSeriesSearchEditText.setTextColor(getColor(R.color.background));
         TVSeriesSearchEditText.setHint("Search a T.V. Series");
         TVSeriesSearchEditText.setHintTextColor(getColor(R.color.background));
         updateTextView = findViewById(R.id.updateTextView);
+        updateDBTextView = findViewById(R.id.updateDBTextView);
         acceptUpdateButton = findViewById(R.id.acceptUpdateButton);
+        acceptUpdateDBButton = findViewById(R.id.acceptUpdateDBButton);
     }
 
     @Override
@@ -252,6 +277,7 @@ public class TVSeriesActivity extends MainActivity {
         sortButton.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.INVISIBLE);
         updateButton.setVisibility(View.INVISIBLE);
+        updateDBButton.setVisibility(View.INVISIBLE);
         super.startDeleteButtonAction();
     }
 
@@ -261,6 +287,7 @@ public class TVSeriesActivity extends MainActivity {
         sortButton.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
         updateButton.setVisibility(View.VISIBLE);
+        updateDBButton.setVisibility(View.VISIBLE);
         super.setButtonsClickable(true);
         super.endDeleteButtonAction();
         if(adapter.getCount() == 0) {
@@ -288,6 +315,7 @@ public class TVSeriesActivity extends MainActivity {
         sortButton.setClickable(bool);
         searchButton.setClickable(bool);
         updateButton.setClickable(bool);
+        updateDBButton.setClickable(bool);
     }
 
     private void updateTotals() {
@@ -392,6 +420,14 @@ public class TVSeriesActivity extends MainActivity {
     public void closeForm() {
         addButton.setVisibility(View.VISIBLE);
         acceptUpdateButton.setVisibility(View.INVISIBLE);
+        acceptUpdateDBButton.setVisibility(View.INVISIBLE);
         super.closeForm();
+    }
+
+    private Calendar setCalendarForUpdate() {
+        Calendar calendarTVSeries = Calendar.getInstance();
+        calendarTVSeries.setTimeInMillis(new Date().getTime());
+        calendarTVSeries.add(Calendar.SECOND, 10);
+        return calendarTVSeries;
     }
 }

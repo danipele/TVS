@@ -94,9 +94,6 @@ public interface Dao {
     @Query("select count(*) from Seasons")
     int getNrOfSeasons();
 
-    @Query("select * from Seasons")
-    List<Season> getSeasons();
-
     @Query("select * from Seasons where idTVSeries = :idTVSeries")
     List<Season> getSeasonsWithIdTVSeries(int idTVSeries);
 

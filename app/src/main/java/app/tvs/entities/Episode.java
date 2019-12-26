@@ -84,10 +84,6 @@ public class Episode {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public double getIMDBRating() {
         return IMDBRating;
     }

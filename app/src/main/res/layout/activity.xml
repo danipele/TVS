@@ -54,6 +54,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/updateDBTextView"
+            android:layout_width="324dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="70dp"
+            android:paddingTop="6dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:text="@string/updateDBString"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/closeFormButton"
             android:layout_width="25dp"
@@ -171,6 +191,22 @@
 
         <Button
             android:id="@+id/acceptUpdateButton"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/add_in_form_style"
+            android:text="@string/acceptUpdate"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/acceptUpdateDBButton"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:layout_marginBottom="30dp"

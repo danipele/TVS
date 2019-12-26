@@ -94,10 +94,6 @@ public class TVSeries {
         return IMDBLink;
     }
 
-    public void setIMDBLink(String IMDBLink) {
-        this.IMDBLink = IMDBLink;
-    }
-
     public String getName() {
         return name;
     }

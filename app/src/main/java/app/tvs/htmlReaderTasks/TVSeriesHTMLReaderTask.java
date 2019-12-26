@@ -84,7 +84,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                     matcher = Pattern.compile(activity.getString(R.string.datePattern)).matcher(htmlLine);
                     if(matcher.find()) {
                         if(matcher.group(1).contains("–")) {
-                            String years[] = matcher.group(1).split("–");
+                            String[] years = matcher.group(1).split("–");
                             startYear = Integer.parseInt(years[0]);
                             if(years[1].equals(" ") || years[1].equals("")) {
                                 endYear = Calendar.getInstance().get(Calendar.YEAR);

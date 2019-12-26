@@ -28,7 +28,7 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
 
     @Override
     protected void onPreExecute() {
-        ((SeasonsActivity) activity).closeForm();
+        activity.closeForm();
         super.onPreExecute();
     }
 

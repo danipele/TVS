@@ -61,68 +61,50 @@ public class TVSeriesActivity extends MainActivity {
 
         super.onCreate(savedInstanceState);
 
-        sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(sortListView.getVisibility() == View.INVISIBLE) {
-                    sortListView.setVisibility(View.VISIBLE);
-                    setButtonsClickable(false);
-                    sortButton.setClickable(true);
-                    adapter.notifyDataSetChanged();
-                }
-                else {
-                    closeSortList();
-                }
-            }
-        });
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchMode = true;
-                openSearchView();
-                searchedTVSeries = Global.database.dao().getTVSeries();
-            }
-        });
-
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                formLayout.setVisibility(View.VISIBLE);
+        sortButton.setOnClickListener(v -> {
+            if(sortListView.getVisibility() == View.INVISIBLE) {
+                sortListView.setVisibility(View.VISIBLE);
                 setButtonsClickable(false);
-                updateTextView.setVisibility(View.VISIBLE);
-                addInForm.setVisibility(View.INVISIBLE);
-                acceptUpdateButton.setVisibility(View.VISIBLE);
+                sortButton.setClickable(true);
                 adapter.notifyDataSetChanged();
             }
-        });
-
-        updateDBButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                formLayout.setVisibility(View.VISIBLE);
-                setButtonsClickable(false);
-                updateDBTextView.setVisibility(View.VISIBLE);
-                addInForm.setVisibility(View.INVISIBLE);
-                acceptUpdateDBButton.setVisibility(View.VISIBLE);
-                adapter.notifyDataSetChanged();
+            else {
+                closeSortList();
             }
         });
 
-        acceptUpdateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, setCalendarForUpdate().getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesBroadcastReceiver.class), 0));
-                closeForm();
-            }
+        searchButton.setOnClickListener(v -> {
+            searchMode = true;
+            openSearchView();
+            searchedTVSeries = Global.database.dao().getTVSeries();
         });
 
-        acceptUpdateDBButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, setCalendarForUpdate().getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesShortBroadcastReceiver.class), 0));
-                closeForm();
-            }
+        updateButton.setOnClickListener(v -> {
+            formLayout.setVisibility(View.VISIBLE);
+            setButtonsClickable(false);
+            updateTextView.setVisibility(View.VISIBLE);
+            addInForm.setVisibility(View.INVISIBLE);
+            acceptUpdateButton.setVisibility(View.VISIBLE);
+            adapter.notifyDataSetChanged();
+        });
+
+        updateDBButton.setOnClickListener(v -> {
+            formLayout.setVisibility(View.VISIBLE);
+            setButtonsClickable(false);
+            updateDBTextView.setVisibility(View.VISIBLE);
+            addInForm.setVisibility(View.INVISIBLE);
+            acceptUpdateDBButton.setVisibility(View.VISIBLE);
+            adapter.notifyDataSetChanged();
+        });
+
+        acceptUpdateButton.setOnClickListener(v -> {
+            ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, setCalendarForUpdate().getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesBroadcastReceiver.class), 0));
+            closeForm();
+        });
+
+        acceptUpdateDBButton.setOnClickListener(v -> {
+            ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, setCalendarForUpdate().getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesShortBroadcastReceiver.class), 0));
+            closeForm();
         });
 
         TVSeriesSearchEditText.addTextChangedListener(new TextWatcher() {
@@ -166,15 +148,12 @@ public class TVSeriesActivity extends MainActivity {
             }
         });
 
-        TVSeriesSearchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(TVSeriesSearchEditText.getText().toString().equals("")) {
-                    closeSearchView();
-                }
-                else {
-                    resetTVSeriesSearchEditText();
-                }
+        TVSeriesSearchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn).setOnClickListener(v -> {
+            if(TVSeriesSearchEditText.getText().toString().equals("")) {
+                closeSearchView();
+            }
+            else {
+                resetTVSeriesSearchEditText();
             }
         });
     }

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -104,17 +103,14 @@ public class EpisodeAdapter extends BaseAdapter {
                 viewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
             }
         }
-        viewHolder.checkForDeleteEpisodeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(viewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
-                    activity.addForDeleteEpisodesList(episode);
-                    viewHolder.elementEpisode.setBackgroundResource(R.color.header);
-                }
-                else {
-                    viewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
-                    activity.removeForDeleteEpisodesList(episode);
-                }
+        viewHolder.checkForDeleteEpisodeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(viewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
+                activity.addForDeleteEpisodesList(episode);
+                viewHolder.elementEpisode.setBackgroundResource(R.color.header);
+            }
+            else {
+                viewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
+                activity.removeForDeleteEpisodesList(episode);
             }
         });
         return convertView;

@@ -33,11 +33,7 @@ public abstract class HTMLReaderTask extends AsyncTask<Void, Void, String> {
             activity.findViewById(R.id.addingImageView).setVisibility(View.VISIBLE);
             ((TextView) activity.findViewById(R.id.addingTextView)).setText(setFinalMessage());
             activity.adapter.notifyDataSetChanged();
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    finishTask();
-                }
-            }, 2000);
+            new Handler().postDelayed(this::finishTask, 2000);
         }
         else{
             finishTask();

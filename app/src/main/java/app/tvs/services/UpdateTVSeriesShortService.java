@@ -3,7 +3,6 @@ package app.tvs.services;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -18,6 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
+import app.tvs.Global;
 import app.tvseries.R;
 import app.tvs.activities.StartActivity;
 import app.tvs.db.Database;
@@ -34,7 +34,7 @@ public class UpdateTVSeriesShortService extends Service {
             String message = "";
             try {
                 int addedNew = 0;
-                Database database = Room.databaseBuilder(context, Database.class, context.getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
+                Database database = Global.database;
                 InputStream input = new BufferedInputStream(new InputSource(new GZIPInputStream(new URL(context.getString(R.string.dbFileLink)).openConnection().getInputStream())).getByteStream());
                 byte[] data = new byte[2097152];
                 int count;

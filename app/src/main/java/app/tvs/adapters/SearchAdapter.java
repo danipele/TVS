@@ -54,17 +54,14 @@ public class SearchAdapter extends BaseAdapter {
         if (convertView != null) {
             ((TextView) convertView.findViewById(R.id.nameAddTextView)).setText(tvSeriesShort.getName());
             ((TextView) convertView.findViewById(R.id.yearsAddTextView)).setText(String.format(Locale.getDefault(), "%s - %s", tvSeriesShort.getYearStart(), (tvSeriesShort.getYearEnd().equals(activity.getString(R.string.unknownValue))) ? ("") : (tvSeriesShort.getYearEnd())));
-            convertView.findViewById(R.id.searchAddLayout).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String url = activity.getString(R.string.linkStandard) + tvSeriesShort.getId() + "/";
-                    if(notExistsAlready(url)) {
-                        new TVSeriesHTMLReaderTask(activity, url).execute();
-                        activity.resetAddSearchEditText();
-                    }
-                    else {
-                        Toast.makeText(activity, activity.getString(R.string.alreadyExists), Toast.LENGTH_LONG).show();
-                    }
+            convertView.findViewById(R.id.searchAddLayout).setOnClickListener(v -> {
+                String url = activity.getString(R.string.linkStandard) + tvSeriesShort.getId() + "/";
+                if(notExistsAlready(url)) {
+                    new TVSeriesHTMLReaderTask(activity, url).execute();
+                    activity.resetAddSearchEditText();
+                }
+                else {
+                    Toast.makeText(activity, activity.getString(R.string.alreadyExists), Toast.LENGTH_LONG).show();
                 }
             });
         }

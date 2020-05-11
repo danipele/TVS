@@ -110,4 +110,6 @@
     <string name="updateDBString">Are you sure you want to update the database?\nThe update will begin in 10 seconds.\nDo not close the app.</string>
     <string name="acceptUpdate">Yes</string>
     <string name="searchUntil">item_description</string>
+    <string name="genreLinkFinder">\"genre\": \[</string>
+    <string name="genreLinkStopper">\]\,</string>
 </resources>

@@ -63,7 +63,10 @@ public class TVSeries {
     @ColumnInfo
     private long lastTimeEpisodeSeen;
 
-    public TVSeries(String IMDBLink, String name, int startYear, int endYear, int nrSeasons, int nrEpisodes, int startYearSeen, int endYearSeen, int seasonsSeen, int episodesSeen, double IMDBRating, Global.STATES state, Global.SEENSTATES seenState, Bitmap bitmapImage, long lastTimeUpdated, long lastTimeEpisodeSeen) {
+    @ColumnInfo
+    private String genres;
+
+    public TVSeries(String IMDBLink, String name, int startYear, int endYear, int nrSeasons, int nrEpisodes, int startYearSeen, int endYearSeen, int seasonsSeen, int episodesSeen, double IMDBRating, Global.STATES state, Global.SEENSTATES seenState, Bitmap bitmapImage, long lastTimeUpdated, long lastTimeEpisodeSeen, String genres) {
         this.IMDBLink = IMDBLink;
         this.name = name;
         this.startYear = startYear;
@@ -80,6 +83,7 @@ public class TVSeries {
         this.bitmapImage = bitmapImage;
         this.lastTimeUpdated = lastTimeUpdated;
         this.lastTimeEpisodeSeen = lastTimeEpisodeSeen;
+        this.genres = genres;
     }
 
     public int getId() {
@@ -259,4 +263,9 @@ public class TVSeries {
             }
         }
     }
+
+    public String getGenres() {
+        return genres;
+    }
+
 }

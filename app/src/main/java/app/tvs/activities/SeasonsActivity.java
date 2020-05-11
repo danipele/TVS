@@ -60,7 +60,7 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
     @Override
     protected void initHeader() {
         if(parent.getName().length() > 24) {
-            headerTextView.setTextSize(20 - (((parent.getName().length() - 24) / 5 + 1)* 2));
+            headerTextView.setTextSize(20 - (((float)(parent.getName().length() - 24) / 5 + 1)* 2));
         }
         headerTextView.setText(parent.getName());
     }

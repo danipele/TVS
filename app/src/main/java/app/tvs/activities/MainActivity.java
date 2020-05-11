@@ -52,40 +52,22 @@ public abstract class MainActivity extends AppCompatActivity {
 
         setAdapters();
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addButtonAction();
-            }
-        });
+        addButton.setOnClickListener(v -> addButtonAction());
 
-        leaveActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leaveActivity();
-            }
-        });
+        leaveActivityButton.setOnClickListener(v -> leaveActivity());
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(adapter.getCount() != 0) {
-                    if (deleteMode) {
-                        deleteButtonAction();
-                        endDeleteButtonAction();
-                    } else {
-                        startDeleteButtonAction();
-                    }
+        deleteButton.setOnClickListener(v -> {
+            if(adapter.getCount() != 0) {
+                if (deleteMode) {
+                    deleteButtonAction();
+                    endDeleteButtonAction();
+                } else {
+                    startDeleteButtonAction();
                 }
             }
         });
 
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeForm();
-            }
-        });
+        closeButton.setOnClickListener(v -> closeForm());
     }
 
     public void closeForm() {

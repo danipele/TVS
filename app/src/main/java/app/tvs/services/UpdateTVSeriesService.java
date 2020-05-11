@@ -3,7 +3,6 @@ package app.tvs.services;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -40,7 +39,7 @@ public class UpdateTVSeriesService extends Service {
             String message = "";
             try {
                 //setNotification("Start");
-                Database database = Room.databaseBuilder(context, Database.class, context.getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
+                Database database = Global.database;
                 List<TVSeries> TVSeriesList = database.dao().getTVSeries();
                 Matcher matcher;
                 String htmlLine;

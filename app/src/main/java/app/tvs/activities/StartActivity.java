@@ -19,12 +19,7 @@ public class StartActivity extends Activity {
 
         Global.database = Room.databaseBuilder(this, Database.class, getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startApp();
-            }
-        },700);
+        new Handler().postDelayed(this::startApp,700);
 
     }
 

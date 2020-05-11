@@ -49,14 +49,11 @@ public class SortAdapter extends BaseAdapter {
                 convertView.findViewById(R.id.sortLayout).setBackgroundColor(activity.getColor(R.color.adding));
             else
                 convertView.findViewById(R.id.sortLayout).setBackgroundColor(activity.getColor(R.color.white));
-            convertView.findViewById(R.id.sortLayout).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activity.getSorts().setActualSort(sort);
-                    activity.closeSortList();
-                    activity.notifySortAdapter();
-                    activity.notifyAdapter();
-                }
+            convertView.findViewById(R.id.sortLayout).setOnClickListener(v -> {
+                activity.getSorts().setActualSort(sort);
+                activity.closeSortList();
+                activity.notifySortAdapter();
+                activity.notifyAdapter();
             });
         }
         return convertView;

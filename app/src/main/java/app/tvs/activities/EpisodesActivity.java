@@ -58,7 +58,7 @@ public class EpisodesActivity extends EpisodesSeasonsActivity {
     protected void initHeader() {
         String headerString = String.format(Locale.getDefault(), "%s - S%d", Global.database.dao().getNameOfTVSeriesForEpisodeWithIdSeason(parent.getId()),parent.getIndex());
         if(headerString.length() > 24) {
-            headerTextView.setTextSize(20 - (((headerString.length() - 24) / 5 + 1)* 2));
+            headerTextView.setTextSize(20 - (((float)(headerString.length() - 24) / 5 + 1)* 2));
         }
         headerTextView.setText(headerString);
     }

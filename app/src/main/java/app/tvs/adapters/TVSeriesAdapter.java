@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.devsmart.android.ui.HorizontalListView;
 
 import java.util.Locale;
 
@@ -42,6 +43,7 @@ public class TVSeriesAdapter extends BaseAdapter {
         TextView IMDBTextView;
         ImageView seenStateImageView;
         GradientDrawable stateDrawable;
+        HorizontalListView genreListView;
     }
 
     private TVSeriesActivity activity;
@@ -99,6 +101,7 @@ public class TVSeriesAdapter extends BaseAdapter {
                 viewHolder.IMDBTextView = convertView.findViewById(R.id.IMDBTextView);
                 viewHolder.seenStateImageView = convertView.findViewById(R.id.seenStateImageView);
                 viewHolder.stateDrawable = (GradientDrawable) activity.getDrawable(R.drawable.state_style);
+                viewHolder.genreListView = convertView.findViewById(R.id.genreListView);
 
                 convertView.setTag(viewHolder);
             }
@@ -109,6 +112,7 @@ public class TVSeriesAdapter extends BaseAdapter {
 
         final TVSeries tvseries = getItem(position);
 
+        viewHolder.genreListView.setAdapter(new GenreAdapter(getItem(position), activity));
         viewHolder.numberElemTextView.setText(String.format(Locale.getDefault(), "%d", position+1));
         viewHolder.posterElemImageView.setImageBitmap(tvseries.getBitmapImage());
         viewHolder.nameElemTextView.setText(tvseries.getName());
@@ -119,23 +123,15 @@ public class TVSeriesAdapter extends BaseAdapter {
         viewHolder.seenSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getSeasonsSeen()));
         viewHolder.seenEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getEpisodesSeen()));
         viewHolder.IMDBTextView.setText(String.format(Locale.getDefault(), "%.1f", tvseries.getIMDBRating()));
-        viewHolder.goToSeasonElemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity.getContext(), SeasonsActivity.class);
-                intent.putExtra(activity.getString(R.string.sharingTVSeriesId), tvseries.getId());
-                activity.startActivity(intent);
-                viewHolder.element.setBackgroundResource(R.color.header);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        viewHolder.element.setBackgroundResource(R.color.elemList);
-                    }
-                }, 30);
-                activity.overridePendingTransition(R.anim.right_in_animation, R.anim.left_out_animation);
-            }
+        viewHolder.goToSeasonElemButton.setOnClickListener(v -> {
+            Intent intent = new Intent(activity.getContext(), SeasonsActivity.class);
+            intent.putExtra(activity.getString(R.string.sharingTVSeriesId), tvseries.getId());
+            activity.startActivity(intent);
+            viewHolder.element.setBackgroundResource(R.color.header);
+            new Handler().postDelayed(() -> viewHolder.element.setBackgroundResource(R.color.elemList), 30);
+            activity.overridePendingTransition(R.anim.right_in_animation, R.anim.left_out_animation);
         });
-        viewHolder. goToSeasonElemButton.setClickable(activity.isAddSearchListView() && activity.isProgressLayoutInvisible() && activity.isSortListViewInvisible() && activity.isUpdateFormInvisible());
+        viewHolder.goToSeasonElemButton.setClickable(activity.isAddSearchListView() && activity.isProgressLayoutInvisible() && activity.isSortListViewInvisible() && activity.isUpdateFormInvisible());
         if(viewHolder.stateDrawable != null) {
             if(tvseries.getState() == Global.STATES.ON_GOING) {
                 viewHolder.stateDrawable.setStroke(1, activity.getColor(R.color.onGoingState));
@@ -178,17 +174,14 @@ public class TVSeriesAdapter extends BaseAdapter {
             viewHolder.seenStateImageView.setImageDrawable(activity.getDrawable(R.drawable.up_to_date));
         }
 
-        viewHolder.checkForDeleteTVSeriesCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(viewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
-                    activity.addForDeleteTVSeriesList(tvseries);
-                    viewHolder.element.setBackgroundResource(R.color.header);
-                }
-                else {
-                    viewHolder.element.setBackgroundResource(R.color.elemList);
-                    activity.removeForDeleteTVSeriesList(tvseries);
-                }
+        viewHolder.checkForDeleteTVSeriesCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(viewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
+                activity.addForDeleteTVSeriesList(tvseries);
+                viewHolder.element.setBackgroundResource(R.color.header);
+            }
+            else {
+                viewHolder.element.setBackgroundResource(R.color.elemList);
+                activity.removeForDeleteTVSeriesList(tvseries);
             }
         });
         return convertView;

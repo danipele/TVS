@@ -11,7 +11,7 @@ import app.tvs.entities.Season;
 import app.tvs.entities.TVSeries;
 import app.tvs.entities.TVSeriesShort;
 
-@android.arch.persistence.room.Database(entities = {TVSeries.class, Season.class, Episode.class, TVSeriesShort.class}, version = 3, exportSchema = false)
+@android.arch.persistence.room.Database(entities = {TVSeries.class, Season.class, Episode.class, TVSeriesShort.class}, version = 4, exportSchema = false)
 @TypeConverters({StateConverter.class, SeenStateConverter.class, BitmapConverter.class})
 public abstract class Database extends RoomDatabase {
 

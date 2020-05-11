@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -91,21 +90,13 @@ public class SeasonsAdapter extends BaseAdapter {
         viewHolder.nrEpisodesSeenElemSeasonTextView.setText(String.format(Locale.getDefault(), "%d", season.getNrEpisodesSeen()));
         viewHolder.nrEpisodesTotalElemSeasonTextView.setText(String.format(Locale.getDefault(), "out of %d", season.getNrTotalOfEpisodes()));
 
-        viewHolder.goToEpisodesElemSeasonButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity.getContext(), EpisodesActivity.class);
-                intent.putExtra(activity.getString(R.string.sharingSeasonId), season.getId());
-                viewHolder.elementSeason.setBackgroundResource(R.color.header);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        viewHolder.elementSeason.setBackgroundResource(R.color.elemList);
-                    }
-                }, 30);
-                activity.startActivity(intent);
-                activity.overridePendingTransition(R.anim.right_in_animation, R.anim.left_out_animation);
-            }
+        viewHolder.goToEpisodesElemSeasonButton.setOnClickListener(v -> {
+            Intent intent = new Intent(activity.getContext(), EpisodesActivity.class);
+            intent.putExtra(activity.getString(R.string.sharingSeasonId), season.getId());
+            viewHolder.elementSeason.setBackgroundResource(R.color.header);
+            new Handler().postDelayed(() -> viewHolder.elementSeason.setBackgroundResource(R.color.elemList), 30);
+            activity.startActivity(intent);
+            activity.overridePendingTransition(R.anim.right_in_animation, R.anim.left_out_animation);
         });
         viewHolder.goToEpisodesElemSeasonButton.setClickable(activity.isFormLayoutInvisible() && activity.isProgressLayoutInvisible());
         if(activity.isDeleteMode()) {
@@ -121,17 +112,14 @@ public class SeasonsAdapter extends BaseAdapter {
                 viewHolder.elementSeason.setBackgroundResource(R.color.elemList);
             }
         }
-        viewHolder.checkForDeleteSeasonsCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(viewHolder.checkForDeleteSeasonsCheckBox.isChecked()) {
-                    activity.addForDeleteSeasonsList(season);
-                    viewHolder.elementSeason.setBackgroundResource(R.color.header);
-                }
-                else {
-                    viewHolder.elementSeason.setBackgroundResource(R.color.elemList);
-                    activity.removeForDeleteSeasonsList(season);
-                }
+        viewHolder.checkForDeleteSeasonsCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(viewHolder.checkForDeleteSeasonsCheckBox.isChecked()) {
+                activity.addForDeleteSeasonsList(season);
+                viewHolder.elementSeason.setBackgroundResource(R.color.header);
+            }
+            else {
+                viewHolder.elementSeason.setBackgroundResource(R.color.elemList);
+                activity.removeForDeleteSeasonsList(season);
             }
         });
         return convertView;    }

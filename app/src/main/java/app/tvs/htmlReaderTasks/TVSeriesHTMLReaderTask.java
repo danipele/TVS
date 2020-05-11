@@ -1,16 +1,21 @@
 package app.tvs.htmlReaderTasks;
 
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.TextView;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import app.tvs.Global;
 import app.tvseries.R;
@@ -44,6 +49,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
         super.onPreExecute();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected String doInBackground(Void... voids) {
         try {
@@ -61,6 +67,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
             int nrEpisodesToDelete = 0;
             int nrEpisodesFound = 0;
             int nrEpisodesFromLastSeasonToDelete = 0;
+            List<String> genres = new ArrayList<>();
 
             Scanner TVSeriesScanner = new Scanner(new URL(url).openStream());
 
@@ -169,6 +176,13 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                         imageLink = matcher.group(1);
                     }
                 }
+                if(htmlLine.contains(activity.getString(R.string.genreLinkFinder))) {
+                    htmlLine = TVSeriesScanner.nextLine();
+                    while(!htmlLine.trim().equals(activity.getString(R.string.genreLinkStopper))) {
+                        genres.add(htmlLine.substring(htmlLine.indexOf('\"') + 1, htmlLine.lastIndexOf('\"')));
+                        htmlLine = TVSeriesScanner.nextLine();
+                    }
+                }
             }
             nrEpisodes -= nrEpisodesToDelete;
 
@@ -176,10 +190,10 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                 imageLink = "https://semantic-ui.com/images/wireframe/image.png";
             }
 
-            if(name.equals("") || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0)
+            if(name.equals("") || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0 || genres.isEmpty())
                 throw new Exception();
             else {
-                TVSeries toAddTVSeries = new TVSeries(url, name, startYear, endYear, nrSeasons, nrEpisodes, 0, 0, 0, 0, IMDBRating, state, Global.SEENSTATES.PAUSE, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), new Date().getTime(), Long.MIN_VALUE);
+                TVSeries toAddTVSeries = new TVSeries(url, name, startYear, endYear, nrSeasons, nrEpisodes, 0, 0, 0, 0, IMDBRating, state, Global.SEENSTATES.PAUSE, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), new Date().getTime(), Long.MIN_VALUE, genres.stream().map(String::valueOf).collect(Collectors.joining(",")));
                 Global.database.dao().addTVSeries(toAddTVSeries);
             }
             return "";

@@ -22,12 +22,7 @@ public abstract class EpisodesSeasonsActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addInForm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getInfoFromForm();
-            }
-        });
+        addInForm.setOnClickListener(v -> getInfoFromForm());
     }
 
     @Override

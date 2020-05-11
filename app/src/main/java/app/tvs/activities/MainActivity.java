@@ -153,8 +153,6 @@ public abstract class MainActivity extends AppCompatActivity {
 
     public Context getContext() {return this;}
 
-    protected MainActivity getActivity() {return this;}
-
     public boolean isProgressLayoutInvisible() {
         return progressLayout.getVisibility() == View.INVISIBLE;
     }

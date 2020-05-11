@@ -1,9 +1,5 @@
 package app.tvs.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.text.Editable;
@@ -16,18 +12,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import app.tvs.Global;
 import app.tvs.adapters.SearchAdapter;
 import app.tvs.adapters.SortAdapter;
 import app.tvs.adapters.TVSeriesAdapter;
-import app.tvs.broadcastReceivers.UpdateTVSeriesBroadcastReceiver;
-import app.tvs.broadcastReceivers.UpdateTVSeriesShortBroadcastReceiver;
 import app.tvs.entities.TVSeries;
 import app.tvs.entities.TVSeriesShort;
 import app.tvs.sorts.LastTimeEpisodeSeenSort;
@@ -95,16 +86,6 @@ public class TVSeriesActivity extends MainActivity {
             addInForm.setVisibility(View.INVISIBLE);
             acceptUpdateDBButton.setVisibility(View.VISIBLE);
             adapter.notifyDataSetChanged();
-        });
-
-        acceptUpdateButton.setOnClickListener(v -> {
-            ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, setCalendarForUpdate().getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesBroadcastReceiver.class), 0));
-            closeForm();
-        });
-
-        acceptUpdateDBButton.setOnClickListener(v -> {
-            ((AlarmManager) Objects.requireNonNull(getSystemService(Context.ALARM_SERVICE))).set(AlarmManager.RTC, setCalendarForUpdate().getTimeInMillis(), PendingIntent.getBroadcast(getActivity(), 2, new Intent(getActivity(), UpdateTVSeriesShortBroadcastReceiver.class), 0));
-            closeForm();
         });
 
         TVSeriesSearchEditText.addTextChangedListener(new TextWatcher() {
@@ -403,10 +384,4 @@ public class TVSeriesActivity extends MainActivity {
         super.closeForm();
     }
 
-    private Calendar setCalendarForUpdate() {
-        Calendar calendarTVSeries = Calendar.getInstance();
-        calendarTVSeries.setTimeInMillis(new Date().getTime());
-        calendarTVSeries.add(Calendar.SECOND, 10);
-        return calendarTVSeries;
-    }
 }

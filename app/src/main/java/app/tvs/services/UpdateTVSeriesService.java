@@ -1,7 +1,5 @@
 package app.tvs.services;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -22,7 +18,6 @@ import java.util.regex.Pattern;
 
 import app.tvs.Global;
 import app.tvseries.R;
-import app.tvs.activities.StartActivity;
 import app.tvs.db.Database;
 import app.tvs.entities.Episode;
 import app.tvs.entities.Season;
@@ -38,7 +33,6 @@ public class UpdateTVSeriesService extends Service {
         public void run() {
             String message = "";
             try {
-                //setNotification("Start");
                 Database database = Global.database;
                 List<TVSeries> TVSeriesList = database.dao().getTVSeries();
                 Matcher matcher;
@@ -243,7 +237,6 @@ public class UpdateTVSeriesService extends Service {
                         }
                         database.dao().updateSeasonsList(seasonsList);
                         tvSeries.setSeenState();
-                        //setNotification(tvSeries.getName() + " updated");
                     }
                     updatedIndex++;
                 }
@@ -252,48 +245,16 @@ public class UpdateTVSeriesService extends Service {
                 int updatedTrue = 0;
                 for(boolean b : updated)
                     if(b) updatedTrue++;
-                message = "T.V. Series list was updated. " + updatedTrue + " T.V. Series were updated.";
+                message = "TVS list was updated. " + updatedTrue + " T.V. Series were updated.";
             }
             catch (Exception e) {
-                message = "T.V. Series list couldn't be updated";
+                message = "TVS list couldn't be updated";
             }
             finally {
-                Intent intentStartActivity = new Intent(context, StartActivity.class);
-                intentStartActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                NotificationCompat.Builder notification = new NotificationCompat.Builder(context, "TVSeries_channel")
-                        .setSmallIcon(R.drawable.icon_transparent)
-                        .setColor(context.getColor(R.color.colorPrimary))
-                        .setDefaults(Notification.DEFAULT_ALL)
-                        .setContentTitle(context.getString(R.string.app_name))
-                        .setContentText(message)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(message))
-                        .setContentIntent(PendingIntent.getActivity(context, 0, intentStartActivity, 0))
-                        .setAutoCancel(true);
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                notificationManager.notify(1, notification.build());
+                NotificationService.addNotification(message, context, "C1", "UpdateTVSeries", "Update TVSeries table");
             }
         }
     };
-
-    /*public void setNotification(String message) {
-        Intent intentStartActivity = new Intent(context, StartActivity.class);
-        intentStartActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(context, "TVSeries_channel")
-                .setSmallIcon(R.drawable.icon_transparent)
-                .setColor(context.getColor(R.color.colorPrimary))
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentTitle(context.getString(R.string.app_name))
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(message))
-                .setContentIntent(PendingIntent.getActivity(context, 0, intentStartActivity, 0))
-                .setAutoCancel(true);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(1, notification.build());
-    }*/
 
     @Nullable
     @Override

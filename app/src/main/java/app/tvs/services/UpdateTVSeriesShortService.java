@@ -1,14 +1,10 @@
 package app.tvs.services;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 
 import org.xml.sax.InputSource;
 
@@ -19,7 +15,6 @@ import java.util.zip.GZIPInputStream;
 
 import app.tvs.Global;
 import app.tvseries.R;
-import app.tvs.activities.StartActivity;
 import app.tvs.db.Database;
 import app.tvs.entities.TVSeriesShort;
 
@@ -68,28 +63,14 @@ public class UpdateTVSeriesShortService extends Service {
 
                 System.out.print(file);
                 input.close();
-                message = "T.V. Series database was updated. " + addedNew + " T.V. Series were added";
+                message = "TVS database was updated. " + addedNew + " T.V. Series were added";
 
             }
             catch (Exception e) {
-                message = "T.V. Series database couldn't be updated";
+                message = "TVS database couldn't be updated";
             }
             finally {
-                Intent intentStartActivity = new Intent(context, StartActivity.class);
-                intentStartActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                NotificationCompat.Builder notification = new NotificationCompat.Builder(context, "TVSeriesShort_channel")
-                        .setSmallIcon(R.drawable.icon_transparent)
-                        .setColor(context.getColor(R.color.colorPrimary))
-                        .setDefaults(Notification.DEFAULT_ALL)
-                        .setContentTitle(context.getString(R.string.app_name))
-                        .setContentText(message)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(message))
-                        .setContentIntent(PendingIntent.getActivity(context, 0, intentStartActivity, 0))
-                        .setAutoCancel(true);
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                notificationManager.notify(2, notification.build());
+                NotificationService.addNotification(message, context, "C2", "UpdateTVSeriesShort", "Update TVSeriesShort table");
             }
         }
     };

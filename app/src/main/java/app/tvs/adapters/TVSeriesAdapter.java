@@ -1,190 +1,220 @@
 package app.tvs.adapters;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.devsmart.android.ui.HorizontalListView;
-
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import app.tvs.Global;
-import app.tvseries.R;
 import app.tvs.activities.SeasonsActivity;
 import app.tvs.activities.TVSeriesActivity;
 import app.tvs.entities.TVSeries;
+import app.tvseries.R;
 
-public class TVSeriesAdapter extends BaseAdapter {
+public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static class ViewHolder {
-        TextView numberElemTextView;
-        ImageView posterElemImageView;
-        TextView nameElemTextView;
-        TextView yearsElemTextView;
-        TextView nrSeasonsElemTextView;
-        TextView nrEpisodesElemTextView;
-        TextView seenYearsElemTextView;
-        TextView seenSeasonsElemTextView;
-        TextView seenEpisodesElemTextView;
-        Button goToSeasonElemButton;
-        ConstraintLayout element;
-        TextView stateTextView;
-        CheckBox checkForDeleteTVSeriesCheckBox;
-        TextView IMDBTextView;
-        ImageView seenStateImageView;
-        GradientDrawable stateDrawable;
-        HorizontalListView genreListView;
-    }
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-    private TVSeriesActivity activity;
+        private TextView numberElemTextView;
+        private ImageView posterElemImageView;
+        private TextView nameElemTextView;
+        private TextView yearsElemTextView;
+        private TextView nrSeasonsElemTextView;
+        private TextView nrEpisodesElemTextView;
+        private TextView seenYearsElemTextView;
+        private TextView seenSeasonsElemTextView;
+        private TextView seenEpisodesElemTextView;
+        private Button goToSeasonElemButton;
+        private ConstraintLayout element;
+        private TextView stateTextView;
+        private CheckBox checkForDeleteTVSeriesCheckBox;
+        private TextView IMDBTextView;
+        private ImageView seenStateImageView;
+        private GradientDrawable stateDrawable;
+        private RecyclerView genreRecyclerView;
 
-    public TVSeriesAdapter(TVSeriesActivity activity) {
-        this.activity = activity;
-    }
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            numberElemTextView = itemView.findViewById(R.id.numberElemTextView);
+            posterElemImageView = itemView.findViewById(R.id.posterElemImageView);
+            nameElemTextView = itemView.findViewById(R.id.nameElemTextView);
+            yearsElemTextView = itemView.findViewById(R.id.yearsElemTextView);
+            nrSeasonsElemTextView = itemView.findViewById(R.id.nrSeasonsElemTextView);
+            nrEpisodesElemTextView = itemView.findViewById(R.id.nrEpisodesElemTextView);
+            seenYearsElemTextView = itemView.findViewById(R.id.seenYearsElemTextView);
+            seenSeasonsElemTextView = itemView.findViewById(R.id.seenSeasonsElemTextView);
+            seenEpisodesElemTextView = itemView.findViewById(R.id.seenEpisodesElemTextView);
+            goToSeasonElemButton = itemView.findViewById(R.id.goToSeasonElemButton);
+            element = itemView.findViewById(R.id.element);
+            stateTextView = itemView.findViewById(R.id.stateTextView);
+            checkForDeleteTVSeriesCheckBox = itemView.findViewById(R.id.checkForDeleteTVSeriesCheckBox);
+            IMDBTextView = itemView.findViewById(R.id.IMDBTextView);
+            seenStateImageView = itemView.findViewById(R.id.seenStateImageView);
+            stateDrawable = (GradientDrawable) itemView.getContext().getDrawable(R.drawable.state_style);
+            genreRecyclerView = itemView.findViewById(R.id.genreRecyclerView);
 
-    @Override
-    public int getCount() {
-        if(activity.isNotSearchMode())
-            return Global.database.dao().getNrOfTVSeries();
-        else
-            return activity.getSearchedTVSeries().size();
-    }
-
-    @Override
-    public TVSeries getItem(int position) {
-        if(activity.isNotSearchMode())
-            return activity.getSorts().getActualSort().getSortedList().get(position);
-        else
-            return activity.getSearchedTVSeries().get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
-
-        if(convertView == null) {
-            viewHolder = new ViewHolder();
-            LayoutInflater layoutInflater = ((LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-            if(layoutInflater != null) {
-                convertView = layoutInflater.inflate(R.layout.element,parent, false);
-            }
-
-            if(convertView != null) {
-                viewHolder.numberElemTextView = convertView.findViewById(R.id.numberElemTextView);
-                viewHolder.posterElemImageView = convertView.findViewById(R.id.posterElemImageView);
-                viewHolder.nameElemTextView = convertView.findViewById(R.id.nameElemTextView);
-                viewHolder.yearsElemTextView = convertView.findViewById(R.id.yearsElemTextView);
-                viewHolder.nrSeasonsElemTextView = convertView.findViewById(R.id.nrSeasonsElemTextView);
-                viewHolder.nrEpisodesElemTextView = convertView.findViewById(R.id.nrEpisodesElemTextView);
-                viewHolder.seenYearsElemTextView = convertView.findViewById(R.id.seenYearsElemTextView);
-                viewHolder.seenSeasonsElemTextView = convertView.findViewById(R.id.seenSeasonsElemTextView);
-                viewHolder.seenEpisodesElemTextView = convertView.findViewById(R.id.seenEpisodesElemTextView);
-                viewHolder.goToSeasonElemButton = convertView.findViewById(R.id.goToSeasonElemButton);
-                viewHolder.element = convertView.findViewById(R.id.element);
-                viewHolder.stateTextView = convertView.findViewById(R.id.stateTextView);
-                viewHolder.checkForDeleteTVSeriesCheckBox = convertView.findViewById(R.id.checkForDeleteTVSeriesCheckBox);
-                viewHolder.IMDBTextView = convertView.findViewById(R.id.IMDBTextView);
-                viewHolder.seenStateImageView = convertView.findViewById(R.id.seenStateImageView);
-                viewHolder.stateDrawable = (GradientDrawable) activity.getDrawable(R.drawable.state_style);
-                viewHolder.genreListView = convertView.findViewById(R.id.genreListView);
-
-                convertView.setTag(viewHolder);
-            }
         }
-        else {
-            viewHolder = (ViewHolder) convertView.getTag();
+    }
+
+    static class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView footerListTextView;
+        private ImageView showArrowImageView;
+
+        FooterViewHolder(@NonNull View itemView) {
+            super(itemView);
+            footerListTextView = itemView.findViewById(R.id.footerListTextView);
+            showArrowImageView = itemView.findViewById(R.id.showArrowImageView);
         }
+    }
 
-        final TVSeries tvseries = getItem(position);
+    private static final int TYPE_TVSERIES = 1;
+    private static final int TYPE_FOOTER = 2;
 
-        viewHolder.genreListView.setAdapter(new GenreAdapter(getItem(position), activity));
-        viewHolder.numberElemTextView.setText(String.format(Locale.getDefault(), "%d", position+1));
-        viewHolder.posterElemImageView.setImageBitmap(tvseries.getBitmapImage());
-        viewHolder.nameElemTextView.setText(tvseries.getName());
-        viewHolder.yearsElemTextView.setText(String.format(Locale.getDefault(),"- %d-%d -", tvseries.getStartYear(), tvseries.getEndYear()));
-        viewHolder.nrSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getNrSeasons()));
-        viewHolder.nrEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getNrEpisodes()));
-        viewHolder.seenYearsElemTextView.setText((tvseries.getEndYearSeen() == 0 && tvseries.getStartYearSeen() == 0)?("-"):(String.format(Locale.getDefault(), "%d%s", tvseries.getStartYearSeen(), (tvseries.getStartYearSeen() == tvseries.getEndYearSeen())?(""):("-"+tvseries.getEndYearSeen()))));
-        viewHolder.seenSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getSeasonsSeen()));
-        viewHolder.seenEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getEpisodesSeen()));
-        viewHolder.IMDBTextView.setText(String.format(Locale.getDefault(), "%.1f", tvseries.getIMDBRating()));
-        viewHolder.goToSeasonElemButton.setOnClickListener(v -> {
-            Intent intent = new Intent(activity.getContext(), SeasonsActivity.class);
-            intent.putExtra(activity.getString(R.string.sharingTVSeriesId), tvseries.getId());
-            activity.startActivity(intent);
-            viewHolder.element.setBackgroundResource(R.color.header);
-            new Handler().postDelayed(() -> viewHolder.element.setBackgroundResource(R.color.elemList), 30);
-            activity.overridePendingTransition(R.anim.right_in_animation, R.anim.left_out_animation);
-        });
-        viewHolder.goToSeasonElemButton.setClickable(activity.isAddSearchListView() && activity.isProgressLayoutInvisible() && activity.isSortListViewInvisible() && activity.isUpdateFormInvisible());
-        if(viewHolder.stateDrawable != null) {
-            if(tvseries.getState() == Global.STATES.ON_GOING) {
-                viewHolder.stateDrawable.setStroke(1, activity.getColor(R.color.onGoingState));
-                viewHolder.stateTextView.setTextColor(activity.getColor(R.color.onGoingState));
-                viewHolder.stateTextView.setText(activity.getString(R.string.onGoing));
+    private List<TVSeries> tvSeries;
+    private TVSeriesActivity tvSeriesActivity;
+
+    public TVSeriesAdapter(List<TVSeries> tvSeries, TVSeriesActivity tvSeriesActivity) {
+        this.tvSeries = tvSeries;
+        this.tvSeriesActivity = tvSeriesActivity;
+    }
+
+    @Override
+    public int getItemViewType(int i) {
+        if (i == tvSeries.size()) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_TVSERIES;
+        }
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        return (viewType == TYPE_FOOTER) ? (new FooterViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.footer_list, viewGroup, false))) : (new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element, viewGroup, false)));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+        if (getItemViewType(i) == TYPE_FOOTER) {
+            FooterViewHolder footerViewHolder = (FooterViewHolder) viewHolder;
+            if (tvSeries.size() == 0) {
+                footerViewHolder.footerListTextView.setText(tvSeriesActivity.getString(R.string.noTVSeries));
+                footerViewHolder.showArrowImageView.setVisibility(View.VISIBLE);
+            } else {
+                footerViewHolder.footerListTextView.setText(tvSeriesActivity.getString(R.string.theEnd));
+                footerViewHolder.showArrowImageView.setVisibility(View.INVISIBLE);
             }
-            else if(tvseries.getState() == Global.STATES.IN_STAND_BY) {
-                viewHolder.stateDrawable.setStroke(1, activity.getColor(R.color.inStandByState));
-                viewHolder.stateTextView.setTextColor(activity.getColor(R.color.inStandByState));
-                viewHolder.stateTextView.setText(activity.getString(R.string.inStandBy));
+        } else {
+            ViewHolder tvSeriesViewHolder = (ViewHolder) viewHolder;
+            final TVSeries tvseries = tvSeries.get(i);
+
+            tvSeriesViewHolder.genreRecyclerView.setLayoutManager(new LinearLayoutManager(tvSeriesActivity, LinearLayoutManager.HORIZONTAL, false));
+            tvSeriesViewHolder.genreRecyclerView.setAdapter(new GenreAdapter(Arrays.asList(tvseries.getGenres().split(","))));
+            tvSeriesViewHolder.numberElemTextView.setText(String.format(Locale.getDefault(), "%d", i+1));
+            tvSeriesViewHolder.posterElemImageView.setImageBitmap(tvseries.getBitmapImage());
+            tvSeriesViewHolder.nameElemTextView.setText(tvseries.getName());
+            tvSeriesViewHolder.yearsElemTextView.setText(String.format(Locale.getDefault(),"- %d-%d -", tvseries.getStartYear(), tvseries.getEndYear()));
+            tvSeriesViewHolder.nrSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getNrSeasons()));
+            tvSeriesViewHolder.nrEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getNrEpisodes()));
+            tvSeriesViewHolder.seenYearsElemTextView.setText((tvseries.getEndYearSeen() == 0 && tvseries.getStartYearSeen() == 0)?("-"):(String.format(Locale.getDefault(), "%d%s", tvseries.getStartYearSeen(), (tvseries.getStartYearSeen() == tvseries.getEndYearSeen())?(""):("-"+tvseries.getEndYearSeen()))));
+            tvSeriesViewHolder.seenSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getSeasonsSeen()));
+            tvSeriesViewHolder.seenEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getEpisodesSeen()));
+            tvSeriesViewHolder.IMDBTextView.setText(String.format(Locale.getDefault(), "%.1f", tvseries.getIMDBRating()));
+            tvSeriesViewHolder.goToSeasonElemButton.setOnClickListener(v -> {
+                Intent intent = new Intent(tvSeriesActivity.getContext(), SeasonsActivity.class);
+                intent.putExtra(tvSeriesActivity.getString(R.string.sharingTVSeriesId), tvseries.getId());
+                tvSeriesActivity.startActivity(intent);
+                tvSeriesViewHolder.element.setBackgroundResource(R.color.header);
+                new Handler().postDelayed(() -> tvSeriesViewHolder.element.setBackgroundResource(R.color.elemList), 30);
+                tvSeriesActivity.overridePendingTransition(R.anim.right_in_animation, R.anim.left_out_animation);
+            });
+            tvSeriesViewHolder.goToSeasonElemButton.setClickable(tvSeriesActivity.getAddSearchRecyclerView() && tvSeriesActivity.isProgressLayoutInvisible() && tvSeriesActivity.isSortListViewInvisible() && tvSeriesActivity.isUpdateFormInvisible());
+            if(tvSeriesViewHolder.stateDrawable != null) {
+                if(tvseries.getState() == Global.STATES.ON_GOING) {
+                    tvSeriesViewHolder.stateDrawable.setStroke(1, tvSeriesActivity.getColor(R.color.onGoingState));
+                    tvSeriesViewHolder.stateTextView.setTextColor(tvSeriesActivity.getColor(R.color.onGoingState));
+                    tvSeriesViewHolder.stateTextView.setText(tvSeriesActivity.getString(R.string.onGoing));
+                }
+                else if(tvseries.getState() == Global.STATES.IN_STAND_BY) {
+                    tvSeriesViewHolder.stateDrawable.setStroke(1, tvSeriesActivity.getColor(R.color.inStandByState));
+                    tvSeriesViewHolder.stateTextView.setTextColor(tvSeriesActivity.getColor(R.color.inStandByState));
+                    tvSeriesViewHolder.stateTextView.setText(tvSeriesActivity.getString(R.string.inStandBy));
+                }
+                else {
+                    tvSeriesViewHolder.stateDrawable.setStroke(1, tvSeriesActivity.getColor(R.color.finishedState));
+                    tvSeriesViewHolder.stateTextView.setTextColor(tvSeriesActivity.getColor(R.color.finishedState));
+                    tvSeriesViewHolder.stateTextView.setText(tvSeriesActivity.getString(R.string.FINISHED));
+                }
+            }
+            tvSeriesViewHolder.stateTextView.setBackground(tvSeriesViewHolder.stateDrawable);
+            if(tvSeriesActivity.isDeleteMode()) {
+                tvSeriesViewHolder.goToSeasonElemButton.setVisibility(View.INVISIBLE);
+                tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setVisibility(View.VISIBLE);
             }
             else {
-                viewHolder.stateDrawable.setStroke(1, activity.getColor(R.color.finishedState));
-                viewHolder.stateTextView.setTextColor(activity.getColor(R.color.finishedState));
-                viewHolder.stateTextView.setText(activity.getString(R.string.FINISHED));
+                tvSeriesViewHolder.goToSeasonElemButton.setVisibility(View.VISIBLE);
+                tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setVisibility(View.INVISIBLE);
+                if(tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
+                    tvSeriesActivity.removeForDeleteTVSeriesList(tvseries);
+                    tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setChecked(false);
+                    tvSeriesViewHolder.element.setBackgroundResource(R.color.elemList);
+                }
             }
-        }
-        viewHolder.stateTextView.setBackground(viewHolder.stateDrawable);
-        if(activity.isDeleteMode()) {
-            viewHolder.goToSeasonElemButton.setVisibility(View.INVISIBLE);
-            viewHolder.checkForDeleteTVSeriesCheckBox.setVisibility(View.VISIBLE);
-        }
-        else {
-            viewHolder.goToSeasonElemButton.setVisibility(View.VISIBLE);
-            viewHolder.checkForDeleteTVSeriesCheckBox.setVisibility(View.INVISIBLE);
-            if(viewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
-                activity.removeForDeleteTVSeriesList(tvseries);
-                viewHolder.checkForDeleteTVSeriesCheckBox.setChecked(false);
-                viewHolder.element.setBackgroundResource(R.color.elemList);
+
+            if(tvseries.getSeenState() == Global.SEENSTATES.PLAY) {
+                tvSeriesViewHolder.seenStateImageView.setImageDrawable(tvSeriesActivity.getDrawable(R.drawable.play));
             }
-        }
-
-        if(tvseries.getSeenState() == Global.SEENSTATES.PLAY) {
-            viewHolder.seenStateImageView.setImageDrawable(activity.getDrawable(R.drawable.play));
-        }
-        else if(tvseries.getSeenState() == Global.SEENSTATES.PAUSE) {
-            viewHolder.seenStateImageView.setImageDrawable(activity.getDrawable(R.drawable.pause));
-        }
-        else {
-            viewHolder.seenStateImageView.setImageDrawable(activity.getDrawable(R.drawable.up_to_date));
-        }
-
-        viewHolder.checkForDeleteTVSeriesCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(viewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
-                activity.addForDeleteTVSeriesList(tvseries);
-                viewHolder.element.setBackgroundResource(R.color.header);
+            else if(tvseries.getSeenState() == Global.SEENSTATES.PAUSE) {
+                tvSeriesViewHolder.seenStateImageView.setImageDrawable(tvSeriesActivity.getDrawable(R.drawable.pause));
             }
             else {
-                viewHolder.element.setBackgroundResource(R.color.elemList);
-                activity.removeForDeleteTVSeriesList(tvseries);
+                tvSeriesViewHolder.seenStateImageView.setImageDrawable(tvSeriesActivity.getDrawable(R.drawable.up_to_date));
             }
-        });
-        return convertView;
+
+            tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
+                    tvSeriesActivity.addForDeleteTVSeriesList(tvseries);
+                    tvSeriesViewHolder.element.setBackgroundResource(R.color.header);
+                }
+                else {
+                    tvSeriesViewHolder.element.setBackgroundResource(R.color.elemList);
+                    tvSeriesActivity.removeForDeleteTVSeriesList(tvseries);
+                }
+            });
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return tvSeries.size() + 1;
+    }
+
+    public void updateTVSeries(List<TVSeries> tvSeries) {
+        this.tvSeries = tvSeries;
+    }
+
+    public void removeTVSeries(List<TVSeries> tvSeries) {
+        this.tvSeries.removeAll(tvSeries);
+    }
+
+    public void addTVSeries(TVSeries tvSeries) {
+        this.tvSeries.add(tvSeries);
     }
 
 }

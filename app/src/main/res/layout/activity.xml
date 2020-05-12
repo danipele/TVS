@@ -8,8 +8,8 @@
     android:background="@color/background"
     tools:context="app.tvs.activities.MainActivity">
 
-    <ListView
-        android:id="@+id/listView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listRecycleView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="1dp"
@@ -33,46 +33,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/updateTextView"
-            android:layout_width="324dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="70dp"
-            android:paddingTop="6dp"
-            android:paddingStart="30dp"
-            android:paddingEnd="30dp"
-            android:text="@string/updateString"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/updateDBTextView"
-            android:layout_width="324dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="70dp"
-            android:paddingTop="6dp"
-            android:paddingStart="30dp"
-            android:paddingEnd="30dp"
-            android:text="@string/updateDBString"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/closeFormButton"
@@ -101,46 +61,6 @@
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible">
-
-            <TextView
-                android:id="@+id/IMDBLinkTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="100dp"
-                android:labelFor="@+id/IMDBLinkEditText"
-                android:paddingEnd="0dp"
-                android:paddingStart="8dp"
-                android:paddingTop="12dp"
-                android:text="@string/IMDBLink"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/IMDBLinkEditText"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="100dp"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:text="@string/linkStandard"
-                android:textColor="@color/white"
-                android:textColorHint="@color/background"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/IMDBLinkTextView"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/infoLayoutSeasonsEpisodes"
@@ -185,38 +105,6 @@
             android:text="@string/add"
             android:textAlignment="center"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/acceptUpdateButton"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/add_in_form_style"
-            android:text="@string/acceptUpdate"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/acceptUpdateDBButton"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/add_in_form_style"
-            android:text="@string/acceptUpdate"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -429,8 +317,8 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <ListView
-        android:id="@+id/addSearchListView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/addSearchRecyclerView"
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginStart="50dp"
@@ -501,11 +389,12 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <ListView
-        android:id="@+id/sortListView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/sortRecycleView"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:visibility="invisible"
+        android:background="@color/app_icon_background"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 

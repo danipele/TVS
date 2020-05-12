@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/element"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/elemList">
 
@@ -357,7 +357,7 @@
         app:layout_constraintEnd_toStartOf="@+id/goToSeasonElemButton"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.devsmart.android.ui.HorizontalListView
+    <!--<com.devsmart.android.ui.HorizontalListView
         android:id="@+id/genreListView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -367,6 +367,17 @@
         app:layout_constraintStart_toEndOf="@+id/posterElemImageView"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
         android:dividerHeight="10dp"
-        android:divider="@color/background"/>
+        android:divider="@color/background"/>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/genreRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
+        app:layout_constraintStart_toEndOf="@+id/posterElemImageView"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,14 +1,16 @@
 package app.tvs.activities;
 
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,9 +18,9 @@ import java.util.List;
 import java.util.Locale;
 
 import app.tvs.Global;
-import app.tvs.adapters.SearchAdapter;
-import app.tvs.adapters.SortAdapter;
 import app.tvs.adapters.TVSeriesAdapter;
+import app.tvs.adapters.SortAdapter;
+import app.tvs.adapters.SearchAdapter;
 import app.tvs.entities.TVSeries;
 import app.tvs.entities.TVSeriesShort;
 import app.tvs.sorts.LastTimeEpisodeSeenSort;
@@ -28,22 +30,18 @@ import app.tvseries.R;
 public class TVSeriesActivity extends MainActivity {
 
     private List<TVSeries> forDeleteTVSeriesList;
-    private ListView sortListView;
+    private RecyclerView sortRecycleView;
     private Sorts sorts;
     private SortAdapter sortAdapter;
     private List<TVSeries> searchedTVSeries;
     private boolean searchMode = false;
     private SearchView TVSeriesSearchView;
-    private ListView addSearchListView;
+    private RecyclerView addSearchRecyclerView;
     private EditText TVSeriesSearchEditText;
     private SearchAdapter searchAdapter;
     private List<TVSeriesShort> searchedForAddTVSeries;
     protected ImageView sortButton;
     protected ImageView searchButton;
-    protected TextView updateTextView;
-    protected TextView updateDBTextView;
-    protected Button acceptUpdateButton;
-    protected Button acceptUpdateDBButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +49,11 @@ public class TVSeriesActivity extends MainActivity {
         super.onCreate(savedInstanceState);
 
         sortButton.setOnClickListener(v -> {
-            if(sortListView.getVisibility() == View.INVISIBLE) {
-                sortListView.setVisibility(View.VISIBLE);
+            if(sortRecycleView.getVisibility() == View.INVISIBLE) {
+                sortRecycleView.setVisibility(View.VISIBLE);
                 setButtonsClickable(false);
                 sortButton.setClickable(true);
-                adapter.notifyDataSetChanged();
+                notifyChangedAdapter(getSorts().getActualSort().getSortedList());
             }
             else {
                 closeSortList();
@@ -103,7 +101,7 @@ public class TVSeriesActivity extends MainActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if(searchMode)
-                    adapter.notifyDataSetChanged();
+                    notifyChangedAdapter(searchedTVSeries);
                 else
                     searchAdapter.notifyDataSetChanged();
             }
@@ -121,15 +119,8 @@ public class TVSeriesActivity extends MainActivity {
 
     @Override
     public void onResume() {
+        ((TVSeriesAdapter) adapter).updateTVSeries(getSorts().getActualSort().getSortedList());
         super.onResume();
-        if(adapter.getCount() == 0) {
-            ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.noTVSeries));
-            findViewById(R.id.showArrowImageView).setVisibility(View.VISIBLE);
-        }
-        else {
-            ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.theEnd));
-            findViewById(R.id.showArrowImageView).setVisibility(View.INVISIBLE);
-        }
         addButton.setVisibility(View.VISIBLE);
         findViewById(R.id.totalTVSeriesLayout).setVisibility(View.VISIBLE);
         findViewById(R.id.totalSeasonsLayout).setVisibility(View.VISIBLE);
@@ -146,7 +137,7 @@ public class TVSeriesActivity extends MainActivity {
 
     @Override
     public void onBackPressed() {
-        if(sortListView.getVisibility() == View.VISIBLE) {
+        if(sortRecycleView.getVisibility() == View.VISIBLE) {
             closeSortList();
         }
         else if(TVSeriesSearchView.getVisibility() == View.VISIBLE) {
@@ -179,32 +170,44 @@ public class TVSeriesActivity extends MainActivity {
     protected void initViews() {
         super.initViews();
         TVSeriesSearchView = findViewById(R.id.searchTVSeriesSearchView);
-        addSearchListView = findViewById(R.id.addSearchListView);
+        addSearchRecyclerView = findViewById(R.id.addSearchRecyclerView);
         sortButton = findViewById(R.id.sortButton);
         searchButton = findViewById(R.id.searchButton);
-        sortListView = findViewById(R.id.sortListView);
+        sortRecycleView = findViewById(R.id.sortRecycleView);
         TVSeriesSearchEditText = TVSeriesSearchView.findViewById(R.id.search_src_text);
         TVSeriesSearchEditText.setTextColor(getColor(R.color.background));
         TVSeriesSearchEditText.setHint("Search a T.V. Series");
         TVSeriesSearchEditText.setHintTextColor(getColor(R.color.background));
-        updateTextView = findViewById(R.id.updateTextView);
-        updateDBTextView = findViewById(R.id.updateDBTextView);
-        acceptUpdateButton = findViewById(R.id.acceptUpdateButton);
-        acceptUpdateDBButton = findViewById(R.id.acceptUpdateDBButton);
     }
 
     @Override
     protected void setAdapters() {
         super.setAdapters();
-        sortAdapter = new SortAdapter(this);
-        sortListView.setAdapter(sortAdapter);
-        searchAdapter = new SearchAdapter(this);
-        addSearchListView.setAdapter(searchAdapter);
+
+        sortRecycleView.setLayoutManager(new LinearLayoutManager(this));
+        sortRecycleView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.bottom = 1;
+            }
+        });
+        sortAdapter = new SortAdapter(getSorts(), this);
+        sortRecycleView.setAdapter(sortAdapter);
+
+        addSearchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        addSearchRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.bottom = 2;
+            }
+        });
+        searchAdapter = new SearchAdapter(getSearchedForAddTVSeries(), this);
+        addSearchRecyclerView.setAdapter(searchAdapter);
     }
 
     @Override
     protected void setAdapter() {
-        adapter = new TVSeriesAdapter(this);
+        adapter = new TVSeriesAdapter((isNotSearchMode()) ? (getSorts().getActualSort().getSortedList()) : (getSearchedTVSeries()), this);
     }
 
     @Override
@@ -217,20 +220,18 @@ public class TVSeriesActivity extends MainActivity {
 
     @Override
     protected void endDeleteButtonAction() {
+        notifyRemoveAdapter();
         forDeleteTVSeriesList.clear();
         sortButton.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
         super.setButtonsClickable(true);
         super.endDeleteButtonAction();
-        if(adapter.getCount() == 0) {
-            ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.noTVSeries));
-            findViewById(R.id.showArrowImageView).setVisibility(View.VISIBLE);
-        }
-        else {
-            ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.theEnd));
-            findViewById(R.id.showArrowImageView).setVisibility(View.INVISIBLE);
-        }
         updateTotals();
+    }
+
+    public void notifyRemoveAdapter() {
+        ((TVSeriesAdapter) adapter).removeTVSeries(forDeleteTVSeriesList);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -238,7 +239,6 @@ public class TVSeriesActivity extends MainActivity {
         for(TVSeries tvSeries : forDeleteTVSeriesList) {
             Global.database.dao().deleteTVSeries(tvSeries);
         }
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -256,7 +256,7 @@ public class TVSeriesActivity extends MainActivity {
 
     protected void addButtonAction() {
         openSearchView();
-        addSearchListView.setVisibility(View.VISIBLE);
+        addSearchRecyclerView.setVisibility(View.VISIBLE);
         searchedForAddTVSeries.clear();
         searchedForAddTVSeries.addAll(Global.database.dao().getTVSeriesShortWithLimit(100));
         searchAdapter.notifyDataSetChanged();
@@ -274,7 +274,8 @@ public class TVSeriesActivity extends MainActivity {
         sortAdapter.notifyDataSetChanged();
     }
 
-    public void notifyAdapter() {
+    public void notifyChangedAdapter(List<TVSeries> tvSeries) {
+        ((TVSeriesAdapter)adapter).updateTVSeries(tvSeries);
         adapter.notifyDataSetChanged();
     }
 
@@ -287,19 +288,19 @@ public class TVSeriesActivity extends MainActivity {
     }
 
     public void closeSortList() {
-        sortListView.setVisibility(View.INVISIBLE);
+        sortRecycleView.setVisibility(View.INVISIBLE);
         setButtonsClickable(true);
         adapter.notifyDataSetChanged();
     }
 
     public void closeSearchView() {
         TVSeriesSearchView.setVisibility(View.INVISIBLE);
-        addSearchListView.setVisibility(View.INVISIBLE);
+        addSearchRecyclerView.setVisibility(View.INVISIBLE);
         headerTextView.setVisibility(View.VISIBLE);
         setButtonsClickable(true);
         if(searchMode) {
             searchMode = false;
-            adapter.notifyDataSetChanged();
+            notifyChangedAdapter(getSorts().getActualSort().getSortedList());
         }
     }
 
@@ -330,12 +331,12 @@ public class TVSeriesActivity extends MainActivity {
         return !searchMode;
     }
 
-    public boolean isAddSearchListView() {
-        return addSearchListView.getVisibility() == View.INVISIBLE;
+    public boolean getAddSearchRecyclerView() {
+        return addSearchRecyclerView.getVisibility() == View.INVISIBLE;
     }
 
     public boolean isSortListViewInvisible() {
-        return sortListView.getVisibility() == View.INVISIBLE;
+        return sortRecycleView.getVisibility() == View.INVISIBLE;
     }
 
     public boolean isUpdateFormInvisible() {
@@ -349,8 +350,6 @@ public class TVSeriesActivity extends MainActivity {
     @Override
     public void closeForm() {
         addButton.setVisibility(View.VISIBLE);
-        acceptUpdateButton.setVisibility(View.INVISIBLE);
-        acceptUpdateDBButton.setVisibility(View.INVISIBLE);
         super.closeForm();
     }
 

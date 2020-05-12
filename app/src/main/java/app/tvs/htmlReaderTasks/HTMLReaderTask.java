@@ -13,7 +13,7 @@ import app.tvs.activities.MainActivity;
 public abstract class HTMLReaderTask extends AsyncTask<Void, Void, String> {
 
     @SuppressLint("StaticFieldLeak")
-    protected MainActivity activity;
+    MainActivity activity;
 
     HTMLReaderTask(MainActivity activity) {
         this.activity = activity;

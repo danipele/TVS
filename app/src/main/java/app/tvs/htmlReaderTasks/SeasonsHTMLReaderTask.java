@@ -1,7 +1,6 @@
 package app.tvs.htmlReaderTasks;
 
 import android.view.View;
-import android.widget.TextView;
 
 import java.net.URL;
 import java.util.Scanner;
@@ -9,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import app.tvs.Global;
+import app.tvs.adapters.SeasonAdapter;
 import app.tvseries.R;
 import app.tvs.activities.MainActivity;
 import app.tvs.activities.SeasonsActivity;
@@ -36,11 +36,9 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         if(result.equals("")) {
-            ((TextView) activity.findViewById(R.id.footerListTextView)).setText(activity.getString(R.string.theEnd));
             if(parent.getNrSeasons() == parent.getSeasonsSeen()) {
                 activity.addButton.setVisibility(View.INVISIBLE);
             }
-            activity.findViewById(R.id.showArrowImageView).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -100,7 +98,8 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
                 throw new Exception();
             }
             else {
-                Global.database.dao().addSeason(new Season(index, startYear, endYear, nrEpisodes, nrTotalOfEpisodes, 0, parent.getId()));
+                Season season = new Season(index, startYear, endYear, nrEpisodes, nrTotalOfEpisodes, 0, parent.getId());
+                Global.database.dao().addSeason(season);
                 TVSeries updateTVSeries = Global.database.dao().getTVSeriesWithId(parent.getId());
                 if(updateTVSeries.getStartYearSeen() > startYear || updateTVSeries.getStartYearSeen() == 0)
                     updateTVSeries.setStartYearSeen(startYear);
@@ -109,6 +108,7 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
                 updateTVSeries.setSeasonsSeen();
                 Global.database.dao().updateTVSeries(updateTVSeries);
                 parent = Global.database.dao().getTVSeriesWithId(parent.getId());
+                ((SeasonAdapter) activity.adapter).addSeason(season);
             }
 
             return "";

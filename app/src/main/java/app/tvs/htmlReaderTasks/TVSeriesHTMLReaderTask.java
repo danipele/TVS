@@ -3,7 +3,6 @@ package app.tvs.htmlReaderTasks;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.view.View;
 import android.widget.TextView;
 
 import java.net.URL;
@@ -18,6 +17,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import app.tvs.Global;
+import app.tvs.adapters.TVSeriesAdapter;
 import app.tvseries.R;
 import app.tvs.activities.MainActivity;
 import app.tvs.activities.TVSeriesActivity;
@@ -36,10 +36,6 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         ((TextView) activity.findViewById(R.id.totalNrTVSeriesTextView)).setText(String.format(Locale.getDefault(), "%d", Global.database.dao().getNrOfTVSeries()));
-        if(result.equals("")) {
-            ((TextView) activity.findViewById(R.id.footerListTextView)).setText(activity.getString(R.string.theEnd));
-            activity.findViewById(R.id.showArrowImageView).setVisibility(View.INVISIBLE);
-        }
     }
 
     @Override
@@ -195,6 +191,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
             else {
                 TVSeries toAddTVSeries = new TVSeries(url, name, startYear, endYear, nrSeasons, nrEpisodes, 0, 0, 0, 0, IMDBRating, state, Global.SEENSTATES.PAUSE, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), new Date().getTime(), Long.MIN_VALUE, genres.stream().map(String::valueOf).collect(Collectors.joining(",")));
                 Global.database.dao().addTVSeries(toAddTVSeries);
+                ((TVSeriesAdapter) activity.adapter).addTVSeries(toAddTVSeries);
             }
             return "";
 

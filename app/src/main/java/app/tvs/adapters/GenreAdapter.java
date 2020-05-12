@@ -1,76 +1,48 @@
 package app.tvs.adapters;
 
-import android.content.Context;
-import android.support.constraint.ConstraintLayout;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.Arrays;
 import java.util.List;
 
-import app.tvs.activities.TVSeriesActivity;
-import app.tvs.entities.TVSeries;
 import app.tvseries.R;
 
-public class GenreAdapter extends BaseAdapter {
+public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> {
 
-    private static class ViewHolder {
-        ConstraintLayout genreElement;
-        TextView nameTextView;
-    }
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-    private List<String> tvSeriesGenres;
-    private TVSeriesActivity activity;
+        private TextView nameTextView;
 
-    GenreAdapter(TVSeries tvSeries, TVSeriesActivity activity) {
-        this.tvSeriesGenres = Arrays.asList(tvSeries.getGenres().split(","));
-        this.activity = activity;
-    }
-
-    @Override
-    public int getCount() {
-        return tvSeriesGenres.size();
-    }
-
-    @Override
-    public String getItem(int position) {
-        return tvSeriesGenres.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View contentView, ViewGroup parent) {
-
-        final ViewHolder viewHolder;
-
-        if(contentView == null) {
-            viewHolder = new ViewHolder();
-            LayoutInflater layoutInflater = ((LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-            if(layoutInflater != null) {
-                contentView = layoutInflater.inflate(R.layout.element_genre,parent, false);
-            }
-
-            if(contentView != null) {
-                viewHolder.genreElement = contentView.findViewById(R.id.genreElement);
-                viewHolder.nameTextView = contentView.findViewById(R.id.genreTextView);
-
-                contentView.setTag(viewHolder);
-            }
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nameTextView = itemView.findViewById(R.id.genreTextView);
         }
-        else {
-            viewHolder = (ViewHolder) contentView.getTag();
-        }
+    }
 
-        final String genre = getItem(position);
+    private List<String> genres;
+
+    GenreAdapter(List<String> genres) {
+        this.genres = genres;
+    }
+
+    @NonNull
+    @Override
+    public GenreAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_genre, viewGroup, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull GenreAdapter.ViewHolder viewHolder, int i) {
+        final String genre = genres.get(i);
         viewHolder.nameTextView.setText(genre);
+    }
 
-        return contentView;
+    @Override
+    public int getItemCount() {
+        return genres.size();
     }
 }

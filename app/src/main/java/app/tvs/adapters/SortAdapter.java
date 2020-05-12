@@ -1,61 +1,64 @@
 package app.tvs.adapters;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import app.tvseries.R;
 import app.tvs.activities.TVSeriesActivity;
 import app.tvs.sorts.Sort;
+import app.tvs.sorts.Sorts;
+import app.tvseries.R;
 
-public class SortAdapter extends BaseAdapter {
+public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> {
 
-    private TVSeriesActivity activity;
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-    public SortAdapter(TVSeriesActivity activity) {
-        this.activity = activity;
-    }
+        TextView sortTypeTextView;
+        ConstraintLayout sortLayout;
 
-    @Override
-    public int getCount() {
-        return activity.getSorts().getSortsCount();
-    }
-
-    @Override
-    public Sort getItem(int position) {
-        return activity.getSorts().getSort(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null) {
-            LayoutInflater layoutInflater = ((LayoutInflater)activity.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-            if(layoutInflater != null) {
-                convertView = layoutInflater.inflate(R.layout.sort_list,parent, false);
-            }
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.sortTypeTextView = itemView.findViewById(R.id.sortTypeTextView);
+            this.sortLayout = itemView.findViewById(R.id.sortLayout);
         }
-        if(convertView != null) {
-            final Sort sort = getItem(position);
-            ((TextView) convertView.findViewById(R.id.sortTypeTextView)).setText(sort.getName());
-            if(sort.getClass() == activity.getSorts().getActualSort().getClass())
-                convertView.findViewById(R.id.sortLayout).setBackgroundColor(activity.getColor(R.color.adding));
-            else
-                convertView.findViewById(R.id.sortLayout).setBackgroundColor(activity.getColor(R.color.white));
-            convertView.findViewById(R.id.sortLayout).setOnClickListener(v -> {
-                activity.getSorts().setActualSort(sort);
-                activity.closeSortList();
-                activity.notifySortAdapter();
-                activity.notifyAdapter();
-            });
-        }
-        return convertView;
+    }
+
+    private Sorts sorts;
+    private TVSeriesActivity tvSeriesActivity;
+
+    public SortAdapter(Sorts sorts, TVSeriesActivity tvSeriesActivity) {
+        this.sorts = sorts;
+        this.tvSeriesActivity = tvSeriesActivity;
+    }
+
+    @NonNull
+    @Override
+    public SortAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.sort_list, viewGroup, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SortAdapter.ViewHolder viewHolder, int i) {
+        final Sort sort = sorts.getSort(i);
+        viewHolder.sortTypeTextView.setText(sort.getName());
+        if(sort.getClass() == sorts.getActualSort().getClass())
+            viewHolder.sortLayout.setBackgroundColor(tvSeriesActivity.getColor(R.color.adding));
+        else
+            viewHolder.sortLayout.setBackgroundColor(tvSeriesActivity.getColor(R.color.white));
+        viewHolder.sortLayout.setOnClickListener(v -> {
+            sorts.setActualSort(sort);
+            tvSeriesActivity.closeSortList();
+            tvSeriesActivity.notifySortAdapter();
+            tvSeriesActivity.notifyChangedAdapter(tvSeriesActivity.getSorts().getActualSort().getSortedList());
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return sorts.getSortsCount();
     }
 }

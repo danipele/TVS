@@ -1,10 +1,11 @@
 package app.tvs.adapters;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,61 +13,57 @@ import java.util.List;
 import java.util.Locale;
 
 import app.tvs.Global;
-import app.tvseries.R;
 import app.tvs.activities.TVSeriesActivity;
 import app.tvs.entities.TVSeries;
 import app.tvs.entities.TVSeriesShort;
 import app.tvs.htmlReaderTasks.TVSeriesHTMLReaderTask;
+import app.tvseries.R;
 
-public class SearchAdapter extends BaseAdapter {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
-    private TVSeriesActivity activity;
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-    public SearchAdapter(TVSeriesActivity activity) {
-        this.activity = activity;
+        private TextView nameAddTextView;
+        private TextView yearsAddTextView;
+        private ConstraintLayout searchAddLayout;
+
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nameAddTextView = itemView.findViewById(R.id.nameAddTextView);
+            yearsAddTextView = itemView.findViewById(R.id.yearsAddTextView);
+            searchAddLayout = itemView.findViewById(R.id.searchAddLayout);
+        }
+    }
+
+    private List<TVSeriesShort> tvSeriesShorts;
+    private TVSeriesActivity tvSeriesActivity;
+
+    public SearchAdapter(List<TVSeriesShort> tvSeriesShorts, TVSeriesActivity tvSeriesActivity) {
+        this.tvSeriesShorts = tvSeriesShorts;
+        this.tvSeriesActivity = tvSeriesActivity;
+    }
+
+    @NonNull
+    @Override
+    public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_to_add_element, viewGroup, false));
     }
 
     @Override
-    public int getCount() {
-        return activity.getSearchedForAddTVSeries().size();
-    }
-
-    @Override
-    public TVSeriesShort getItem(int position) {
-        return activity.getSearchedForAddTVSeries().get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater layoutInflater = ((LayoutInflater) activity.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-            if (layoutInflater != null) {
-                convertView = layoutInflater.inflate(R.layout.search_to_add_element, parent, false);
+    public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder viewHolder, int i) {
+        final TVSeriesShort tvSeriesShort = tvSeriesShorts.get(i);
+        viewHolder.nameAddTextView.setText(tvSeriesShort.getName());
+        viewHolder.yearsAddTextView.setText(String.format(Locale.getDefault(), "%s - %s", tvSeriesShort.getYearStart(), (tvSeriesShort.getYearEnd().equals(tvSeriesActivity.getString(R.string.unknownValue))) ? ("") : (tvSeriesShort.getYearEnd())));
+        viewHolder.searchAddLayout.setOnClickListener(v -> {
+            String url = tvSeriesActivity.getString(R.string.linkStandard) + tvSeriesShort.getId() + "/";
+            if(notExistsAlready(url)) {
+                new TVSeriesHTMLReaderTask(tvSeriesActivity, url).execute();
+                tvSeriesActivity.resetAddSearchEditText();
             }
-        }
-
-        final TVSeriesShort tvSeriesShort = getItem(position);
-        if (convertView != null) {
-            ((TextView) convertView.findViewById(R.id.nameAddTextView)).setText(tvSeriesShort.getName());
-            ((TextView) convertView.findViewById(R.id.yearsAddTextView)).setText(String.format(Locale.getDefault(), "%s - %s", tvSeriesShort.getYearStart(), (tvSeriesShort.getYearEnd().equals(activity.getString(R.string.unknownValue))) ? ("") : (tvSeriesShort.getYearEnd())));
-            convertView.findViewById(R.id.searchAddLayout).setOnClickListener(v -> {
-                String url = activity.getString(R.string.linkStandard) + tvSeriesShort.getId() + "/";
-                if(notExistsAlready(url)) {
-                    new TVSeriesHTMLReaderTask(activity, url).execute();
-                    activity.resetAddSearchEditText();
-                }
-                else {
-                    Toast.makeText(activity, activity.getString(R.string.alreadyExists), Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-
-        return convertView;
+            else {
+                Toast.makeText(tvSeriesActivity, tvSeriesActivity.getString(R.string.alreadyExists), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private boolean notExistsAlready(String url) {
@@ -75,5 +72,10 @@ public class SearchAdapter extends BaseAdapter {
             if(tvseries.getIMDBLink().equals(url))
                 return false;
         return true;
+    }
+
+    @Override
+    public int getItemCount() {
+        return tvSeriesShorts.size();
     }
 }

@@ -1,17 +1,17 @@
 package app.tvs.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import app.tvseries.R;
@@ -21,9 +21,9 @@ public abstract class MainActivity extends AppCompatActivity {
     protected ImageView deleteButton;
     public ImageView addButton;
     protected TextView headerTextView;
-    protected ListView listView;
+    protected RecyclerView listRecycleView;
     protected ImageView leaveActivityButton;
-    public BaseAdapter adapter;
+    public RecyclerView.Adapter adapter;
     protected ConstraintLayout progressLayout;
     protected ConstraintLayout formLayout;
     protected ImageView closeButton;
@@ -57,7 +57,7 @@ public abstract class MainActivity extends AppCompatActivity {
         leaveActivityButton.setOnClickListener(v -> leaveActivity());
 
         deleteButton.setOnClickListener(v -> {
-            if(adapter.getCount() != 0) {
+            if(adapter.getItemCount() != 0) {
                 if (deleteMode) {
                     deleteButtonAction();
                     endDeleteButtonAction();
@@ -102,7 +102,7 @@ public abstract class MainActivity extends AppCompatActivity {
     protected void initViews() {
         addButton = findViewById(R.id.addButton);
         headerTextView = findViewById(R.id.headerTextView);
-        listView = findViewById(R.id.listView);
+        listRecycleView = findViewById(R.id.listRecycleView);
         leaveActivityButton = findViewById(R.id.backButton);
         deleteButton = findViewById(R.id.deleteButton);
         progressLayout = findViewById(R.id.addingLayout);
@@ -112,19 +112,15 @@ public abstract class MainActivity extends AppCompatActivity {
     }
 
     protected void setAdapters() {
+        listRecycleView.setLayoutManager(new LinearLayoutManager(this));
+        listRecycleView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.bottom = 2;
+            }
+        });
         setAdapter();
-        listView.setAdapter(adapter);
-        setListFooterView();
-    }
-
-    @SuppressLint("InflateParams")
-    protected void setListFooterView() {
-        LayoutInflater layoutInflater = ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-        View footerView = null;
-        if(layoutInflater != null) {
-            footerView = layoutInflater.inflate(R.layout.footer_list,null, true);
-        }
-        listView.addFooterView(footerView);
+        listRecycleView.setAdapter(adapter);
     }
 
     protected void startDeleteButtonAction() {
@@ -135,10 +131,6 @@ public abstract class MainActivity extends AppCompatActivity {
 
     protected void endDeleteButtonAction() {
         deleteMode = false;
-        adapter.notifyDataSetChanged();
-        if(adapter.getCount() == 0) {
-            findViewById(R.id.showArrowImageView).setVisibility(View.VISIBLE);
-        }
     }
 
     public void setButtonsClickable(boolean bool) {

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.tvs.Global;
-import app.tvs.adapters.SeasonsAdapter;
+import app.tvs.adapters.SeasonAdapter;
 import app.tvs.entities.Season;
 import app.tvs.entities.TVSeries;
 import app.tvs.htmlReaderTasks.SeasonsHTMLReaderTask;
@@ -34,26 +34,13 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
     @Override
     public void onResume() {
         parent = Global.database.dao().getTVSeriesWithId(parent.getId());
-        if(adapter.getCount() == 0) {
-            ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.noSeason));
-            findViewById(R.id.showArrowImageView).setVisibility(View.VISIBLE);
+        if(parent.getNrSeasons() != parent.getSeasonsSeen()) {
             addButton.setVisibility(View.VISIBLE);
         }
         else {
-            if (parent.getNrEpisodes() == parent.getEpisodesSeen()) {
-                if (parent.getState() == Global.STATES.FINISHED)
-                    ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.finished));
-                else
-                    ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.upToDate));
-            }
-            else {
-                ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.theEnd));
-            }
-            if(parent.getNrSeasons() == parent.getSeasonsSeen()) {
-                addButton.setVisibility(View.INVISIBLE);
-            }
-            findViewById(R.id.showArrowImageView).setVisibility(View.INVISIBLE);
+            addButton.setVisibility(View.INVISIBLE);
         }
+        ((SeasonAdapter) adapter).updateSeasons(Global.database.dao().getSeasonsWithIdTVSeries(parent.getId()));
         super.onResume();
     }
 
@@ -79,11 +66,12 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
 
     @Override
     protected void setAdapter() {
-        adapter = new SeasonsAdapter(this);
+        adapter = new SeasonAdapter(Global.database.dao().getSeasonsWithIdTVSeriesAscByIndex(getSeasonsParent().getId()), this);
     }
 
     @Override
     protected void endDeleteButtonAction() {
+        notifyRemoveAdapter();
         forDeleteSeasonsList.clear();
         setButtonsClickable(true);
         if(parent.getNrSeasons() == parent.getSeasonsSeen())
@@ -91,14 +79,11 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
         else
             addButton.setVisibility(View.VISIBLE);
         super.endDeleteButtonAction();
-        if(adapter.getCount() == 0) {
-            ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.noSeason));
-            findViewById(R.id.showArrowImageView).setVisibility(View.VISIBLE);
-        }
-        else {
-            ((TextView) findViewById(R.id.footerListTextView)).setText(getString(R.string.theEnd));
-            findViewById(R.id.showArrowImageView).setVisibility(View.INVISIBLE);
-        }
+    }
+
+    public void notifyRemoveAdapter() {
+        ((SeasonAdapter) adapter).removeSeasons(forDeleteSeasonsList);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -119,7 +104,6 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
             parent.setLastTimeEpisodeSeen(Global.database.dao().getLastTimeAddedEpisodeForTVSeriesWithId(parent.getId()));
         }
         Global.database.dao().updateTVSeries(parent);
-        adapter.notifyDataSetChanged();
     }
 
     @Override

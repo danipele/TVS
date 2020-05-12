@@ -1,118 +1,157 @@
 package app.tvs.adapters;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.Locale;
 
-import app.tvs.Global;
 import app.tvs.activities.EpisodesActivity;
 import app.tvs.entities.Episode;
+import app.tvs.entities.Season;
 import app.tvseries.R;
 
-public class EpisodeAdapter extends BaseAdapter {
+public class EpisodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static class ViewHolder {
-        TextView numberElemEpisodeTextView;
-        ImageView posterElemEpisodeImageView;
-        TextView nameElemEpisodeTextView;
-        TextView dateElemEpisodeTextView;
-        TextView durationElemEpisodeTextView;
-        TextView descriptionElemEpisodeTextView;
-        TextView IMDBElemEpisodeTextView;
-        ConstraintLayout elementEpisode;
-        CheckBox checkForDeleteEpisodeCheckBox;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView numberElemEpisodeTextView;
+        private ImageView posterElemEpisodeImageView;
+        private TextView nameElemEpisodeTextView;
+        private TextView dateElemEpisodeTextView;
+        private TextView durationElemEpisodeTextView;
+        private TextView descriptionElemEpisodeTextView;
+        private TextView IMDBElemEpisodeTextView;
+        private ConstraintLayout elementEpisode;
+        private CheckBox checkForDeleteEpisodeCheckBox;
+
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            numberElemEpisodeTextView = itemView.findViewById(R.id.numberElemEpisodeTextView);
+            posterElemEpisodeImageView = itemView.findViewById(R.id.posterElemEpisodeImageView);
+            nameElemEpisodeTextView = itemView.findViewById(R.id.nameElemEpisodeTextView);
+            dateElemEpisodeTextView = itemView.findViewById(R.id.dateElemEpisodeTextView);
+            durationElemEpisodeTextView = itemView.findViewById(R.id.durationElemEpisodeTextView);
+            descriptionElemEpisodeTextView = itemView.findViewById(R.id.descriptionElemEpisodeTextView);
+            IMDBElemEpisodeTextView = itemView.findViewById(R.id.IMDBElemEpisodeTextView);
+            checkForDeleteEpisodeCheckBox = itemView.findViewById(R.id.checkForDeleteEpisodeCheckBox);
+            elementEpisode = itemView.findViewById(R.id.elementEpisode);
+        }
     }
 
-    private EpisodesActivity activity;
+    static class FooterViewHolder extends RecyclerView.ViewHolder {
 
-    public EpisodeAdapter(EpisodesActivity activity) {
-        this.activity = activity;
+        private TextView footerListTextView;
+        private ImageView showArrowImageView;
+
+        FooterViewHolder(@NonNull View itemView) {
+            super(itemView);
+            footerListTextView = itemView.findViewById(R.id.footerListTextView);
+            showArrowImageView = itemView.findViewById(R.id.showArrowImageView);
+        }
+    }
+
+    private static final int TYPE_EPISODE = 1;
+    private static final int TYPE_FOOTER = 2;
+
+    private List<Episode> episodes;
+    private EpisodesActivity episodesActivity;
+
+    public EpisodeAdapter(List<Episode> episodes, EpisodesActivity episodesActivity) {
+        this.episodes = episodes;
+        this.episodesActivity = episodesActivity;
     }
 
     @Override
-    public int getCount() {
-        return Global.database.dao().getNrEpisodesForSeason(activity.getEpisodesParent().getId());
+    public int getItemViewType(int i) {
+        if (i == episodes.size()) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_EPISODE;
+        }
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        return (viewType == TYPE_FOOTER) ? (new FooterViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.footer_list, viewGroup, false))) : (new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_episode, viewGroup, false)));
     }
 
     @Override
-    public Episode getItem(int position) {
-        return Global.database.dao().getEpisodesWithIdSeasonAscByIndex(activity.getEpisodesParent().getId()).get(position);
-    }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
-
-        if(convertView == null) {
-            viewHolder = new ViewHolder();
-            LayoutInflater layoutInflater = ((LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-            if(layoutInflater != null) {
-                convertView = layoutInflater.inflate(R.layout.element_episode,parent, false);
+        if (getItemViewType(i) == TYPE_FOOTER) {
+            FooterViewHolder footerViewHolder = (FooterViewHolder) viewHolder;
+            Season parent = episodesActivity.getEpisodesParent();
+            if (episodes.size() == 0) {
+                footerViewHolder.footerListTextView.setText(episodesActivity.getString(R.string.noEpisode));
+                footerViewHolder.showArrowImageView.setVisibility(View.VISIBLE);
+            } else {
+                if (parent.getNrEpisodes() == parent.getNrEpisodesSeen()) {
+                    if (parent.getNrEpisodesSeen() == parent.getNrTotalOfEpisodes())
+                        footerViewHolder.footerListTextView.setText(episodesActivity.getString(R.string.finished));
+                    else
+                        footerViewHolder.footerListTextView.setText(episodesActivity.getString(R.string.upToDate));
+                } else {
+                    footerViewHolder.footerListTextView.setText(episodesActivity.getString(R.string.theEnd));
+                }
+                footerViewHolder.showArrowImageView.setVisibility(View.INVISIBLE);
             }
+        } else {
+            ViewHolder episodeViewHolder = (ViewHolder) viewHolder;
+            final Episode episode = episodes.get(i);
 
-            if(convertView != null) {
-                viewHolder.numberElemEpisodeTextView = convertView.findViewById(R.id.numberElemEpisodeTextView);
-                viewHolder.posterElemEpisodeImageView = convertView.findViewById(R.id.posterElemEpisodeImageView);
-                viewHolder.nameElemEpisodeTextView = convertView.findViewById(R.id.nameElemEpisodeTextView);
-                viewHolder.dateElemEpisodeTextView = convertView.findViewById(R.id.dateElemEpisodeTextView);
-                viewHolder.durationElemEpisodeTextView = convertView.findViewById(R.id.durationElemEpisodeTextView);
-                viewHolder.descriptionElemEpisodeTextView = convertView.findViewById(R.id.descriptionElemEpisodeTextView);
-                viewHolder.IMDBElemEpisodeTextView = convertView.findViewById(R.id.IMDBElemEpisodeTextView);
-                viewHolder.checkForDeleteEpisodeCheckBox = convertView.findViewById(R.id.checkForDeleteEpisodeCheckBox);
-                viewHolder.elementEpisode = convertView.findViewById(R.id.elementEpisode);
-
-                convertView.setTag(viewHolder);
-            }
-        }
-        else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        final Episode episode = getItem(position);
-
-        viewHolder.posterElemEpisodeImageView.setImageBitmap(episode.getBitmapImage());
-        viewHolder.numberElemEpisodeTextView.setText(String.format(Locale.getDefault(), "Episode %d", episode.getIndex()));
-        viewHolder.nameElemEpisodeTextView.setText(episode.getName());
-        viewHolder.dateElemEpisodeTextView.setText(episode.getReleaseDate());
-        viewHolder.durationElemEpisodeTextView.setText(episode.getDuration());
-        viewHolder.descriptionElemEpisodeTextView.setText(episode.getDescription());
-        viewHolder.IMDBElemEpisodeTextView.setText(String.format(Locale.getDefault(), "%.1f", episode.getIMDBRating()));
-        if(activity.isDeleteMode()) {
-            viewHolder.descriptionElemEpisodeTextView.setVisibility(View.INVISIBLE);
-            viewHolder.checkForDeleteEpisodeCheckBox.setVisibility(View.VISIBLE);
-        }
-        else {
-            viewHolder.descriptionElemEpisodeTextView.setVisibility(View.VISIBLE);
-            viewHolder.checkForDeleteEpisodeCheckBox.setVisibility(View.INVISIBLE);
-            if(viewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
-                activity.removeForDeleteEpisodesList(episode);
-                viewHolder.checkForDeleteEpisodeCheckBox.setChecked(false);
-                viewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
-            }
-        }
-        viewHolder.checkForDeleteEpisodeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(viewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
-                activity.addForDeleteEpisodesList(episode);
-                viewHolder.elementEpisode.setBackgroundResource(R.color.header);
+            episodeViewHolder.posterElemEpisodeImageView.setImageBitmap(episode.getBitmapImage());
+            episodeViewHolder.numberElemEpisodeTextView.setText(String.format(Locale.getDefault(), "Episode %d", episode.getIndex()));
+            episodeViewHolder.nameElemEpisodeTextView.setText(episode.getName());
+            episodeViewHolder.dateElemEpisodeTextView.setText(episode.getReleaseDate());
+            episodeViewHolder.durationElemEpisodeTextView.setText(episode.getDuration());
+            episodeViewHolder.descriptionElemEpisodeTextView.setText(episode.getDescription());
+            episodeViewHolder.IMDBElemEpisodeTextView.setText(String.format(Locale.getDefault(), "%.1f", episode.getIMDBRating()));
+            if(episodesActivity.isDeleteMode()) {
+                episodeViewHolder.descriptionElemEpisodeTextView.setVisibility(View.INVISIBLE);
+                episodeViewHolder.checkForDeleteEpisodeCheckBox.setVisibility(View.VISIBLE);
             }
             else {
-                viewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
-                activity.removeForDeleteEpisodesList(episode);
+                episodeViewHolder.descriptionElemEpisodeTextView.setVisibility(View.VISIBLE);
+                episodeViewHolder.checkForDeleteEpisodeCheckBox.setVisibility(View.INVISIBLE);
+                if(episodeViewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
+                    episodesActivity.removeForDeleteEpisodesList(episode);
+                    episodeViewHolder.checkForDeleteEpisodeCheckBox.setChecked(false);
+                    episodeViewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
+                }
             }
-        });
-        return convertView;
+            episodeViewHolder.checkForDeleteEpisodeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(episodeViewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
+                    episodesActivity.addForDeleteEpisodesList(episode);
+                    episodeViewHolder.elementEpisode.setBackgroundResource(R.color.header);
+                }
+                else {
+                    episodeViewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
+                    episodesActivity.removeForDeleteEpisodesList(episode);
+                }
+            });
+        }
     }
+
+    @Override
+    public int getItemCount() {
+        return episodes.size() + 1;
+    }
+
+    public void removeEpisodes(List<Episode> episodes) {
+        this.episodes.removeAll(episodes);
+    }
+
+    public void addEpisode(Episode episode) {
+        episodes.add(episode);
+    }
+
 }

@@ -2,7 +2,6 @@ package app.tvs.htmlReaderTasks;
 
 import android.graphics.BitmapFactory;
 import android.view.View;
-import android.widget.TextView;
 
 import java.net.URL;
 import java.util.Date;
@@ -12,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import app.tvs.Global;
+import app.tvs.adapters.EpisodeAdapter;
 import app.tvseries.R;
 import app.tvs.activities.EpisodesActivity;
 import app.tvs.activities.MainActivity;
@@ -41,19 +41,11 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
         super.onPostExecute(result);
         if(result.equals("")) {
             if (parent.getNrEpisodes() == parent.getNrEpisodesSeen()) {
-                if(parent.getNrEpisodes() == parent.getNrTotalOfEpisodes()) {
-                    ((TextView) activity.findViewById(R.id.footerListTextView)).setText(activity.getString(R.string.finished));
-                }
-                else {
-                    ((TextView) activity.findViewById(R.id.footerListTextView)).setText(activity.getString(R.string.upToDate));
-                }
                 activity.addButton.setVisibility(View.INVISIBLE);
             }
             else {
-                ((TextView) activity.findViewById(R.id.footerListTextView)).setText(activity.getString(R.string.theEnd));
                 activity.addButton.setVisibility(View.VISIBLE);
             }
-            activity.findViewById(R.id.showArrowImageView).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -170,7 +162,8 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                 throw new Exception();
             else {
                 long now = new Date().getTime();
-                Global.database.dao().addEpisodes(new Episode(index, name, releaseDate, duration, description, IMDb, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), parent.getId(), now));
+                Episode episode = new Episode(index, name, releaseDate, duration, description, IMDb, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), parent.getId(), now);
+                Global.database.dao().addEpisodes(episode);
                 Season season = Global.database.dao().getSeasonById(parent.getId());
                 season.setNrEpisodesSeen();
                 Global.database.dao().updateSeason(season);
@@ -180,6 +173,7 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                 TVseries.setLastTimeEpisodeSeen(now);
                 TVseries.setSeenState();
                 Global.database.dao().updateTVSeries(TVseries);
+                ((EpisodeAdapter) activity.adapter).addEpisode(episode);
             }
 
             return "";

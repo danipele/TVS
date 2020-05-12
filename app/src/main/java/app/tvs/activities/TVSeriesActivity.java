@@ -40,8 +40,6 @@ public class TVSeriesActivity extends MainActivity {
     private List<TVSeriesShort> searchedForAddTVSeries;
     protected ImageView sortButton;
     protected ImageView searchButton;
-    protected ImageView updateButton;
-    protected ImageView updateDBButton;
     protected TextView updateTextView;
     protected TextView updateDBTextView;
     protected Button acceptUpdateButton;
@@ -68,24 +66,6 @@ public class TVSeriesActivity extends MainActivity {
             searchMode = true;
             openSearchView();
             searchedTVSeries = Global.database.dao().getTVSeries();
-        });
-
-        updateButton.setOnClickListener(v -> {
-            formLayout.setVisibility(View.VISIBLE);
-            setButtonsClickable(false);
-            updateTextView.setVisibility(View.VISIBLE);
-            addInForm.setVisibility(View.INVISIBLE);
-            acceptUpdateButton.setVisibility(View.VISIBLE);
-            adapter.notifyDataSetChanged();
-        });
-
-        updateDBButton.setOnClickListener(v -> {
-            formLayout.setVisibility(View.VISIBLE);
-            setButtonsClickable(false);
-            updateDBTextView.setVisibility(View.VISIBLE);
-            addInForm.setVisibility(View.INVISIBLE);
-            acceptUpdateDBButton.setVisibility(View.VISIBLE);
-            adapter.notifyDataSetChanged();
         });
 
         TVSeriesSearchEditText.addTextChangedListener(new TextWatcher() {
@@ -157,8 +137,6 @@ public class TVSeriesActivity extends MainActivity {
         updateTotals();
         sortButton.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
-        updateButton.setVisibility(View.VISIBLE);
-        updateDBButton.setVisibility(View.VISIBLE);
         if(searchMode) {
             closeSearchView();
             searchMode = false;
@@ -204,8 +182,6 @@ public class TVSeriesActivity extends MainActivity {
         addSearchListView = findViewById(R.id.addSearchListView);
         sortButton = findViewById(R.id.sortButton);
         searchButton = findViewById(R.id.searchButton);
-        updateButton = findViewById(R.id.updateButton);
-        updateDBButton = findViewById(R.id.updateDBButton);
         sortListView = findViewById(R.id.sortListView);
         TVSeriesSearchEditText = TVSeriesSearchView.findViewById(R.id.search_src_text);
         TVSeriesSearchEditText.setTextColor(getColor(R.color.background));
@@ -236,8 +212,6 @@ public class TVSeriesActivity extends MainActivity {
         super.setButtonsClickable(false);
         sortButton.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.INVISIBLE);
-        updateButton.setVisibility(View.INVISIBLE);
-        updateDBButton.setVisibility(View.INVISIBLE);
         super.startDeleteButtonAction();
     }
 
@@ -246,8 +220,6 @@ public class TVSeriesActivity extends MainActivity {
         forDeleteTVSeriesList.clear();
         sortButton.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
-        updateButton.setVisibility(View.VISIBLE);
-        updateDBButton.setVisibility(View.VISIBLE);
         super.setButtonsClickable(true);
         super.endDeleteButtonAction();
         if(adapter.getCount() == 0) {
@@ -274,8 +246,6 @@ public class TVSeriesActivity extends MainActivity {
         super.setButtonsClickable(bool);
         sortButton.setClickable(bool);
         searchButton.setClickable(bool);
-        updateButton.setClickable(bool);
-        updateDBButton.setClickable(bool);
     }
 
     private void updateTotals() {

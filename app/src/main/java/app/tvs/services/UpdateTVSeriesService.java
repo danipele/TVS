@@ -19,7 +19,7 @@ import app.tvs.entities.Season;
 import app.tvs.entities.TVSeries;
 import app.tvseries.R;
 
-public class UpdateTVSeries {
+public class UpdateTVSeriesService {
 
     public static void update(Context context) {
         String message = "";

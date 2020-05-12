@@ -14,7 +14,7 @@ import app.tvs.db.Database;
 import app.tvs.entities.TVSeriesShort;
 import app.tvseries.R;
 
-public class UpdateTVSeriesShort {
+public class UpdateTVSeriesShortService {
 
     public static void update(Context context) {
         String message = "";

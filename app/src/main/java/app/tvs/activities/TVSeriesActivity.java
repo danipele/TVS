@@ -251,6 +251,7 @@ public class TVSeriesActivity extends MainActivity {
         searchedForAddTVSeries.clear();
         searchedForAddTVSeries.addAll(Global.database.dao().getTVSeriesShortWithLimit(100));
         searchAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     public void notifySortAdapter() {
@@ -285,6 +286,7 @@ public class TVSeriesActivity extends MainActivity {
             searchMode = false;
             notifyChangedAdapter(getSorts().getActualSort().getSortedList());
         }
+        adapter.notifyDataSetChanged();
     }
 
     private void openSearchView() {

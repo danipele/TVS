@@ -53,6 +53,7 @@ public abstract class EpisodesSeasonsActivity extends MainActivity {
         infoFormLayout.setVisibility(View.VISIBLE);
         setButtonsClickable(false);
         updateSpinner();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

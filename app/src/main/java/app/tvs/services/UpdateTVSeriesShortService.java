@@ -2,6 +2,7 @@ package app.tvs.services;
 
 import android.content.Context;
 
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.InputSource;
 
 import java.io.BufferedInputStream;
@@ -17,17 +18,17 @@ import app.tvseries.R;
 public class UpdateTVSeriesShortService {
 
     public static void update(Context context) {
-        String message = "";
+        String message = StringUtils.EMPTY;
         try {
             int addedNew = 0;
             Database database = Global.database;
             InputStream input = new BufferedInputStream(new InputSource(new GZIPInputStream(new URL(context.getString(R.string.dbFileLink)).openConnection().getInputStream())).getByteStream());
             byte[] data = new byte[2097152];
             int count;
-            String endMargins = "";
+            String endMargins = StringUtils.EMPTY;
 
-            NotificationService.addNotification("Starting update ...", context, "C2", "UpdateTVSeriesShort", "Update TVSeriesShort table");
-            String dataString, file = "";
+            NotificationService.addNotification(context.getString(R.string.startUpdate), context, context.getString(R.string.updateTVSeriesShortChannel), context.getString(R.string.updateTVSeriesShortName), context.getString(R.string.updateTVSeriesShortDescription));
+            String dataString, file = StringUtils.EMPTY;
             String[] lines;
             while ((count = input.read(data)) != -1) {
                 dataString = new String(data, 0, count, context.getString(R.string.UTF8));
@@ -53,14 +54,14 @@ public class UpdateTVSeriesShortService {
 
             System.out.print(file);
             input.close();
-            message = "TVS database was updated. " + addedNew + " T.V. Series were added";
+            message = context.getString(R.string.dbUpdated) + addedNew + context.getString(R.string.TVSeriesWereUpdated);
 
         }
         catch (Exception e) {
-            message = "TVS database couldn't be updated";
+            message = context.getString(R.string.dbNotUpdated);
         }
         finally {
-            NotificationService.addNotification(message, context, "C2", "UpdateTVSeriesShort", "Update TVSeriesShort table");
+            NotificationService.addNotification(message, context, context.getString(R.string.updateTVSeriesShortChannel), context.getString(R.string.updateTVSeriesShortName), context.getString(R.string.updateTVSeriesShortDescription));
         }
 
     }

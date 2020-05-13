@@ -5,6 +5,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,7 +37,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        ((TextView) activity.findViewById(R.id.totalNrTVSeriesTextView)).setText(String.format(Locale.getDefault(), "%d", Global.database.dao().getNrOfTVSeries()));
+        ((TextView) activity.findViewById(R.id.totalNrTVSeriesTextView)).setText(String.format(Locale.getDefault(), activity.getString(R.string.intFormat), Global.database.dao().getNrOfTVSeries()));
     }
 
     @Override
@@ -51,14 +53,14 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
         try {
 
             String htmlLine;
-            String name="";
+            String name = StringUtils.EMPTY;
             int startYear = 0;
             int endYear = 0;
             int nrSeasons = 0;
             int nrEpisodes = 0;
             double IMDBRating = 0;
             Global.STATES state = Global.STATES.UNDECLARED;
-            String imageLink = "";
+            String imageLink = StringUtils.EMPTY;
             Matcher matcher;
             int nrEpisodesToDelete = 0;
             int nrEpisodesFound = 0;
@@ -86,10 +88,10 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                 if (htmlLine.contains(activity.getString(R.string.dateFinder))) {
                     matcher = Pattern.compile(activity.getString(R.string.datePattern)).matcher(htmlLine);
                     if (matcher.find()) {
-                        if (matcher.group(1).contains("–")) {
-                            String[] years = matcher.group(1).split("–");
+                        if (matcher.group(1).contains(activity.getString(R.string.minus))) {
+                            String[] years = matcher.group(1).split(activity.getString(R.string.minus));
                             startYear = Integer.parseInt(years[0]);
-                            if (years[1].equals(" ") || years[1].equals("")) {
+                            if (years[1].trim().isEmpty()) {
                                 endYear = Calendar.getInstance().get(Calendar.YEAR);
                             } else {
                                 endYear = Integer.parseInt(years[1]);
@@ -142,7 +144,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                             state = (nrEpisodesFromLastSeasonToDelete == 0) ? (Global.STATES.IN_STAND_BY) : (Global.STATES.ON_GOING);
                         }
                     }
-                    Scanner seasonUnknownScanner = new Scanner(new URL(url+activity.getString(R.string.forSeasonLink)+"-1").openStream());
+                    Scanner seasonUnknownScanner = new Scanner(new URL(url+activity.getString(R.string.forSeasonLink)+activity.getString(R.string.minusOne)).openStream());
                     while (seasonUnknownScanner.hasNext()) {
                         htmlLine = seasonUnknownScanner.nextLine();
                         if (htmlLine.contains(activity.getString(R.string.seasonUnknownFinder))) {
@@ -183,18 +185,18 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
             }
             nrEpisodes -= nrEpisodesToDelete;
 
-            if (imageLink.equals("")) {
-                imageLink = "https://semantic-ui.com/images/wireframe/image.png";
+            if (imageLink.isEmpty()) {
+                imageLink = activity.getString(R.string.noImageLink);
             }
 
-            if (name.equals("") || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0 || genres.isEmpty()) {
+            if (name.isEmpty() || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0 || genres.isEmpty()) {
                 throw new Exception();
             } else {
-                TVSeries toAddTVSeries = new TVSeries(url, name, startYear, endYear, nrSeasons, nrEpisodes, 0, 0, 0, 0, IMDBRating, state, Global.SEENSTATES.PAUSE, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), new Date().getTime(), Long.MIN_VALUE, genres.stream().map(String::valueOf).collect(Collectors.joining(",")));
+                TVSeries toAddTVSeries = new TVSeries(url, name, startYear, endYear, nrSeasons, nrEpisodes, 0, 0, 0, 0, IMDBRating, state, Global.SEENSTATES.PAUSE, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), new Date().getTime(), Long.MIN_VALUE, genres.stream().map(String::valueOf).collect(Collectors.joining(activity.getString(R.string.comma))));
                 Global.database.dao().addTVSeries(toAddTVSeries);
                 ((TVSeriesAdapter) activity.adapter).addTVSeries(toAddTVSeries);
             }
-            return "";
+            return StringUtils.EMPTY;
 
         } catch (Exception e) {
             return getToastMessage();

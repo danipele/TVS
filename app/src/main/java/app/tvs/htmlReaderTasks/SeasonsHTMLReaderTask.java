@@ -2,6 +2,8 @@ package app.tvs.htmlReaderTasks;
 
 import android.view.View;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.net.URL;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -35,7 +37,7 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        if (result.equals("")) {
+        if (result.isEmpty()) {
             if (parent.getNrSeasons() == parent.getSeasonsSeen()) {
                 activity.addButton.setVisibility(View.INVISIBLE);
             }
@@ -111,7 +113,7 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
                 ((SeasonAdapter) activity.adapter).addSeason(season);
             }
 
-            return "";
+            return StringUtils.EMPTY;
         }
         catch (Exception e) {
             return getToastMessage();

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -78,9 +80,9 @@ public class TVSeriesActivity extends MainActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (searchMode) {
-                    searchedTVSeries.addAll(Global.database.dao().getTVSeriesSortedAscByNameThatContains("%" + s.toString().toLowerCase() + "%"));
+                    searchedTVSeries.addAll(Global.database.dao().getTVSeriesSortedAscByNameThatContains(getString(R.string.percent) + s.toString().toLowerCase() + getString(R.string.percent)));
                 } else {
-                    List<TVSeriesShort> foundTVSeriesShort = Global.database.dao().getTVSeriesShortLike("%" + s.toString().toLowerCase() + "%");
+                    List<TVSeriesShort> foundTVSeriesShort = Global.database.dao().getTVSeriesShortLike(getString(R.string.percent) + s.toString().toLowerCase() + getString(R.string.percent));
                     List<TVSeriesShort> toRemoveFromFoundTVSeriesShort = new ArrayList<>();
                     for (TVSeriesShort tvSeriesShort : foundTVSeriesShort) {
                         if (tvSeriesShort.getName().equalsIgnoreCase(s.toString())) {
@@ -109,7 +111,7 @@ public class TVSeriesActivity extends MainActivity {
         });
 
         TVSeriesSearchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn).setOnClickListener(v -> {
-            if (TVSeriesSearchEditText.getText().toString().equals("")) {
+            if (TVSeriesSearchEditText.getText().toString().isEmpty()) {
                 closeSearchView();
             } else {
                 resetTVSeriesSearchEditText();
@@ -176,7 +178,7 @@ public class TVSeriesActivity extends MainActivity {
         sortRecycleView = findViewById(R.id.sortRecycleView);
         TVSeriesSearchEditText = TVSeriesSearchView.findViewById(R.id.search_src_text);
         TVSeriesSearchEditText.setTextColor(getColor(R.color.background));
-        TVSeriesSearchEditText.setHint("Search a T.V. Series");
+        TVSeriesSearchEditText.setHint(getString(R.string.searchEditTextHint));
         TVSeriesSearchEditText.setHintTextColor(getColor(R.color.background));
     }
 
@@ -249,9 +251,9 @@ public class TVSeriesActivity extends MainActivity {
     }
 
     private void updateTotals() {
-        ((TextView) findViewById(R.id.totalNrTVSeriesTextView)).setText(String.format(Locale.getDefault(), "%d", Global.database.dao().getNrOfTVSeries()));
-        ((TextView) findViewById(R.id.totalNrSeasonsTextView)).setText(String.format(Locale.getDefault(), "%d", Global.database.dao().getNrOfSeasons()));
-        ((TextView) findViewById(R.id.totalNrEpisodesTextView)).setText(String.format(Locale.getDefault(), "%d", Global.database.dao().getNrOFEpisodes()));
+        ((TextView) findViewById(R.id.totalNrTVSeriesTextView)).setText(String.format(Locale.getDefault(), getString(R.string.intFormat), Global.database.dao().getNrOfTVSeries()));
+        ((TextView) findViewById(R.id.totalNrSeasonsTextView)).setText(String.format(Locale.getDefault(), getString(R.string.intFormat), Global.database.dao().getNrOfSeasons()));
+        ((TextView) findViewById(R.id.totalNrEpisodesTextView)).setText(String.format(Locale.getDefault(), getString(R.string.intFormat), Global.database.dao().getNrOFEpisodes()));
     }
 
     protected void addButtonAction() {
@@ -280,7 +282,7 @@ public class TVSeriesActivity extends MainActivity {
     }
 
     public void resetAddSearchEditText() {
-        TVSeriesSearchEditText.setText("");
+        TVSeriesSearchEditText.setText(StringUtils.EMPTY);
     }
 
     public void setHeaderVisible() {
@@ -310,9 +312,9 @@ public class TVSeriesActivity extends MainActivity {
         setButtonsClickable(false);
         headerTextView.setVisibility(View.INVISIBLE);
         if (searchMode) {
-            TVSeriesSearchEditText.setHint("Search a T.V. Series");
+            TVSeriesSearchEditText.setHint(getString(R.string.searchEditTextHint));
         } else {
-            TVSeriesSearchEditText.setHint("Add a T.V. Series");
+            TVSeriesSearchEditText.setHint(getString(R.string.addEditTextHint));
         }
     }
 
@@ -345,7 +347,7 @@ public class TVSeriesActivity extends MainActivity {
     }
 
     public void resetTVSeriesSearchEditText() {
-        TVSeriesSearchEditText.setText("");
+        TVSeriesSearchEditText.setText(StringUtils.EMPTY);
     }
 
     @Override

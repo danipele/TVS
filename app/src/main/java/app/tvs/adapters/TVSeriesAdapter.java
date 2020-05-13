@@ -15,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -125,17 +127,17 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             final TVSeries tvseries = tvSeries.get(i);
 
             tvSeriesViewHolder.genreRecyclerView.setLayoutManager(new LinearLayoutManager(tvSeriesActivity, LinearLayoutManager.HORIZONTAL, false));
-            tvSeriesViewHolder.genreRecyclerView.setAdapter(new GenreAdapter(Arrays.asList(tvseries.getGenres().split(","))));
-            tvSeriesViewHolder.numberElemTextView.setText(String.format(Locale.getDefault(), "%d", i+1));
+            tvSeriesViewHolder.genreRecyclerView.setAdapter(new GenreAdapter(Arrays.asList(tvseries.getGenres().split(tvSeriesActivity.getString(R.string.comma)))));
+            tvSeriesViewHolder.numberElemTextView.setText(String.format(Locale.getDefault(), tvSeriesActivity.getString(R.string.intFormat), i+1));
             tvSeriesViewHolder.posterElemImageView.setImageBitmap(tvseries.getBitmapImage());
             tvSeriesViewHolder.nameElemTextView.setText(tvseries.getName());
-            tvSeriesViewHolder.yearsElemTextView.setText(String.format(Locale.getDefault(),"- %d-%d -", tvseries.getStartYear(), tvseries.getEndYear()));
-            tvSeriesViewHolder.nrSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getNrSeasons()));
-            tvSeriesViewHolder.nrEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getNrEpisodes()));
-            tvSeriesViewHolder.seenYearsElemTextView.setText((tvseries.getEndYearSeen() == 0 && tvseries.getStartYearSeen() == 0) ? ("-") : (String.format(Locale.getDefault(), "%d%s", tvseries.getStartYearSeen(), (tvseries.getStartYearSeen() == tvseries.getEndYearSeen()) ? ("") : ("-"+tvseries.getEndYearSeen()))));
-            tvSeriesViewHolder.seenSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getSeasonsSeen()));
-            tvSeriesViewHolder.seenEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getEpisodesSeen()));
-            tvSeriesViewHolder.IMDBTextView.setText(String.format(Locale.getDefault(), "%.1f", tvseries.getIMDBRating()));
+            tvSeriesViewHolder.yearsElemTextView.setText(String.format(Locale.getDefault(),tvSeriesActivity.getString(R.string.yearsEpisodesFormat), tvseries.getStartYear(), tvseries.getEndYear()));
+            tvSeriesViewHolder.nrSeasonsElemTextView.setText(String.format(Locale.getDefault(), tvSeriesActivity.getString(R.string.intFormat), tvseries.getNrSeasons()));
+            tvSeriesViewHolder.nrEpisodesElemTextView.setText(String.format(Locale.getDefault(), tvSeriesActivity.getString(R.string.intFormat), tvseries.getNrEpisodes()));
+            tvSeriesViewHolder.seenYearsElemTextView.setText((tvseries.getEndYearSeen() == 0 && tvseries.getStartYearSeen() == 0) ? (tvSeriesActivity.getString(R.string.minus)) : (String.format(Locale.getDefault(), tvSeriesActivity.getString(R.string.intStringFormat), tvseries.getStartYearSeen(), (tvseries.getStartYearSeen() == tvseries.getEndYearSeen()) ? (StringUtils.EMPTY) : (tvSeriesActivity.getString(R.string.minus)+tvseries.getEndYearSeen()))));
+            tvSeriesViewHolder.seenSeasonsElemTextView.setText(String.format(Locale.getDefault(), tvSeriesActivity.getString(R.string.intFormat), tvseries.getSeasonsSeen()));
+            tvSeriesViewHolder.seenEpisodesElemTextView.setText(String.format(Locale.getDefault(), tvSeriesActivity.getString(R.string.intFormat), tvseries.getEpisodesSeen()));
+            tvSeriesViewHolder.IMDBTextView.setText(String.format(Locale.getDefault(), tvSeriesActivity.getString(R.string.float1RealFormat), tvseries.getIMDBRating()));
             tvSeriesViewHolder.goToSeasonElemButton.setOnClickListener(v -> {
                 Intent intent = new Intent(tvSeriesActivity.getContext(), SeasonsActivity.class);
                 intent.putExtra(tvSeriesActivity.getString(R.string.sharingTVSeriesId), tvseries.getId());

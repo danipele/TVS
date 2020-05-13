@@ -40,7 +40,7 @@ public class EpisodesActivity extends EpisodesSeasonsActivity {
 
     @Override
     protected void initHeader() {
-        String headerString = String.format(Locale.getDefault(), "%s - S%d", Global.database.dao().getNameOfTVSeriesForEpisodeWithIdSeason(parent.getId()),parent.getIndex());
+        String headerString = String.format(Locale.getDefault(), getString(R.string.episodeHeaderFormat), Global.database.dao().getNameOfTVSeriesForEpisodeWithIdSeason(parent.getId()),parent.getIndex());
         if (headerString.length() > 24) {
             headerTextView.setTextSize(20 - (((float)(headerString.length() - 24) / 5 + 1)* 2));
         }

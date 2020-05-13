@@ -110,12 +110,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             final Episode episode = episodes.get(i);
 
             episodeViewHolder.posterElemEpisodeImageView.setImageBitmap(episode.getBitmapImage());
-            episodeViewHolder.numberElemEpisodeTextView.setText(String.format(Locale.getDefault(), "Episode %d", episode.getIndex()));
+            episodeViewHolder.numberElemEpisodeTextView.setText(String.format(Locale.getDefault(), episodesActivity.getString(R.string.nrOfEpisodeFormat), episode.getIndex()));
             episodeViewHolder.nameElemEpisodeTextView.setText(episode.getName());
             episodeViewHolder.dateElemEpisodeTextView.setText(episode.getReleaseDate());
             episodeViewHolder.durationElemEpisodeTextView.setText(episode.getDuration());
             episodeViewHolder.descriptionElemEpisodeTextView.setText(episode.getDescription());
-            episodeViewHolder.IMDBElemEpisodeTextView.setText(String.format(Locale.getDefault(), "%.1f", episode.getIMDBRating()));
+            episodeViewHolder.IMDBElemEpisodeTextView.setText(String.format(Locale.getDefault(), episodesActivity.getString(R.string.float1RealFormat), episode.getIMDBRating()));
             if (episodesActivity.isDeleteMode()) {
                 episodeViewHolder.descriptionElemEpisodeTextView.setVisibility(View.INVISIBLE);
                 episodeViewHolder.checkForDeleteEpisodeCheckBox.setVisibility(View.VISIBLE);

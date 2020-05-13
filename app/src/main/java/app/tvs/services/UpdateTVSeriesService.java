@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,7 +24,7 @@ import app.tvseries.R;
 public class UpdateTVSeriesService {
 
     public static void update(Context context) {
-        String message = "";
+        String message = StringUtils.EMPTY;
         try {
             Database database = Global.database;
             List<TVSeries> TVSeriesList = database.dao().getTVSeries();
@@ -31,7 +33,7 @@ public class UpdateTVSeriesService {
             boolean[] updated = new boolean[TVSeriesList.size()];
             int updatedIndex = 0;
 
-            NotificationService.addNotification("Starting update ...", context, "C1", "UpdateTVSeries", "Update TVSeries table");
+            NotificationService.addNotification(context.getString(R.string.startUpdate), context, context.getString(R.string.updateTVSeriesChannel), context.getString(R.string.updateTVSeriesName), context.getString(R.string.updateTVSeriesDescription));
             for (TVSeries tvSeries : TVSeriesList) {
                 if (tvSeries.getState() != Global.STATES.FINISHED) {
                     int nrEpisodesToDelete = 0;
@@ -99,7 +101,7 @@ public class UpdateTVSeriesService {
                                     updated[updatedIndex] = true;
                                 }
                             }
-                            Scanner seasonUnknownScanner = new Scanner(new URL(tvSeries.getIMDBLink() + context.getString(R.string.forSeasonLink)+"-1").openStream());
+                            Scanner seasonUnknownScanner = new Scanner(new URL(tvSeries.getIMDBLink() + context.getString(R.string.forSeasonLink)+context.getString(R.string.minusOne)).openStream());
                             while (seasonUnknownScanner.hasNext()) {
                                 htmlLine = seasonUnknownScanner.nextLine();
                                 if (htmlLine.contains(context.getString(R.string.seasonUnknownFinder))) {
@@ -128,14 +130,14 @@ public class UpdateTVSeriesService {
                         if (htmlLine.contains(context.getString(R.string.dateFinder))) {
                             matcher = Pattern.compile(context.getString(R.string.datePattern)).matcher(htmlLine);
                             if (matcher.find()) {
-                                if (matcher.group(1).contains("–")) {
-                                    String[] years= matcher.group(1).split("–");
+                                if (matcher.group(1).contains(context.getString(R.string.minus))) {
+                                    String[] years= matcher.group(1).split(context.getString(R.string.minus));
                                     if (tvSeries.getStartYear() != Integer.parseInt(years[0])) {
                                         tvSeries.setStartYear(Integer.parseInt(years[0]));
                                         tvSeries.setLastTimeUpdated(new Date().getTime());
                                         updated[updatedIndex] = true;
                                     }
-                                    if (years[1].equals(" ") || years[1].equals("")) {
+                                    if (years[1].trim().isEmpty()) {
                                         if (tvSeries.getEndYear() != Calendar.getInstance().get(Calendar.YEAR)) {
                                             tvSeries.setEndYear(Calendar.getInstance().get(Calendar.YEAR));
                                             tvSeries.setLastTimeUpdated(new Date().getTime());
@@ -240,13 +242,13 @@ public class UpdateTVSeriesService {
                     updatedTrue++;
                 }
             }
-            message = "TVS list was updated. " + updatedTrue + " T.V. Series were updated.";
+            message = context.getString(R.string.listUpdated) + updatedTrue + context.getString(R.string.TVSeriesWereUpdated);
         }
         catch (Exception e) {
-            message = "TVS list couldn't be updated";
+            message = context.getString(R.string.listNotUpdated);
         }
         finally {
-            NotificationService.addNotification(message, context, "C1", "UpdateTVSeries", "Update TVSeries table");
+            NotificationService.addNotification(message, context, context.getString(R.string.updateTVSeriesChannel), context.getString(R.string.updateTVSeriesName), context.getString(R.string.updateTVSeriesDescription));
         }
     }
 

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -53,9 +55,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder viewHolder, int i) {
         final TVSeriesShort tvSeriesShort = tvSeriesShorts.get(i);
         viewHolder.nameAddTextView.setText(tvSeriesShort.getName());
-        viewHolder.yearsAddTextView.setText(String.format(Locale.getDefault(), "%s - %s", tvSeriesShort.getYearStart(), (tvSeriesShort.getYearEnd().equals(tvSeriesActivity.getString(R.string.unknownValue))) ? ("") : (tvSeriesShort.getYearEnd())));
+        viewHolder.yearsAddTextView.setText(String.format(Locale.getDefault(), tvSeriesActivity.getString(R.string.yearsTVSeriesShortFormat), tvSeriesShort.getYearStart(), (tvSeriesShort.getYearEnd().equals(tvSeriesActivity.getString(R.string.unknownValue))) ? (StringUtils.EMPTY) : (tvSeriesShort.getYearEnd())));
         viewHolder.searchAddLayout.setOnClickListener(v -> {
-            String url = tvSeriesActivity.getString(R.string.linkStandard) + tvSeriesShort.getId() + "/";
+            String url = tvSeriesActivity.getString(R.string.linkStandard) + tvSeriesShort.getId() + tvSeriesActivity.getString(R.string.slash);
             if (notExistsAlready(url)) {
                 new TVSeriesHTMLReaderTask(tvSeriesActivity, url).execute();
                 tvSeriesActivity.resetAddSearchEditText();

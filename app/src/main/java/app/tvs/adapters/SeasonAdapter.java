@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -113,11 +115,11 @@ public class SeasonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ViewHolder seasonViewHolder = (ViewHolder) viewHolder;
             final Season season = seasons.get(i);
 
-            seasonViewHolder.nrSeasonElemSeasonTextView.setText(String.format(Locale.getDefault(), "Season %d", season.getIndex()));
-            seasonViewHolder.yearsElemSeasonTextView.setText(String.format(Locale.getDefault(), "- %d%s -", season.getStartYear(), (season.getStartYear() == season.getEndYear()) ? ("") : ("-"+season.getEndYear())));
-            seasonViewHolder.nrEpisodesElemSeasonTextView.setText(String.format(Locale.getDefault(), "%d", season.getNrEpisodes()));
-            seasonViewHolder.nrEpisodesSeenElemSeasonTextView.setText(String.format(Locale.getDefault(), "%d", season.getNrEpisodesSeen()));
-            seasonViewHolder.nrEpisodesTotalElemSeasonTextView.setText(String.format(Locale.getDefault(), "out of %d", season.getNrTotalOfEpisodes()));
+            seasonViewHolder.nrSeasonElemSeasonTextView.setText(String.format(Locale.getDefault(), seasonsActivity.getString(R.string.nrOFSeasonFormat), season.getIndex()));
+            seasonViewHolder.yearsElemSeasonTextView.setText(String.format(Locale.getDefault(), seasonsActivity.getString(R.string.yearsEpisodeFormat), season.getStartYear(), (season.getStartYear() == season.getEndYear()) ? (StringUtils.EMPTY) : (seasonsActivity.getString(R.string.minus)+season.getEndYear())));
+            seasonViewHolder.nrEpisodesElemSeasonTextView.setText(String.format(Locale.getDefault(), seasonsActivity.getString(R.string.intFormat), season.getNrEpisodes()));
+            seasonViewHolder.nrEpisodesSeenElemSeasonTextView.setText(String.format(Locale.getDefault(), seasonsActivity.getString(R.string.intFormat), season.getNrEpisodesSeen()));
+            seasonViewHolder.nrEpisodesTotalElemSeasonTextView.setText(String.format(Locale.getDefault(), seasonsActivity.getString(R.string.nrTotalEpisodeFormat), season.getNrTotalOfEpisodes()));
 
             seasonViewHolder.goToEpisodesElemSeasonButton.setOnClickListener(v -> {
                 Intent intent = new Intent(seasonsActivity.getContext(), EpisodesActivity.class);

@@ -161,7 +161,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:textAlignment="center"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -394,7 +394,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        android:background="@color/app_icon_background"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 

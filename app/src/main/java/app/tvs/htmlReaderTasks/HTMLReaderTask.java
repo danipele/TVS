@@ -29,7 +29,7 @@ public abstract class HTMLReaderTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         activity.findViewById(R.id.addingProgressBar).setVisibility(View.INVISIBLE);
-        if (result.equals("")) {
+        if (result.isEmpty()) {
             activity.findViewById(R.id.addingImageView).setVisibility(View.VISIBLE);
             ((TextView) activity.findViewById(R.id.addingTextView)).setText(setFinalMessage());
             activity.adapter.notifyDataSetChanged();

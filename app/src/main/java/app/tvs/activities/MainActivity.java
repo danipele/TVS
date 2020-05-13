@@ -57,7 +57,7 @@ public abstract class MainActivity extends AppCompatActivity {
         leaveActivityButton.setOnClickListener(v -> leaveActivity());
 
         deleteButton.setOnClickListener(v -> {
-            if(adapter.getItemCount() != 0) {
+            if (adapter.getItemCount() != 0) {
                 if (deleteMode) {
                     deleteButtonAction();
                     endDeleteButtonAction();
@@ -78,10 +78,9 @@ public abstract class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(deleteMode) {
+        if (deleteMode) {
             endDeleteButtonAction();
-        }
-        else {
+        } else {
             leaveActivity();
         }
     }
@@ -93,7 +92,7 @@ public abstract class MainActivity extends AppCompatActivity {
     }
 
     protected void initActionBar() {
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getSupportActionBar().setCustomView(R.layout.action_bar_tvseries);
         }

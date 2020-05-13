@@ -67,55 +67,54 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
 
             Scanner TVSeriesScanner = new Scanner(new URL(url).openStream());
 
-            while(TVSeriesScanner.hasNext()) {
+            while (TVSeriesScanner.hasNext()) {
                 htmlLine = TVSeriesScanner.nextLine();
-                if(htmlLine.contains(activity.getString(R.string.nameFinder))) {
+                if (htmlLine.contains(activity.getString(R.string.nameFinder))) {
                     htmlLine = TVSeriesScanner.nextLine();
                     matcher = Pattern.compile(activity.getString(R.string.namePattern)).matcher(htmlLine);
-                    if(matcher.find()) {
+                    if (matcher.find()) {
                         name = matcher.group(1);
                     }
                     htmlLine = TVSeriesScanner.nextLine();
-                    if(htmlLine.contains(activity.getString(R.string.originalNameFinder))) {
+                    if (htmlLine.contains(activity.getString(R.string.originalNameFinder))) {
                         matcher = Pattern.compile(activity.getString(R.string.originalNamePattern)).matcher(htmlLine);
-                        if(matcher.find()) {
+                        if (matcher.find()) {
                             name = matcher.group(1);
                         }
                     }
                 }
-                if(htmlLine.contains(activity.getString(R.string.dateFinder))) {
+                if (htmlLine.contains(activity.getString(R.string.dateFinder))) {
                     matcher = Pattern.compile(activity.getString(R.string.datePattern)).matcher(htmlLine);
-                    if(matcher.find()) {
-                        if(matcher.group(1).contains("–")) {
+                    if (matcher.find()) {
+                        if (matcher.group(1).contains("–")) {
                             String[] years = matcher.group(1).split("–");
                             startYear = Integer.parseInt(years[0]);
-                            if(years[1].equals(" ") || years[1].equals("")) {
+                            if (years[1].equals(" ") || years[1].equals("")) {
                                 endYear = Calendar.getInstance().get(Calendar.YEAR);
-                            }
-                            else {
+                            } else {
                                 endYear = Integer.parseInt(years[1]);
                                 state = Global.STATES.FINISHED;
                             }
-                        }
-                        else {
+                        } else {
                             startYear = Integer.parseInt(matcher.group(1));
                             endYear = Integer.parseInt(matcher.group(1));
                             state = Global.STATES.FINISHED;
                         }
                     }
                 }
-                if(htmlLine.contains(activity.getString(R.string.nrSeasonsFinder))) {
-                    while(!htmlLine.contains(activity.getString(R.string.nrSeasonsFindingCond)))
+                if (htmlLine.contains(activity.getString(R.string.nrSeasonsFinder))) {
+                    while (!htmlLine.contains(activity.getString(R.string.nrSeasonsFindingCond))) {
                         htmlLine = TVSeriesScanner.nextLine();
+                    }
                     matcher = Pattern.compile(activity.getString(R.string.nrSeasonPattern)).matcher(htmlLine);
-                    if(matcher.find()) {
+                    if (matcher.find()) {
                         nrSeasons = Integer.parseInt(matcher.group(1));
-                        while(nrEpisodesFound == nrEpisodesToDelete && nrSeasons > 0) {
+                        while (nrEpisodesFound == nrEpisodesToDelete && nrSeasons > 0) {
                             nrEpisodesFromLastSeasonToDelete = 0;
                             Scanner seasonScanner = new Scanner(new URL(url+activity.getString(R.string.forSeasonLink)+nrSeasons).openStream());
-                            while(seasonScanner.hasNext()) {
+                            while (seasonScanner.hasNext()) {
                                 htmlLine = seasonScanner.nextLine();
-                                if(htmlLine.contains(activity.getString(R.string.episodeItemIdOdd)) || htmlLine.contains(activity.getString(R.string.episodeItemIdEven))) {
+                                if (htmlLine.contains(activity.getString(R.string.episodeItemIdOdd)) || htmlLine.contains(activity.getString(R.string.episodeItemIdEven))) {
                                     nrEpisodesFound++;
                                     boolean unreleased = true;
                                     htmlLine = seasonScanner.nextLine();
@@ -135,46 +134,48 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                                 }
                             }
                             nrEpisodesToDelete+=nrEpisodesFromLastSeasonToDelete;
-                            if(nrEpisodesFound == nrEpisodesToDelete)
+                            if (nrEpisodesFound == nrEpisodesToDelete) {
                                 nrSeasons--;
+                            }
                         }
-                        if(state == Global.STATES.UNDECLARED)
-                            state = (nrEpisodesFromLastSeasonToDelete == 0)?(Global.STATES.IN_STAND_BY):(Global.STATES.ON_GOING);
+                        if (state == Global.STATES.UNDECLARED) {
+                            state = (nrEpisodesFromLastSeasonToDelete == 0) ? (Global.STATES.IN_STAND_BY) : (Global.STATES.ON_GOING);
+                        }
                     }
                     Scanner seasonUnknownScanner = new Scanner(new URL(url+activity.getString(R.string.forSeasonLink)+"-1").openStream());
-                    while(seasonUnknownScanner.hasNext()) {
+                    while (seasonUnknownScanner.hasNext()) {
                         htmlLine = seasonUnknownScanner.nextLine();
-                        if(htmlLine.contains(activity.getString(R.string.seasonUnknownFinder))) {
-                            if(htmlLine.contains(activity.getString(R.string.seasonUnknownPattern))) {
+                        if (htmlLine.contains(activity.getString(R.string.seasonUnknownFinder))) {
+                            if (htmlLine.contains(activity.getString(R.string.seasonUnknownPattern))) {
                                 nrEpisodesToDelete++;
                             }
                         }
                     }
                     break;
                 }
-                if(htmlLine.contains(activity.getString(R.string.nrEpisodesFinder))) {
+                if (htmlLine.contains(activity.getString(R.string.nrEpisodesFinder))) {
                     htmlLine = TVSeriesScanner.nextLine();
                     matcher = Pattern.compile(activity.getString(R.string.nrEpisodesPattern)).matcher(htmlLine);
-                    if(matcher.find()) {
+                    if (matcher.find()) {
                         nrEpisodes = Integer.parseInt(matcher.group(1));
                     }
                 }
                 if (htmlLine.contains(activity.getString(R.string.IMDbRatingFinder1)) && htmlLine.contains(activity.getString(R.string.IMDbRatingFinder2))) {
                     matcher = Pattern.compile(activity.getString(R.string.IMDbRatingPattern)).matcher(htmlLine);
-                    if(matcher.find()) {
+                    if (matcher.find()) {
                         IMDBRating = Float.parseFloat(matcher.group(1));
                     }
                 }
-                if(htmlLine.contains(activity.getString(R.string.imageLinkFinder))) {
+                if (htmlLine.contains(activity.getString(R.string.imageLinkFinder))) {
                     htmlLine = TVSeriesScanner.nextLine();
                     matcher = Pattern.compile(activity.getString(R.string.imageLinkPattern)).matcher(htmlLine);
-                    if(matcher.find()) {
+                    if (matcher.find()) {
                         imageLink = matcher.group(1);
                     }
                 }
-                if(htmlLine.contains(activity.getString(R.string.genreLinkFinder))) {
+                if (htmlLine.contains(activity.getString(R.string.genreLinkFinder))) {
                     htmlLine = TVSeriesScanner.nextLine();
-                    while(!htmlLine.trim().equals(activity.getString(R.string.genreLinkStopper))) {
+                    while (!htmlLine.trim().equals(activity.getString(R.string.genreLinkStopper))) {
                         genres.add(htmlLine.substring(htmlLine.indexOf('\"') + 1, htmlLine.lastIndexOf('\"')));
                         htmlLine = TVSeriesScanner.nextLine();
                     }
@@ -182,13 +183,13 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
             }
             nrEpisodes -= nrEpisodesToDelete;
 
-            if(imageLink.equals("")) {
+            if (imageLink.equals("")) {
                 imageLink = "https://semantic-ui.com/images/wireframe/image.png";
             }
 
-            if(name.equals("") || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0 || genres.isEmpty())
+            if (name.equals("") || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0 || genres.isEmpty()) {
                 throw new Exception();
-            else {
+            } else {
                 TVSeries toAddTVSeries = new TVSeries(url, name, startYear, endYear, nrSeasons, nrEpisodes, 0, 0, 0, 0, IMDBRating, state, Global.SEENSTATES.PAUSE, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), new Date().getTime(), Long.MIN_VALUE, genres.stream().map(String::valueOf).collect(Collectors.joining(",")));
                 Global.database.dao().addTVSeries(toAddTVSeries);
                 ((TVSeriesAdapter) activity.adapter).addTVSeries(toAddTVSeries);

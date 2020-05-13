@@ -56,11 +56,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         viewHolder.yearsAddTextView.setText(String.format(Locale.getDefault(), "%s - %s", tvSeriesShort.getYearStart(), (tvSeriesShort.getYearEnd().equals(tvSeriesActivity.getString(R.string.unknownValue))) ? ("") : (tvSeriesShort.getYearEnd())));
         viewHolder.searchAddLayout.setOnClickListener(v -> {
             String url = tvSeriesActivity.getString(R.string.linkStandard) + tvSeriesShort.getId() + "/";
-            if(notExistsAlready(url)) {
+            if (notExistsAlready(url)) {
                 new TVSeriesHTMLReaderTask(tvSeriesActivity, url).execute();
                 tvSeriesActivity.resetAddSearchEditText();
-            }
-            else {
+            } else {
                 Toast.makeText(tvSeriesActivity, tvSeriesActivity.getString(R.string.alreadyExists), Toast.LENGTH_LONG).show();
             }
         });
@@ -68,9 +67,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     private boolean notExistsAlready(String url) {
         List<TVSeries> TVSeriesList = Global.database.dao().getTVSeries();
-        for(TVSeries tvseries : TVSeriesList)
-            if(tvseries.getIMDBLink().equals(url))
+        for (TVSeries tvseries : TVSeriesList) {
+            if (tvseries.getIMDBLink().equals(url)) {
                 return false;
+            }
+        }
         return true;
     }
 

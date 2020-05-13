@@ -132,7 +132,7 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvSeriesViewHolder.yearsElemTextView.setText(String.format(Locale.getDefault(),"- %d-%d -", tvseries.getStartYear(), tvseries.getEndYear()));
             tvSeriesViewHolder.nrSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getNrSeasons()));
             tvSeriesViewHolder.nrEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getNrEpisodes()));
-            tvSeriesViewHolder.seenYearsElemTextView.setText((tvseries.getEndYearSeen() == 0 && tvseries.getStartYearSeen() == 0)?("-"):(String.format(Locale.getDefault(), "%d%s", tvseries.getStartYearSeen(), (tvseries.getStartYearSeen() == tvseries.getEndYearSeen())?(""):("-"+tvseries.getEndYearSeen()))));
+            tvSeriesViewHolder.seenYearsElemTextView.setText((tvseries.getEndYearSeen() == 0 && tvseries.getStartYearSeen() == 0) ? ("-") : (String.format(Locale.getDefault(), "%d%s", tvseries.getStartYearSeen(), (tvseries.getStartYearSeen() == tvseries.getEndYearSeen()) ? ("") : ("-"+tvseries.getEndYearSeen()))));
             tvSeriesViewHolder.seenSeasonsElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getSeasonsSeen()));
             tvSeriesViewHolder.seenEpisodesElemTextView.setText(String.format(Locale.getDefault(), "%d", tvseries.getEpisodesSeen()));
             tvSeriesViewHolder.IMDBTextView.setText(String.format(Locale.getDefault(), "%.1f", tvseries.getIMDBRating()));
@@ -145,54 +145,48 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 tvSeriesActivity.overridePendingTransition(R.anim.right_in_animation, R.anim.left_out_animation);
             });
             tvSeriesViewHolder.goToSeasonElemButton.setClickable(tvSeriesActivity.getAddSearchRecyclerView() && tvSeriesActivity.isProgressLayoutInvisible() && tvSeriesActivity.isSortListViewInvisible() && tvSeriesActivity.isUpdateFormInvisible());
-            if(tvSeriesViewHolder.stateDrawable != null) {
-                if(tvseries.getState() == Global.STATES.ON_GOING) {
+            if (tvSeriesViewHolder.stateDrawable != null) {
+                if (tvseries.getState() == Global.STATES.ON_GOING) {
                     tvSeriesViewHolder.stateDrawable.setStroke(1, tvSeriesActivity.getColor(R.color.onGoingState));
                     tvSeriesViewHolder.stateTextView.setTextColor(tvSeriesActivity.getColor(R.color.onGoingState));
                     tvSeriesViewHolder.stateTextView.setText(tvSeriesActivity.getString(R.string.onGoing));
-                }
-                else if(tvseries.getState() == Global.STATES.IN_STAND_BY) {
+                } else if (tvseries.getState() == Global.STATES.IN_STAND_BY) {
                     tvSeriesViewHolder.stateDrawable.setStroke(1, tvSeriesActivity.getColor(R.color.inStandByState));
                     tvSeriesViewHolder.stateTextView.setTextColor(tvSeriesActivity.getColor(R.color.inStandByState));
                     tvSeriesViewHolder.stateTextView.setText(tvSeriesActivity.getString(R.string.inStandBy));
-                }
-                else {
+                } else {
                     tvSeriesViewHolder.stateDrawable.setStroke(1, tvSeriesActivity.getColor(R.color.finishedState));
                     tvSeriesViewHolder.stateTextView.setTextColor(tvSeriesActivity.getColor(R.color.finishedState));
                     tvSeriesViewHolder.stateTextView.setText(tvSeriesActivity.getString(R.string.FINISHED));
                 }
             }
             tvSeriesViewHolder.stateTextView.setBackground(tvSeriesViewHolder.stateDrawable);
-            if(tvSeriesActivity.isDeleteMode()) {
+            if (tvSeriesActivity.isDeleteMode()) {
                 tvSeriesViewHolder.goToSeasonElemButton.setVisibility(View.INVISIBLE);
                 tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 tvSeriesViewHolder.goToSeasonElemButton.setVisibility(View.VISIBLE);
                 tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setVisibility(View.INVISIBLE);
-                if(tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
+                if (tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
                     tvSeriesActivity.removeForDeleteTVSeriesList(tvseries);
                     tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setChecked(false);
                     tvSeriesViewHolder.element.setBackgroundResource(R.color.elemList);
                 }
             }
 
-            if(tvseries.getSeenState() == Global.SEENSTATES.PLAY) {
+            if (tvseries.getSeenState() == Global.SEENSTATES.PLAY) {
                 tvSeriesViewHolder.seenStateImageView.setImageDrawable(tvSeriesActivity.getDrawable(R.drawable.play));
-            }
-            else if(tvseries.getSeenState() == Global.SEENSTATES.PAUSE) {
+            } else if (tvseries.getSeenState() == Global.SEENSTATES.PAUSE) {
                 tvSeriesViewHolder.seenStateImageView.setImageDrawable(tvSeriesActivity.getDrawable(R.drawable.pause));
-            }
-            else {
+            } else {
                 tvSeriesViewHolder.seenStateImageView.setImageDrawable(tvSeriesActivity.getDrawable(R.drawable.up_to_date));
             }
 
             tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
+                if (tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
                     tvSeriesActivity.addForDeleteTVSeriesList(tvseries);
                     tvSeriesViewHolder.element.setBackgroundResource(R.color.header);
-                }
-                else {
+                } else {
                     tvSeriesViewHolder.element.setBackgroundResource(R.color.elemList);
                     tvSeriesActivity.removeForDeleteTVSeriesList(tvseries);
                 }

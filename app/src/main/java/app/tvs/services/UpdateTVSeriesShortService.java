@@ -26,26 +26,25 @@ public class UpdateTVSeriesShortService {
             int count;
             String endMargins = "";
 
+            NotificationService.addNotification("Starting update ...", context, "C2", "UpdateTVSeriesShort", "Update TVSeriesShort table");
             String dataString, file = "";
             String[] lines;
             while ((count = input.read(data)) != -1) {
                 dataString = new String(data, 0, count, context.getString(R.string.UTF8));
                 lines = dataString.split(context.getString(R.string.newLine));
-                for(String line : lines) {
-                    if(line.equals(lines[lines.length - 1])) {
+                for (String line : lines) {
+                    if (line.equals(lines[lines.length - 1])) {
                         endMargins = line;
-                    }
-                    else if(line.equals(lines[0])) {
-                        if(!line.equals(context.getString(R.string.dbFileHeader))) {
-                            if(line.length() >= 9 && line.substring(0, 9).matches(context.getString(R.string.startsWithIdMatcher))) {
+                    } else if(line.equals(lines[0])) {
+                        if (!line.equals(context.getString(R.string.dbFileHeader))) {
+                            if (line.length() >= 9 && line.substring(0, 9).matches(context.getString(R.string.startsWithIdMatcher))) {
                                 addedNew += updateTVSeriesShort(endMargins, database, context);
                                 addedNew += updateTVSeriesShort(line, database, context);
                             } else {
                                 addedNew += updateTVSeriesShort(endMargins.concat(line), database, context);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         addedNew += updateTVSeriesShort(line, database, context);
                     }
                 }
@@ -74,10 +73,9 @@ public class UpdateTVSeriesShortService {
         String[] columns = line.split(context.getString(R.string.tab));
         if (TVSeriesConditions(columns, context)) {
             TVSeriesShort tvSeriesShort = new TVSeriesShort(columns[0], columns[2], columns[5], columns[6]);
-            if(database.dao().getTVSeriesShortWithId(tvSeriesShort.getId()) == 1) {
+            if (database.dao().getTVSeriesShortWithId(tvSeriesShort.getId()) == 1) {
                 database.dao().updateTVSeriesShort(tvSeriesShort);
-            }
-            else {
+            } else {
                 database.dao().addTVSeriesShort(tvSeriesShort);
                 return 1;
             }

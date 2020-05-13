@@ -39,11 +39,10 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        if(result.equals("")) {
+        if (result.equals("")) {
             if (parent.getNrEpisodes() == parent.getNrEpisodesSeen()) {
                 activity.addButton.setVisibility(View.INVISIBLE);
-            }
-            else {
+            } else {
                 activity.addButton.setVisibility(View.VISIBLE);
             }
         }
@@ -64,14 +63,15 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
 
             Scanner seasonScanner = new Scanner(new URL(Global.database.dao().getIMDBLinkOfTVSeriesForSeason(parent.getId()) + activity.getString(R.string.forSeasonLink) + parent.getIndex()).openStream());
 
-            while(seasonScanner.hasNext()) {
+            while (seasonScanner.hasNext()) {
                 htmlLine = seasonScanner.nextLine();
-                if(htmlLine.contains(activity.getString(R.string.episodeItemIdEven)) || htmlLine.contains(activity.getString(R.string.episodeItemIdOdd))) {
+                if (htmlLine.contains(activity.getString(R.string.episodeItemIdEven)) || htmlLine.contains(activity.getString(R.string.episodeItemIdOdd))) {
                     seasonScanner.nextLine();
                     htmlLine = seasonScanner.nextLine();
                     episodeLink = seasonScanner.nextLine();
-                    while (!htmlLine.contains(activity.getString(R.string.episodeFinder)))
+                    while (!htmlLine.contains(activity.getString(R.string.episodeFinder))) {
                         htmlLine = seasonScanner.nextLine();
+                    }
                     if (htmlLine.contains(Integer.toString(index))) {
                         matcher = Pattern.compile(activity.getString(R.string.episodeLinkPattern)).matcher(episodeLink);
                         if (matcher.find()) {
@@ -105,11 +105,13 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                                     }
                                 }
                                 if (htmlLine.contains(activity.getString(R.string.episodeImageLinkFinder))) {
-                                    while (!htmlLine.contains(activity.getString(R.string.src)))
+                                    while (!htmlLine.contains(activity.getString(R.string.src))) {
                                         htmlLine = episodeScanner.nextLine();
+                                    }
                                     String htmlLineAux;
-                                    while (!(htmlLineAux = episodeScanner.nextLine()).contains(activity.getString(R.string.imageLinkEnd)))
+                                    while (!(htmlLineAux = episodeScanner.nextLine()).contains(activity.getString(R.string.imageLinkEnd))) {
                                         htmlLine = String.format(Locale.getDefault(), "%s%s", htmlLine, htmlLineAux);
+                                    }
                                     matcher = Pattern.compile(activity.getString(R.string.imageLinkPattern)).matcher(htmlLine);
                                     if (matcher.find()) {
                                         imageLink = matcher.group(1);
@@ -124,24 +126,24 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                                     if (matcher.find()) {
                                         description = matcher.group(1);
                                         String[] sentences = description.split(activity.getString(R.string.sentenceFinder));
-                                        for(int i = 0; i < sentences.length; i++) {
-                                            if(sentences[i].contains("</")) {
+                                        for (int i = 0; i < sentences.length; i++) {
+                                            if (sentences[i].contains("</")) {
                                                 String result = sentences[i].substring(0,sentences[i].indexOf('<')).concat(sentences[i].substring(sentences[i].indexOf('>') + 1));
                                                 sentences[i] = result.substring(0,result.indexOf('<')).concat(result.substring(result.indexOf('>') + 1));
                                             }
                                         }
-                                        if(sentences.length > 3)
+                                        if (sentences.length > 3) {
                                             description = sentences[0] + sentences[1] + sentences[2] + ".";
-                                        else {
+                                        } else {
                                             description = "";
-                                            for(String sentence : sentences)
+                                            for (String sentence : sentences) {
                                                 description = description.concat(sentence);
+                                            }
                                         }
 
-                                    }
-                                    else {
+                                    } else {
                                         matcher = Pattern.compile(activity.getString(R.string.episodeDescriptionPatternNotFinished)).matcher(htmlLine);
-                                        if(matcher.find()) {
+                                        if (matcher.find()) {
                                             description = matcher.group(1) + ".";
                                         }
                                     }
@@ -154,13 +156,13 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                 }
             }
 
-            if(imageLink.equals("")) {
+            if (imageLink.equals("")) {
                 imageLink = "https://semantic-ui.com/images/wireframe/image.png";
             }
 
-            if(name.equals("") || releaseDate.equals("") || duration.equals("") || IMDb == 0 || description.equals(""))
+            if (name.equals("") || releaseDate.equals("") || duration.equals("") || IMDb == 0 || description.equals("")) {
                 throw new Exception();
-            else {
+            } else {
                 long now = new Date().getTime();
                 Episode episode = new Episode(index, name, releaseDate, duration, description, IMDb, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), parent.getId(), now);
                 Global.database.dao().addEpisodes(episode);

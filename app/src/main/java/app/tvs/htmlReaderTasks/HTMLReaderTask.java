@@ -29,13 +29,12 @@ public abstract class HTMLReaderTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         activity.findViewById(R.id.addingProgressBar).setVisibility(View.INVISIBLE);
-        if(result.equals("")) {
+        if (result.equals("")) {
             activity.findViewById(R.id.addingImageView).setVisibility(View.VISIBLE);
             ((TextView) activity.findViewById(R.id.addingTextView)).setText(setFinalMessage());
             activity.adapter.notifyDataSetChanged();
             new Handler().postDelayed(this::finishTask, 2000);
-        }
-        else{
+        } else {
             finishTask();
             Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
         }

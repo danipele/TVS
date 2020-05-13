@@ -224,19 +224,20 @@ public class TVSeries {
 
     public void updateYearsSeen() {
         List<Season> seasonsList = Global.database.dao().getSeasonsWithIdTVSeries(id);
-        if(seasonsList.size() > 0) {
+        if (seasonsList.size() > 0) {
             int startYearMin = Integer.MAX_VALUE;
             int endYearMax = 0;
             for (Season season : seasonsList) {
-                if (season.getStartYear() < startYearMin)
+                if (season.getStartYear() < startYearMin) {
                     startYearMin = season.getStartYear();
-                if (season.getEndYear() > endYearMax)
+                }
+                if (season.getEndYear() > endYearMax) {
                     endYearMax = season.getEndYear();
+                }
             }
             this.startYearSeen = startYearMin;
             this.endYearSeen = endYearMax;
-        }
-        else {
+        } else {
             this.startYearSeen = 0;
             this.endYearSeen = 0;
         }
@@ -247,19 +248,18 @@ public class TVSeries {
     }
 
     public void setSeenState() {
-        if(nrEpisodes == episodesSeen) {
+        if (nrEpisodes == episodesSeen) {
             seenState = Global.SEENSTATES.STOP;
-        }
-        else {
-            if(seasonsSeen == 0) {
+        } else {
+            if (seasonsSeen == 0) {
                 seenState = Global.SEENSTATES.PAUSE;
-            }
-            else {
+            } else {
                 Season lastSeason = Global.database.dao().getLastSeasonOfTVSeriesWithId(id);
-                if (lastSeason.getNrEpisodes() == lastSeason.getNrEpisodesSeen())
+                if (lastSeason.getNrEpisodes() == lastSeason.getNrEpisodesSeen()) {
                     seenState = Global.SEENSTATES.PAUSE;
-                else
+                } else {
                     seenState = Global.SEENSTATES.PLAY;
+                }
             }
         }
     }

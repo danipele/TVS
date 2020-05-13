@@ -99,10 +99,11 @@ public class SeasonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 footerViewHolder.showArrowImageView.setVisibility(View.VISIBLE);
             } else {
                 if (parent.getNrEpisodes() == parent.getEpisodesSeen()) {
-                    if (parent.getState() == Global.STATES.FINISHED)
+                    if (parent.getState() == Global.STATES.FINISHED) {
                         footerViewHolder.footerListTextView.setText(seasonsActivity.getString(R.string.finished));
-                    else
+                    } else {
                         footerViewHolder.footerListTextView.setText(seasonsActivity.getString(R.string.upToDate));
+                    }
                 } else {
                     footerViewHolder.footerListTextView.setText(seasonsActivity.getString(R.string.theEnd));
                 }
@@ -113,7 +114,7 @@ public class SeasonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final Season season = seasons.get(i);
 
             seasonViewHolder.nrSeasonElemSeasonTextView.setText(String.format(Locale.getDefault(), "Season %d", season.getIndex()));
-            seasonViewHolder.yearsElemSeasonTextView.setText(String.format(Locale.getDefault(), "- %d%s -", season.getStartYear(), (season.getStartYear() == season.getEndYear())?(""):("-"+season.getEndYear())));
+            seasonViewHolder.yearsElemSeasonTextView.setText(String.format(Locale.getDefault(), "- %d%s -", season.getStartYear(), (season.getStartYear() == season.getEndYear()) ? ("") : ("-"+season.getEndYear())));
             seasonViewHolder.nrEpisodesElemSeasonTextView.setText(String.format(Locale.getDefault(), "%d", season.getNrEpisodes()));
             seasonViewHolder.nrEpisodesSeenElemSeasonTextView.setText(String.format(Locale.getDefault(), "%d", season.getNrEpisodesSeen()));
             seasonViewHolder.nrEpisodesTotalElemSeasonTextView.setText(String.format(Locale.getDefault(), "out of %d", season.getNrTotalOfEpisodes()));
@@ -127,25 +128,23 @@ public class SeasonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 seasonsActivity.overridePendingTransition(R.anim.right_in_animation, R.anim.left_out_animation);
             });
             seasonViewHolder.goToEpisodesElemSeasonButton.setClickable(seasonsActivity.isFormLayoutInvisible() && seasonsActivity.isProgressLayoutInvisible());
-            if(seasonsActivity.isDeleteMode()) {
+            if (seasonsActivity.isDeleteMode()) {
                 seasonViewHolder.goToEpisodesElemSeasonButton.setVisibility(View.INVISIBLE);
                 seasonViewHolder.checkForDeleteSeasonsCheckBox.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 seasonViewHolder.goToEpisodesElemSeasonButton.setVisibility(View.VISIBLE);
                 seasonViewHolder.checkForDeleteSeasonsCheckBox.setVisibility(View.INVISIBLE);
-                if(seasonViewHolder.checkForDeleteSeasonsCheckBox.isChecked()) {
+                if (seasonViewHolder.checkForDeleteSeasonsCheckBox.isChecked()) {
                     seasonsActivity.removeForDeleteSeasonsList(season);
                     seasonViewHolder.checkForDeleteSeasonsCheckBox.setChecked(false);
                     seasonViewHolder.elementSeason.setBackgroundResource(R.color.elemList);
                 }
             }
             seasonViewHolder.checkForDeleteSeasonsCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(seasonViewHolder.checkForDeleteSeasonsCheckBox.isChecked()) {
+                if (seasonViewHolder.checkForDeleteSeasonsCheckBox.isChecked()) {
                     seasonsActivity.addForDeleteSeasonsList(season);
                     seasonViewHolder.elementSeason.setBackgroundResource(R.color.header);
-                }
-                else {
+                } else {
                     seasonViewHolder.elementSeason.setBackgroundResource(R.color.elemList);
                     seasonsActivity.removeForDeleteSeasonsList(season);
                 }

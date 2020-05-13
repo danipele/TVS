@@ -13,9 +13,9 @@ import app.tvs.activities.StartActivity;
 import app.tvs.activities.TVSeriesActivity;
 import app.tvseries.R;
 
-class NotificationService {
+public class NotificationService {
 
-    static void addNotification(String message, Context context, String channelId, CharSequence name, String description) {
+    public static void addNotification(String message, Context context, String channelId, CharSequence name, String description) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationChannel notificationChannel = new NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_DEFAULT);

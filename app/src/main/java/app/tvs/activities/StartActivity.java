@@ -26,8 +26,8 @@ public class StartActivity extends Activity {
 
         Global.database = Room.databaseBuilder(this, Database.class, getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
-        scheduleJob(UpdateTVSeriesJobService.class, 86400000, "updateTVSeriesJob14", 14);
-        scheduleJob(UpdateTVSeriesShortJobService.class, 604800000, "updateTVSeriesShortJob11", 11);
+        scheduleJob(UpdateTVSeriesJobService.class, 86400000, "updateTVSeriesJob20", 20);
+        scheduleJob(UpdateTVSeriesShortJobService.class, 604800000, "updateTVSeriesShortJob21", 21);
 
         new Handler().postDelayed(this::startApp,700);
 
@@ -37,7 +37,7 @@ public class StartActivity extends Activity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         JobScheduler jobScheduler = (JobScheduler)getApplicationContext().getSystemService(JOB_SCHEDULER_SERVICE);
 
-        if(!preferences.getBoolean(preference, false)){
+        if (!preferences.getBoolean(preference, false)) {
             ComponentName componentName = new ComponentName(this, cls);
             JobInfo jobInfo = new JobInfo.Builder(jobId, componentName).setPeriodic(time).setPersisted(true).build();
             jobScheduler.schedule(jobInfo);

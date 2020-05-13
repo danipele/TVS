@@ -95,10 +95,11 @@ public class EpisodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 footerViewHolder.showArrowImageView.setVisibility(View.VISIBLE);
             } else {
                 if (parent.getNrEpisodes() == parent.getNrEpisodesSeen()) {
-                    if (parent.getNrEpisodesSeen() == parent.getNrTotalOfEpisodes())
+                    if (parent.getNrEpisodesSeen() == parent.getNrTotalOfEpisodes()) {
                         footerViewHolder.footerListTextView.setText(episodesActivity.getString(R.string.finished));
-                    else
+                    } else {
                         footerViewHolder.footerListTextView.setText(episodesActivity.getString(R.string.upToDate));
+                    }
                 } else {
                     footerViewHolder.footerListTextView.setText(episodesActivity.getString(R.string.theEnd));
                 }
@@ -115,25 +116,23 @@ public class EpisodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             episodeViewHolder.durationElemEpisodeTextView.setText(episode.getDuration());
             episodeViewHolder.descriptionElemEpisodeTextView.setText(episode.getDescription());
             episodeViewHolder.IMDBElemEpisodeTextView.setText(String.format(Locale.getDefault(), "%.1f", episode.getIMDBRating()));
-            if(episodesActivity.isDeleteMode()) {
+            if (episodesActivity.isDeleteMode()) {
                 episodeViewHolder.descriptionElemEpisodeTextView.setVisibility(View.INVISIBLE);
                 episodeViewHolder.checkForDeleteEpisodeCheckBox.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 episodeViewHolder.descriptionElemEpisodeTextView.setVisibility(View.VISIBLE);
                 episodeViewHolder.checkForDeleteEpisodeCheckBox.setVisibility(View.INVISIBLE);
-                if(episodeViewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
+                if (episodeViewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
                     episodesActivity.removeForDeleteEpisodesList(episode);
                     episodeViewHolder.checkForDeleteEpisodeCheckBox.setChecked(false);
                     episodeViewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
                 }
             }
             episodeViewHolder.checkForDeleteEpisodeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(episodeViewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
+                if (episodeViewHolder.checkForDeleteEpisodeCheckBox.isChecked()) {
                     episodesActivity.addForDeleteEpisodesList(episode);
                     episodeViewHolder.elementEpisode.setBackgroundResource(R.color.header);
-                }
-                else {
+                } else {
                     episodeViewHolder.elementEpisode.setBackgroundResource(R.color.elemList);
                     episodesActivity.removeForDeleteEpisodesList(episode);
                 }

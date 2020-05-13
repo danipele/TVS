@@ -25,15 +25,15 @@ public class EpisodesActivity extends EpisodesSeasonsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(getIntent().getExtras() != null)
+        if (getIntent().getExtras() != null) {
             parent = Global.database.dao().getSeasonById(getIntent().getExtras().getInt(getString(R.string.sharingSeasonId)));
+        }
 
         super.onCreate(savedInstanceState);
 
-        if(parent.getNrEpisodes() != parent.getNrEpisodesSeen()) {
+        if (parent.getNrEpisodes() != parent.getNrEpisodesSeen()) {
             addButton.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             addButton.setVisibility(View.INVISIBLE);
         }
     }
@@ -41,7 +41,7 @@ public class EpisodesActivity extends EpisodesSeasonsActivity {
     @Override
     protected void initHeader() {
         String headerString = String.format(Locale.getDefault(), "%s - S%d", Global.database.dao().getNameOfTVSeriesForEpisodeWithIdSeason(parent.getId()),parent.getIndex());
-        if(headerString.length() > 24) {
+        if (headerString.length() > 24) {
             headerTextView.setTextSize(20 - (((float)(headerString.length() - 24) / 5 + 1)* 2));
         }
         headerTextView.setText(headerString);
@@ -64,10 +64,11 @@ public class EpisodesActivity extends EpisodesSeasonsActivity {
         notifyRemoveAdapter();
         forDeleteEpisodesList.clear();
         setButtonsClickable(true);
-        if(parent.getNrEpisodes() == parent.getNrEpisodesSeen())
+        if (parent.getNrEpisodes() == parent.getNrEpisodesSeen()) {
             addButton.setVisibility(View.INVISIBLE);
-        else
+        } else {
             addButton.setVisibility(View.VISIBLE);
+        }
         super.endDeleteButtonAction();
     }
 
@@ -81,10 +82,9 @@ public class EpisodesActivity extends EpisodesSeasonsActivity {
         Global.database.dao().updateSeason(parent);
         TVSeries TVSeriesParent = Global.database.dao().getTVSeriesBySeasonId(parent.getId());
         TVSeriesParent.removeEpisodesSeen(forDeleteEpisodesList.size());
-        if(Global.database.dao().getNrEpisodesForTVSeries(TVSeriesParent.getId()) == 0) {
+        if (Global.database.dao().getNrEpisodesForTVSeries(TVSeriesParent.getId()) == 0) {
             TVSeriesParent.setLastTimeEpisodeSeen(Long.MIN_VALUE);
-        }
-        else {
+        } else {
             TVSeriesParent.setLastTimeEpisodeSeen(Global.database.dao().getLastTimeAddedEpisodeForTVSeriesWithId(TVSeriesParent.getId()));
         }
         TVSeriesParent.setSeenState();
@@ -106,9 +106,11 @@ public class EpisodesActivity extends EpisodesSeasonsActivity {
     @Override
     public ArrayAdapter<Integer> updateSpinnerArray(ArrayAdapter<Integer> spinnerArray) {
         List<Integer> episodes = Global.database.dao().getEpisodesIndexForIdSeason(parent.getId());
-        for(int i = 1; i<= parent.getNrEpisodes(); i++)
-            if(!episodes.contains(i))
+        for (int i = 1; i <= parent.getNrEpisodes(); i++) {
+            if (!episodes.contains(i)) {
                 spinnerArray.add(i);
+            }
+        }
         return spinnerArray;
     }
 

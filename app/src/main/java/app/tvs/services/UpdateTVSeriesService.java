@@ -31,6 +31,7 @@ public class UpdateTVSeriesService {
             boolean[] updated = new boolean[TVSeriesList.size()];
             int updatedIndex = 0;
 
+            NotificationService.addNotification("Starting update ...", context, "C1", "UpdateTVSeries", "Update TVSeries table");
             for (TVSeries tvSeries : TVSeriesList) {
                 if (tvSeries.getState() != Global.STATES.FINISHED) {
                     int nrEpisodesToDelete = 0;
@@ -48,14 +49,15 @@ public class UpdateTVSeriesService {
                             matcher = Pattern.compile(context.getString(R.string.imageLinkPattern)).matcher(htmlLine);
                             if (matcher.find()) {
                                 Bitmap newBitmap = BitmapFactory.decodeStream(new URL(matcher.group(1)).openConnection().getInputStream());
-                                if(!tvSeries.getBitmapImage().sameAs(newBitmap)) {
+                                if (!tvSeries.getBitmapImage().sameAs(newBitmap)) {
                                     tvSeries.setBitmapImage(newBitmap);
                                 }
                             }
                         }
                         if (htmlLine.contains(context.getString(R.string.nrSeasonsFinder))) {
-                            while (!htmlLine.contains(context.getString(R.string.nrSeasonsFindingCond)))
+                            while (!htmlLine.contains(context.getString(R.string.nrSeasonsFindingCond))) {
                                 htmlLine = TVSeriesScanner.nextLine();
+                            }
                             matcher = Pattern.compile(context.getString(R.string.nrSeasonPattern)).matcher(htmlLine);
                             if (matcher.find()) {
                                 TVSeriesNrSeasons = Integer.parseInt(matcher.group(1));
@@ -64,7 +66,7 @@ public class UpdateTVSeriesService {
                                     Scanner seasonScanner = new Scanner(new URL(tvSeries.getIMDBLink() + context.getString(R.string.forSeasonLink) + TVSeriesNrSeasons).openStream());
                                     while (seasonScanner.hasNext()) {
                                         htmlLine = seasonScanner.nextLine();
-                                        if(htmlLine.contains(context.getString(R.string.episodeItemIdOdd)) || htmlLine.contains(context.getString(R.string.episodeItemIdEven))) {
+                                        if (htmlLine.contains(context.getString(R.string.episodeItemIdOdd)) || htmlLine.contains(context.getString(R.string.episodeItemIdEven))) {
                                             nrEpisodesFound++;
                                             boolean unreleased = true;
                                             htmlLine = seasonScanner.nextLine();
@@ -84,22 +86,24 @@ public class UpdateTVSeriesService {
                                         }
                                     }
                                     nrEpisodesToDelete+=nrEpisodesFromLastSeasonToDelete;
-                                    if (nrEpisodesFound == nrEpisodesToDelete)
+                                    if (nrEpisodesFound == nrEpisodesToDelete) {
                                         TVSeriesNrSeasons--;
+                                    }
                                 }
-                                if(state == Global.STATES.UNDECLARED)
-                                    state = (nrEpisodesFromLastSeasonToDelete == 0)?(Global.STATES.IN_STAND_BY):(Global.STATES.ON_GOING);
-                                if(tvSeries.getNrSeasons() != TVSeriesNrSeasons) {
+                                if (state == Global.STATES.UNDECLARED) {
+                                    state = (nrEpisodesFromLastSeasonToDelete == 0) ? (Global.STATES.IN_STAND_BY) : (Global.STATES.ON_GOING);
+                                }
+                                if (tvSeries.getNrSeasons() != TVSeriesNrSeasons) {
                                     tvSeries.setNrSeasons(TVSeriesNrSeasons);
                                     tvSeries.setLastTimeUpdated(new Date().getTime());
                                     updated[updatedIndex] = true;
                                 }
                             }
                             Scanner seasonUnknownScanner = new Scanner(new URL(tvSeries.getIMDBLink() + context.getString(R.string.forSeasonLink)+"-1").openStream());
-                            while(seasonUnknownScanner.hasNext()) {
+                            while (seasonUnknownScanner.hasNext()) {
                                 htmlLine = seasonUnknownScanner.nextLine();
-                                if(htmlLine.contains(context.getString(R.string.seasonUnknownFinder))) {
-                                    if(htmlLine.contains(context.getString(R.string.seasonUnknownPattern))) {
+                                if (htmlLine.contains(context.getString(R.string.seasonUnknownFinder))) {
+                                    if (htmlLine.contains(context.getString(R.string.seasonUnknownPattern))) {
                                         nrEpisodesToDelete++;
                                     }
                                 }
@@ -116,7 +120,7 @@ public class UpdateTVSeriesService {
                         if (htmlLine.contains(context.getString(R.string.IMDbRatingFinder1)) && htmlLine.contains(context.getString(R.string.IMDbRatingFinder2))) {
                             matcher = Pattern.compile(context.getString(R.string.IMDbRatingPattern)).matcher(htmlLine);
                             if (matcher.find()) {
-                                if(tvSeries.getIMDBRating() != Float.parseFloat(matcher.group(1))) {
+                                if (tvSeries.getIMDBRating() != Float.parseFloat(matcher.group(1))) {
                                     tvSeries.setIMDBRating(Float.parseFloat(matcher.group(1)));
                                 }
                             }
@@ -124,40 +128,37 @@ public class UpdateTVSeriesService {
                         if (htmlLine.contains(context.getString(R.string.dateFinder))) {
                             matcher = Pattern.compile(context.getString(R.string.datePattern)).matcher(htmlLine);
                             if (matcher.find()) {
-                                if(matcher.group(1).contains("–")) {
+                                if (matcher.group(1).contains("–")) {
                                     String[] years= matcher.group(1).split("–");
-                                    if(tvSeries.getStartYear() != Integer.parseInt(years[0])) {
+                                    if (tvSeries.getStartYear() != Integer.parseInt(years[0])) {
                                         tvSeries.setStartYear(Integer.parseInt(years[0]));
                                         tvSeries.setLastTimeUpdated(new Date().getTime());
                                         updated[updatedIndex] = true;
                                     }
-                                    if(years[1].equals(" ") || years[1].equals("")) {
-                                        if(tvSeries.getEndYear() != Calendar.getInstance().get(Calendar.YEAR)) {
+                                    if (years[1].equals(" ") || years[1].equals("")) {
+                                        if (tvSeries.getEndYear() != Calendar.getInstance().get(Calendar.YEAR)) {
                                             tvSeries.setEndYear(Calendar.getInstance().get(Calendar.YEAR));
                                             tvSeries.setLastTimeUpdated(new Date().getTime());
                                             updated[updatedIndex] = true;
                                         }
-                                    }
-                                    else {
-                                        if(tvSeries.getEndYear() != Integer.parseInt(years[1])) {
+                                    } else {
+                                        if (tvSeries.getEndYear() != Integer.parseInt(years[1])) {
                                             tvSeries.setEndYear(Integer.parseInt(years[1]));
-                                            state = Global.STATES.FINISHED;
-                                            tvSeries.setLastTimeUpdated(new Date().getTime());
-                                            updated[updatedIndex] = true;
                                         }
+                                        tvSeries.setLastTimeUpdated(new Date().getTime());
+                                        updated[updatedIndex] = true;
+                                        state = Global.STATES.FINISHED;
                                     }
-                                }
-                                else {
-                                    if(tvSeries.getStartYear() != Integer.parseInt(matcher.group(1))) {
+                                } else {
+                                    if (tvSeries.getStartYear() != Integer.parseInt(matcher.group(1))) {
                                         tvSeries.setStartYear(Integer.parseInt(matcher.group(1)));
-                                        tvSeries.setLastTimeUpdated(new Date().getTime());
-                                        updated[updatedIndex] = true;
+
                                     }
-                                    if(tvSeries.getEndYear() != Integer.parseInt(matcher.group(1))) {
+                                    if (tvSeries.getEndYear() != Integer.parseInt(matcher.group(1))) {
                                         tvSeries.setEndYear(Integer.parseInt(matcher.group(1)));
-                                        tvSeries.setLastTimeUpdated(new Date().getTime());
-                                        updated[updatedIndex] = true;
                                     }
+                                    tvSeries.setLastTimeUpdated(new Date().getTime());
+                                    updated[updatedIndex] = true;
                                     state = Global.STATES.FINISHED;
                                 }
 
@@ -179,7 +180,7 @@ public class UpdateTVSeriesService {
                         while (seasonScanner.hasNext()) {
                             htmlLine = seasonScanner.nextLine();
                             if (htmlLine.contains(context.getString(R.string.episodeFinder))) {
-                                if(!htmlLine.contains(context.getString(R.string.episode0FinderInSeason))) {
+                                if (!htmlLine.contains(context.getString(R.string.episode0FinderInSeason))) {
                                     nrTotalOfEpisodes++;
                                     matcher = Pattern.compile(context.getString(R.string.episodeIndexMatcher)).matcher(htmlLine);
                                     if (matcher.find()) {
@@ -200,8 +201,9 @@ public class UpdateTVSeriesService {
                                             SeasonNrEpisodes++;
                                             for (Episode episode : episodesList) {
                                                 if (episodeIndex == episode.getIndex()) {
-                                                    while (!htmlLine.contains(context.getString(R.string.IMDbRatingInSeasonFinder)))
+                                                    while (!htmlLine.contains(context.getString(R.string.IMDbRatingInSeasonFinder))) {
                                                         htmlLine = seasonScanner.nextLine();
+                                                    }
                                                     matcher = Pattern.compile(context.getString(R.string.IMDbRatingInSeasonPattern)).matcher(htmlLine);
                                                     if (matcher.find()) {
                                                         episode.setIMDBRating(Float.parseFloat(matcher.group(1)));
@@ -211,8 +213,7 @@ public class UpdateTVSeriesService {
                                             }
                                         }
                                     }
-                                }
-                                else {
+                                } else {
                                     TVSeriesNrEpisodes--;
                                 }
                             }
@@ -221,7 +222,7 @@ public class UpdateTVSeriesService {
                         season.setNrTotalOfEpisodes(nrTotalOfEpisodes);
                         database.dao().updateEpisodesList(episodesList);
                     }
-                    if(tvSeries.getNrEpisodes() != TVSeriesNrEpisodes) {
+                    if (tvSeries.getNrEpisodes() != TVSeriesNrEpisodes) {
                         tvSeries.setNrEpisodes(TVSeriesNrEpisodes);
                         tvSeries.setLastTimeUpdated(new Date().getTime());
                         updated[updatedIndex] = true;
@@ -234,8 +235,11 @@ public class UpdateTVSeriesService {
             database.dao().updateTVSeriesList(TVSeriesList);
 
             int updatedTrue = 0;
-            for(boolean b : updated)
-                if(b) updatedTrue++;
+            for (boolean b : updated) {
+                if (b) {
+                    updatedTrue++;
+                }
+            }
             message = "TVS list was updated. " + updatedTrue + " T.V. Series were updated.";
         }
         catch (Exception e) {

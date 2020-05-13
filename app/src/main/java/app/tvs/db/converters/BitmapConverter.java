@@ -11,7 +11,7 @@ public class BitmapConverter {
 
     @TypeConverter
     public static Bitmap toBitmap(String string) {
-        byte [] encodeByte= Base64.decode(string, Base64.DEFAULT);
+        byte[] encodeByte= Base64.decode(string, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
     }
 

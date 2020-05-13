@@ -27,10 +27,9 @@ public abstract class EpisodesSeasonsActivity extends MainActivity {
 
     @Override
     public void onBackPressed() {
-        if(formLayout.getVisibility() == View.VISIBLE) {
+        if (formLayout.getVisibility() == View.VISIBLE) {
             closeForm();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -88,10 +87,11 @@ public abstract class EpisodesSeasonsActivity extends MainActivity {
         ArrayAdapter<Integer> spinnerArray = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item);
         spinnerArray.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerArray = updateSpinnerArray(spinnerArray);
-        if(spinnerArray.getCount() == 0)
+        if (spinnerArray.getCount() == 0) {
             addInForm.setVisibility(View.INVISIBLE);
-        else
+        } else {
             addInForm.setVisibility(View.VISIBLE);
+        }
         spinner.setAdapter(spinnerArray);
     }
 

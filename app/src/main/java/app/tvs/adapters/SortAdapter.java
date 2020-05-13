@@ -45,10 +45,11 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull SortAdapter.ViewHolder viewHolder, int i) {
         final Sort sort = sorts.getSort(i);
         viewHolder.sortTypeTextView.setText(sort.getName());
-        if(sort.getClass() == sorts.getActualSort().getClass())
+        if (sort.getClass() == sorts.getActualSort().getClass()) {
             viewHolder.sortLayout.setBackgroundColor(tvSeriesActivity.getColor(R.color.adding));
-        else
+        } else {
             viewHolder.sortLayout.setBackgroundColor(tvSeriesActivity.getColor(R.color.white));
+        }
         viewHolder.sortLayout.setOnClickListener(v -> {
             sorts.setActualSort(sort);
             tvSeriesActivity.closeSortList();

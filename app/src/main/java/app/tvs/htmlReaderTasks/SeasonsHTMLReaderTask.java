@@ -35,8 +35,8 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        if(result.equals("")) {
-            if(parent.getNrSeasons() == parent.getSeasonsSeen()) {
+        if (result.equals("")) {
+            if (parent.getNrSeasons() == parent.getSeasonsSeen()) {
                 activity.addButton.setVisibility(View.INVISIBLE);
             }
         }
@@ -54,10 +54,10 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
 
             Scanner seasonScanner = new Scanner(new URL(parent.getIMDBLink() + activity.getString(R.string.forSeasonLink) + index).openStream());
 
-            while(seasonScanner.hasNext()) {
+            while (seasonScanner.hasNext()) {
                 htmlLine = seasonScanner.nextLine();
-                if(htmlLine.contains(activity.getString(R.string.episodeFinder))) {
-                    if(!htmlLine.contains(activity.getString(R.string.episode0FinderInSeason))) {
+                if (htmlLine.contains(activity.getString(R.string.episodeFinder))) {
+                    if (!htmlLine.contains(activity.getString(R.string.episode0FinderInSeason))) {
                         nrTotalOfEpisodes++;
                         htmlLine = seasonScanner.nextLine();
                         if (htmlLine.contains(activity.getString(R.string.episodeItemAirdateFinder))) {
@@ -86,25 +86,25 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
                                 nrEpisodes++;
                             }
                         }
-                    }
-                    else {
+                    } else {
                         parent.removeEpisodes();
                         Global.database.dao().updateTVSeries(parent);
                     }
                 }
             }
 
-            if(startYear == 0 || endYear == 0 || nrEpisodes == 0) {
+            if (startYear == 0 || endYear == 0 || nrEpisodes == 0) {
                 throw new Exception();
-            }
-            else {
+            } else {
                 Season season = new Season(index, startYear, endYear, nrEpisodes, nrTotalOfEpisodes, 0, parent.getId());
                 Global.database.dao().addSeason(season);
                 TVSeries updateTVSeries = Global.database.dao().getTVSeriesWithId(parent.getId());
-                if(updateTVSeries.getStartYearSeen() > startYear || updateTVSeries.getStartYearSeen() == 0)
+                if (updateTVSeries.getStartYearSeen() > startYear || updateTVSeries.getStartYearSeen() == 0) {
                     updateTVSeries.setStartYearSeen(startYear);
-                if(updateTVSeries.getEndYearSeen() < endYear)
+                }
+                if (updateTVSeries.getEndYearSeen() < endYear) {
                     updateTVSeries.setEndYearSeen(endYear);
+                }
                 updateTVSeries.setSeasonsSeen();
                 Global.database.dao().updateTVSeries(updateTVSeries);
                 parent = Global.database.dao().getTVSeriesWithId(parent.getId());

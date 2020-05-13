@@ -36,7 +36,6 @@ public abstract class MainActivity extends AppCompatActivity {
     abstract protected void deleteButtonAction();
     abstract protected void setAdapter();
     abstract protected void addButtonAction();
-    abstract protected void initArrays();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,6 @@ public abstract class MainActivity extends AppCompatActivity {
         initViews();
         initHeader();
         initLeaveButton();
-        initArrays();
         deleteMode = false;
 
         setAdapters();
@@ -130,6 +128,7 @@ public abstract class MainActivity extends AppCompatActivity {
 
     protected void endDeleteButtonAction() {
         deleteMode = false;
+        adapter.notifyDataSetChanged();
     }
 
     public void setButtonsClickable(boolean bool) {

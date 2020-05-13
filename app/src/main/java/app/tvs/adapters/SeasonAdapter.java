@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -68,10 +69,12 @@ public class SeasonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<Season> seasons;
     private SeasonsActivity seasonsActivity;
+    private List<Season> forDeleteSeasonsList;
 
     public SeasonAdapter(List<Season> seasons, SeasonsActivity seasonsActivity) {
         this.seasons = seasons;
         this.seasonsActivity = seasonsActivity;
+        this.forDeleteSeasonsList = new ArrayList<>();
     }
 
     @Override
@@ -136,19 +139,15 @@ public class SeasonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             } else {
                 seasonViewHolder.goToEpisodesElemSeasonButton.setVisibility(View.VISIBLE);
                 seasonViewHolder.checkForDeleteSeasonsCheckBox.setVisibility(View.INVISIBLE);
-                if (seasonViewHolder.checkForDeleteSeasonsCheckBox.isChecked()) {
-                    seasonsActivity.removeForDeleteSeasonsList(season);
-                    seasonViewHolder.checkForDeleteSeasonsCheckBox.setChecked(false);
-                    seasonViewHolder.elementSeason.setBackgroundResource(R.color.elemList);
-                }
             }
+
+            seasonViewHolder.checkForDeleteSeasonsCheckBox.setOnCheckedChangeListener(null);
+            seasonViewHolder.checkForDeleteSeasonsCheckBox.setChecked(forDeleteSeasonsList.contains(season));
             seasonViewHolder.checkForDeleteSeasonsCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (seasonViewHolder.checkForDeleteSeasonsCheckBox.isChecked()) {
-                    seasonsActivity.addForDeleteSeasonsList(season);
-                    seasonViewHolder.elementSeason.setBackgroundResource(R.color.header);
+                if (isChecked) {
+                    forDeleteSeasonsList.add(season);
                 } else {
-                    seasonViewHolder.elementSeason.setBackgroundResource(R.color.elemList);
-                    seasonsActivity.removeForDeleteSeasonsList(season);
+                    forDeleteSeasonsList.remove(season);
                 }
             });
         }
@@ -159,8 +158,23 @@ public class SeasonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return seasons.size() + 1;
     }
 
-    public void removeSeasons(List<Season> seasons) {
-        this.seasons.removeAll(seasons);
+    public void removeSeasons(TVSeries parent) {
+        int episodesFromDeletedSeasons = 0;
+        for (Season season : forDeleteSeasonsList) {
+            Global.database.dao().deleteSeason(season);
+            episodesFromDeletedSeasons += season.getNrEpisodesSeen();
+        }
+        parent.removeSeasonsSeen(forDeleteSeasonsList.size());
+        parent.removeEpisodesSeen(episodesFromDeletedSeasons);
+        parent.updateYearsSeen();
+        if (Global.database.dao().getNrEpisodesForTVSeries(parent.getId()) == 0) {
+            parent.setLastTimeEpisodeSeen(Long.MIN_VALUE);
+        } else {
+            parent.setLastTimeEpisodeSeen(Global.database.dao().getLastTimeAddedEpisodeForTVSeriesWithId(parent.getId()));
+        }
+        Global.database.dao().updateTVSeries(parent);
+        this.seasons.removeAll(forDeleteSeasonsList);
+        forDeleteSeasonsList = new ArrayList<>();
     }
 
     public void updateSeasons(List<Season> seasons) {

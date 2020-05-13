@@ -5,12 +5,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import app.tvs.Global;
 import app.tvs.adapters.SeasonAdapter;
-import app.tvs.entities.Season;
 import app.tvs.entities.TVSeries;
 import app.tvs.htmlReaderTasks.SeasonsHTMLReaderTask;
 import app.tvseries.R;
@@ -18,7 +16,6 @@ import app.tvseries.R;
 public class SeasonsActivity extends EpisodesSeasonsActivity {
 
     private TVSeries parent;
-    private List<Season> forDeleteSeasonsList;
 
 
     @Override
@@ -52,11 +49,6 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
     }
 
     @Override
-    protected void initArrays() {
-        forDeleteSeasonsList = new ArrayList<>();
-    }
-
-    @Override
     protected void initInfoForm() {
         super.initInfoForm();
         headerFormTextView.setText(R.string.addSeason);
@@ -70,8 +62,6 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
 
     @Override
     protected void endDeleteButtonAction() {
-        notifyRemoveAdapter();
-        forDeleteSeasonsList.clear();
         setButtonsClickable(true);
         if (parent.getNrSeasons() == parent.getSeasonsSeen()) {
             addButton.setVisibility(View.INVISIBLE);
@@ -81,28 +71,9 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
         super.endDeleteButtonAction();
     }
 
-    public void notifyRemoveAdapter() {
-        ((SeasonAdapter) adapter).removeSeasons(forDeleteSeasonsList);
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     protected void deleteButtonAction() {
-        parent = Global.database.dao().getTVSeriesWithId(parent.getId());
-        int episodesFromDeletedSeasons = 0;
-        for (Season season : forDeleteSeasonsList) {
-            Global.database.dao().deleteSeason(season);
-            episodesFromDeletedSeasons += season.getNrEpisodesSeen();
-        }
-        parent.removeSeasonsSeen(forDeleteSeasonsList.size());
-        parent.removeEpisodesSeen(episodesFromDeletedSeasons);
-        parent.updateYearsSeen();
-        if (Global.database.dao().getNrEpisodesForTVSeries(parent.getId()) == 0) {
-            parent.setLastTimeEpisodeSeen(Long.MIN_VALUE);
-        } else {
-            parent.setLastTimeEpisodeSeen(Global.database.dao().getLastTimeAddedEpisodeForTVSeriesWithId(parent.getId()));
-        }
-        Global.database.dao().updateTVSeries(parent);
+        ((SeasonAdapter) adapter).removeSeasons(parent);
     }
 
     @Override
@@ -127,11 +98,4 @@ public class SeasonsActivity extends EpisodesSeasonsActivity {
         return parent;
     }
 
-    public void removeForDeleteSeasonsList(Season season) {
-        forDeleteSeasonsList.remove(season);
-    }
-
-    public void addForDeleteSeasonsList(Season season) {
-        forDeleteSeasonsList.add(season);
-    }
 }

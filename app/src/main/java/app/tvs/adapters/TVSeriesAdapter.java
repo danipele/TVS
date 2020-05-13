@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -89,10 +90,12 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<TVSeries> tvSeries;
     private TVSeriesActivity tvSeriesActivity;
+    private List<TVSeries> forDeleteTVSeriesList;
 
     public TVSeriesAdapter(List<TVSeries> tvSeries, TVSeriesActivity tvSeriesActivity) {
         this.tvSeries = tvSeries;
         this.tvSeriesActivity = tvSeriesActivity;
+        this.forDeleteTVSeriesList = new ArrayList<>();
     }
 
     @Override
@@ -169,11 +172,6 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 tvSeriesViewHolder.goToSeasonElemButton.setVisibility(View.VISIBLE);
                 tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setVisibility(View.INVISIBLE);
-                if (tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
-                    tvSeriesActivity.removeForDeleteTVSeriesList(tvseries);
-                    tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setChecked(false);
-                    tvSeriesViewHolder.element.setBackgroundResource(R.color.elemList);
-                }
             }
 
             if (tvseries.getSeenState() == Global.SEENSTATES.PLAY) {
@@ -184,14 +182,15 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 tvSeriesViewHolder.seenStateImageView.setImageDrawable(tvSeriesActivity.getDrawable(R.drawable.up_to_date));
             }
 
+            tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setOnCheckedChangeListener(null);
+            tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setChecked(forDeleteTVSeriesList.contains(tvseries));
             tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.isChecked()) {
-                    tvSeriesActivity.addForDeleteTVSeriesList(tvseries);
-                    tvSeriesViewHolder.element.setBackgroundResource(R.color.header);
+                if (isChecked) {
+                    forDeleteTVSeriesList.add(tvseries);
                 } else {
-                    tvSeriesViewHolder.element.setBackgroundResource(R.color.elemList);
-                    tvSeriesActivity.removeForDeleteTVSeriesList(tvseries);
+                    forDeleteTVSeriesList.remove(tvseries);
                 }
+
             });
         }
     }
@@ -205,8 +204,12 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.tvSeries = tvSeries;
     }
 
-    public void removeTVSeries(List<TVSeries> tvSeries) {
-        this.tvSeries.removeAll(tvSeries);
+    public void removeTVSeries() {
+        for (TVSeries tvSeries : forDeleteTVSeriesList) {
+            Global.database.dao().deleteTVSeries(tvSeries);
+        }
+        tvSeries.removeAll(forDeleteTVSeriesList);
+        forDeleteTVSeriesList = new ArrayList<>();
     }
 
     public void addTVSeries(TVSeries tvSeries) {

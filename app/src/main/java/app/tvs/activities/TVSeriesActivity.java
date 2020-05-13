@@ -31,7 +31,6 @@ import app.tvseries.R;
 
 public class TVSeriesActivity extends MainActivity {
 
-    private List<TVSeries> forDeleteTVSeriesList;
     private RecyclerView sortRecycleView;
     private Sorts sorts;
     private SortAdapter sortAdapter;
@@ -48,6 +47,7 @@ public class TVSeriesActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        initArrays();
         super.onCreate(savedInstanceState);
 
         sortButton.setOnClickListener(v -> {
@@ -159,10 +159,8 @@ public class TVSeriesActivity extends MainActivity {
         leaveActivityButton.setBackground(getDrawable(R.drawable.ripple_style));
     }
 
-    @Override
     protected void initArrays() {
         searchedTVSeries = new ArrayList<>();
-        forDeleteTVSeriesList = new ArrayList<>();
         searchedForAddTVSeries = new ArrayList<>();
         sorts = new Sorts();
         sorts.setActualSort(new LastTimeEpisodeSeenSort());
@@ -222,8 +220,6 @@ public class TVSeriesActivity extends MainActivity {
 
     @Override
     protected void endDeleteButtonAction() {
-        notifyRemoveAdapter();
-        forDeleteTVSeriesList.clear();
         sortButton.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
         super.setButtonsClickable(true);
@@ -231,16 +227,9 @@ public class TVSeriesActivity extends MainActivity {
         updateTotals();
     }
 
-    public void notifyRemoveAdapter() {
-        ((TVSeriesAdapter) adapter).removeTVSeries(forDeleteTVSeriesList);
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     protected void deleteButtonAction() {
-        for (TVSeries tvSeries : forDeleteTVSeriesList) {
-            Global.database.dao().deleteTVSeries(tvSeries);
-        }
+        ((TVSeriesAdapter) adapter).removeTVSeries();
     }
 
     @Override
@@ -262,14 +251,6 @@ public class TVSeriesActivity extends MainActivity {
         searchedForAddTVSeries.clear();
         searchedForAddTVSeries.addAll(Global.database.dao().getTVSeriesShortWithLimit(100));
         searchAdapter.notifyDataSetChanged();
-    }
-
-    public void removeForDeleteTVSeriesList(TVSeries tvSeries) {
-        forDeleteTVSeriesList.remove(tvSeries);
-    }
-
-    public void addForDeleteTVSeriesList(TVSeries tvSeries) {
-        forDeleteTVSeriesList.add(tvSeries);
     }
 
     public void notifySortAdapter() {

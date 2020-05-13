@@ -88,8 +88,8 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                 if (htmlLine.contains(activity.getString(R.string.dateFinder))) {
                     matcher = Pattern.compile(activity.getString(R.string.datePattern)).matcher(htmlLine);
                     if (matcher.find()) {
-                        if (matcher.group(1).contains(activity.getString(R.string.minus))) {
-                            String[] years = matcher.group(1).split(activity.getString(R.string.minus));
+                        if (matcher.group(1).contains(activity.getString(R.string.minusForYears))) {
+                            String[] years = matcher.group(1).split(activity.getString(R.string.minusForYears));
                             startYear = Integer.parseInt(years[0]);
                             if (years[1].trim().isEmpty()) {
                                 endYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -194,6 +194,7 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
             } else {
                 TVSeries toAddTVSeries = new TVSeries(url, name, startYear, endYear, nrSeasons, nrEpisodes, 0, 0, 0, 0, IMDBRating, state, Global.SEENSTATES.PAUSE, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), new Date().getTime(), Long.MIN_VALUE, genres.stream().map(String::valueOf).collect(Collectors.joining(activity.getString(R.string.comma))));
                 Global.database.dao().addTVSeries(toAddTVSeries);
+                toAddTVSeries = Global.database.dao().getTVSeriesWithUrl(url);
                 ((TVSeriesAdapter) activity.adapter).addTVSeries(toAddTVSeries);
             }
             return StringUtils.EMPTY;

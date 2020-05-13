@@ -100,6 +100,7 @@ public class SeasonsHTMLReaderTask extends HTMLReaderTask {
             } else {
                 Season season = new Season(index, startYear, endYear, nrEpisodes, nrTotalOfEpisodes, 0, parent.getId());
                 Global.database.dao().addSeason(season);
+                season = Global.database.dao().getSeasonForTVSeriesWithIndex(parent.getId(), index);
                 TVSeries updateTVSeries = Global.database.dao().getTVSeriesWithId(parent.getId());
                 if (updateTVSeries.getStartYearSeen() > startYear || updateTVSeries.getStartYearSeen() == 0) {
                     updateTVSeries.setStartYearSeen(startYear);

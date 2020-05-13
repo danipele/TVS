@@ -139,4 +139,5 @@
     <string name="TVSeriesWereUpdated"> T.V. Series were updated.</string>
     <string name="listNotUpdated">TVS list couldn\'t be updated</string>
     <string name="dbNotUpdated">TVS database couldn\'t be updated</string>
+    <string name="minusForYears">–</string>
 </resources>

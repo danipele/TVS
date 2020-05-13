@@ -130,8 +130,8 @@ public class UpdateTVSeriesService {
                         if (htmlLine.contains(context.getString(R.string.dateFinder))) {
                             matcher = Pattern.compile(context.getString(R.string.datePattern)).matcher(htmlLine);
                             if (matcher.find()) {
-                                if (matcher.group(1).contains(context.getString(R.string.minus))) {
-                                    String[] years= matcher.group(1).split(context.getString(R.string.minus));
+                                if (matcher.group(1).contains(context.getString(R.string.minusForYears))) {
+                                    String[] years= matcher.group(1).split(context.getString(R.string.minusForYears));
                                     if (tvSeries.getStartYear() != Integer.parseInt(years[0])) {
                                         tvSeries.setStartYear(Integer.parseInt(years[0]));
                                         tvSeries.setLastTimeUpdated(new Date().getTime());

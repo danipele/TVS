@@ -83,6 +83,9 @@ public interface Dao {
     @Query("select TVSeries.* from TVSeries inner join Seasons where Seasons.id = :idSeason and TVSeries.id = Seasons.idTVSeries")
     TVSeries getTVSeriesBySeasonId(int idSeason);
 
+    @Query("select * from TVSeries where IMDBLink = :url")
+    TVSeries getTVSeriesWithUrl(String url);
+
     //Seasons
 
     @Insert
@@ -106,9 +109,6 @@ public interface Dao {
     @Update
     void updateSeasonsList(List<Season> seasons);
 
-    @Query("select count(*) from Seasons where idTVSeries = :idTVSeries")
-    int getNrOfSeasonsForTVSeries(int idTVSeries);
-
     @Query("select * from Seasons where id = :id")
     Season getSeasonById(int id);
 
@@ -124,6 +124,9 @@ public interface Dao {
     @Query("select * from Seasons where idTVSeries = :idTVSeries order by `index` desc limit 1")
     Season getLastSeasonOfTVSeriesWithId(int idTVSeries);
 
+    @Query("select * from Seasons where `index` = :index AND idTVSeries = :idTVSeries")
+    Season getSeasonForTVSeriesWithIndex(int idTVSeries, int index);
+
     //Episodes
 
     @Insert
@@ -137,9 +140,6 @@ public interface Dao {
 
     @Query("select * from episodes")
     List<Episode> getEpisodes();
-
-    @Query("select count(*) from Episodes where idSeason = :idSeason")
-    int getNrEpisodesForSeason(int idSeason);
 
     @Query("select count(*) from Episodes inner join Seasons where Seasons.idTVSeries = :idTVSeries and Episodes.idSeason = Seasons.id")
     int getNrEpisodesForTVSeries(int idTVSeries);
@@ -175,5 +175,8 @@ public interface Dao {
 
     @Query("select * from TVSeriesShort order by yearStart desc limit :limit")
     List<TVSeriesShort> getTVSeriesShortWithLimit(int limit);
+
+    @Query("select * from Episodes where idSeason = :seasonId AND `index` = :index")
+    Episode getEpisodeForSeasonWithIndex(int seasonId, int index);
 
 }

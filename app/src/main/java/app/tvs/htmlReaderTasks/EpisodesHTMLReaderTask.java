@@ -168,6 +168,7 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                 long now = new Date().getTime();
                 Episode episode = new Episode(index, name, releaseDate, duration, description, IMDb, BitmapFactory.decodeStream(new URL(imageLink).openConnection().getInputStream()), parent.getId(), now);
                 Global.database.dao().addEpisodes(episode);
+                episode = Global.database.dao().getEpisodeForSeasonWithIndex(parent.getId(), index);
                 Season season = Global.database.dao().getSeasonById(parent.getId());
                 season.setNrEpisodesSeen();
                 Global.database.dao().updateSeason(season);

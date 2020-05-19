@@ -14,7 +14,7 @@ public class UpdateTVSeriesShortJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         new Thread(() -> UpdateTVSeriesShortService.update(getApplicationContext())).start();
-        return true;
+        return false;
     }
 
     @Override

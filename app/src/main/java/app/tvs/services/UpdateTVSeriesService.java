@@ -1,5 +1,6 @@
 package app.tvs.services;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,7 +27,7 @@ public class UpdateTVSeriesService {
     public static void update(Context context) {
         String message = StringUtils.EMPTY;
         try {
-            Database database = Global.database;
+            Database database = Global.database = Room.databaseBuilder(context, Database.class, context.getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
             List<TVSeries> TVSeriesList = database.dao().getTVSeries();
             Matcher matcher;
             String htmlLine;

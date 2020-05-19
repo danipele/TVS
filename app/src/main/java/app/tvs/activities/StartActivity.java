@@ -26,8 +26,8 @@ public class StartActivity extends Activity {
 
         Global.database = Room.databaseBuilder(this, Database.class, getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
-        scheduleJob(UpdateTVSeriesJobService.class, 86400000, getString(R.string.updateTVSeriesJobName), 20);
-        scheduleJob(UpdateTVSeriesShortJobService.class, 604800000, getString(R.string.updateTVSeriesShortJobName), 21);
+        scheduleJob(UpdateTVSeriesJobService.class, 1000 * 60 * 60 * 24, getString(R.string.updateTVSeriesJobName), 25);
+        scheduleJob(UpdateTVSeriesShortJobService.class, 1000 * 60 * 60 * 24 * 7, getString(R.string.updateTVSeriesShortJobName), 26);
 
         new Handler().postDelayed(this::startApp,700);
 
@@ -39,7 +39,11 @@ public class StartActivity extends Activity {
 
         if (!preferences.getBoolean(preference, false)) {
             ComponentName componentName = new ComponentName(this, cls);
-            JobInfo jobInfo = new JobInfo.Builder(jobId, componentName).setPeriodic(time).setPersisted(true).build();
+            JobInfo jobInfo = new JobInfo.Builder(jobId, componentName)
+                    .setPeriodic(time)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setPersisted(true)
+                    .build();
             jobScheduler.schedule(jobInfo);
 
             SharedPreferences.Editor editor = preferences.edit();

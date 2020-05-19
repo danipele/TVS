@@ -1,5 +1,6 @@
 package app.tvs.services;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ public class UpdateTVSeriesShortService {
         String message = StringUtils.EMPTY;
         try {
             int addedNew = 0;
-            Database database = Global.database;
+            Database database = Global.database = Room.databaseBuilder(context, Database.class, context.getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
             InputStream input = new BufferedInputStream(new InputSource(new GZIPInputStream(new URL(context.getString(R.string.dbFileLink)).openConnection().getInputStream())).getByteStream());
             byte[] data = new byte[2097152];
             int count;

@@ -136,7 +136,7 @@
     <string name="startUpdate">Starting update …</string>
     <string name="listUpdated">TVS list was updated. </string>
     <string name="dbUpdated">TVS database was updated. </string>
-    <string name="TVSeriesWereUpdated"> T.V. Series were updated.</string>
+    <string name="TVSeriesWereUpdated">T.V. Series were updated.</string>
     <string name="listNotUpdated">TVS list couldn\'t be updated</string>
     <string name="dbNotUpdated">TVS database couldn\'t be updated</string>
     <string name="minusForYears">–</string>

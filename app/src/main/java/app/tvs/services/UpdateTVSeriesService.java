@@ -243,7 +243,7 @@ public class UpdateTVSeriesService {
                     updatedTrue++;
                 }
             }
-            message = context.getString(R.string.listUpdated) + updatedTrue + context.getString(R.string.TVSeriesWereUpdated);
+            message = context.getString(R.string.listUpdated) + " " + updatedTrue + " " + context.getString(R.string.TVSeriesWereUpdated);
         }
         catch (Exception e) {
             message = context.getString(R.string.listNotUpdated);

@@ -55,7 +55,7 @@ public class UpdateTVSeriesShortService {
 
             System.out.print(file);
             input.close();
-            message = context.getString(R.string.dbUpdated) + addedNew + context.getString(R.string.TVSeriesWereUpdated);
+            message = context.getString(R.string.dbUpdated) + " " + addedNew + " " + context.getString(R.string.TVSeriesWereUpdated);
 
         }
         catch (Exception e) {

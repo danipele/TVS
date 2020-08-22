@@ -26,8 +26,8 @@ public class StartActivity extends Activity {
 
         Global.database = Room.databaseBuilder(this, Database.class, getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
-        scheduleJob(UpdateTVSeriesJobService.class, 1000 * 60 * 60 * 24, getString(R.string.updateTVSeriesJobName), 25);
-        scheduleJob(UpdateTVSeriesShortJobService.class, 1000 * 60 * 60 * 24 * 7, getString(R.string.updateTVSeriesShortJobName), 26);
+        scheduleJob(UpdateTVSeriesJobService.class, 1000 * 60 * 60 * 15, getString(R.string.updateTVSeriesJobName), 7353);
+        scheduleJob(UpdateTVSeriesShortJobService.class, 1000 * 60 * 60 * 24 * 3, getString(R.string.updateTVSeriesShortJobName), 3874);
 
         new Handler().postDelayed(this::startApp,700);
 

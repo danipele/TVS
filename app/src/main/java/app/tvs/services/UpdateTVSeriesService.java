@@ -103,10 +103,13 @@ public class UpdateTVSeriesService {
                                 }
                             }
                             Scanner seasonUnknownScanner = new Scanner(new URL(tvSeries.getIMDBLink() + context.getString(R.string.forSeasonLink)+context.getString(R.string.minusOne)).openStream());
-                            while (seasonUnknownScanner.hasNext()) {
+                            while (!htmlLine.contains(context.getString(R.string.seasonUnknownFinder))) {
                                 htmlLine = seasonUnknownScanner.nextLine();
-                                if (htmlLine.contains(context.getString(R.string.seasonUnknownFinder))) {
-                                    if (htmlLine.contains(context.getString(R.string.seasonUnknownPattern))) {
+                            }
+                            if (htmlLine.contains(context.getString(R.string.seasonUnknownPattern))) {
+                                while (seasonUnknownScanner.hasNext()) {
+                                    htmlLine = seasonUnknownScanner.nextLine();
+                                    if (htmlLine.contains(context.getString(R.string.episodeItemIdOdd)) || htmlLine.contains(context.getString(R.string.episodeItemIdEven))) {
                                         nrEpisodesToDelete++;
                                     }
                                 }

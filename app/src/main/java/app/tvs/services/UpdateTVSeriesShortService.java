@@ -68,7 +68,20 @@ public class UpdateTVSeriesShortService {
     }
 
     private static boolean TVSeriesConditions(String[] columns, Context context) {
-        return (columns[1].equals(context.getString(R.string.tvSeries)) || columns[1].equals(context.getString(R.string.tvMiniSeries))) && !columns[5].equals(context.getString(R.string.unknownValue)) && !columns[7].equals(context.getString(R.string.unknownValue)) && !columns[8].contains(context.getString(R.string.TalkShow)) && !columns[8].contains(context.getString(R.string.GameShow)) && !columns[8].contains(context.getString(R.string.RealityTV)) && !columns[8].contains(context.getString(R.string.News)) && !columns[8].contains(context.getString(R.string.Short)) && !columns[8].contains(context.getString(R.string.Documentary)) && !columns[8].contains(context.getString(R.string.Sport)) && !columns[8].contains(context.getString(R.string.Adult)) && !columns[8].contains(context.getString(R.string.Music)) && !columns[8].equals(context.getString(R.string.unknownValue)) && !columns[8].contains(context.getString(R.string.Animation)) && Integer.parseInt(columns[5]) > 1990 && Integer.parseInt(columns[7]) > 20;
+        return (columns[1].equals(context.getString(R.string.tvSeries)) || columns[1].equals(context.getString(R.string.tvMiniSeries))) &&
+                !columns[5].equals(context.getString(R.string.unknownValue)) &&
+                !columns[8].contains(context.getString(R.string.TalkShow)) &&
+                !columns[8].contains(context.getString(R.string.GameShow)) &&
+                !columns[8].contains(context.getString(R.string.RealityTV)) &&
+                !columns[8].contains(context.getString(R.string.News)) &&
+                !columns[8].contains(context.getString(R.string.Short)) &&
+                !columns[8].contains(context.getString(R.string.Documentary)) &&
+                !columns[8].contains(context.getString(R.string.Sport)) &&
+                !columns[8].contains(context.getString(R.string.Adult)) &&
+                !columns[8].contains(context.getString(R.string.Music)) &&
+                !columns[8].equals(context.getString(R.string.unknownValue)) &&
+                !columns[8].contains(context.getString(R.string.Animation)) &&
+                Integer.parseInt(columns[5]) > 1990;
     }
 
     private static int updateTVSeriesShort(String line, Database database, Context context) {

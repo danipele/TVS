@@ -104,8 +104,8 @@
     <string name="genreLinkFinder">\"genre\": \[</string>
     <string name="genreLinkStopper">\]\,</string>
     <string name="episodeHeaderFormat">%s - S%d</string>
-    <string name="updateTVSeriesJobName">updateTVSeriesJob7353</string>
-    <string name="updateTVSeriesShortJobName">updateTVSeriesShortJob3874</string>
+    <string name="updateTVSeriesJobName">updateTVSeriesJob9647</string>
+    <string name="updateTVSeriesShortJobName">updateTVSeriesShortJob1955</string>
     <string name="percent">%</string>
     <string name="searchEditTextHint">Search a T.V. Series</string>
     <string name="addEditTextHint">Add a T.V. Series</string>

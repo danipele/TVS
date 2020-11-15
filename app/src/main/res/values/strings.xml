@@ -101,11 +101,11 @@
     <string name="seasonUnknownFinder">episode_top</string>
     <string name="seasonUnknownPattern">Unknown</string>
     <string name="searchUntil">item_description</string>
-    <string name="genreLinkFinder">\"genre\": \[</string>
+    <string name="genreLinkFinder">\"genre\":</string>
     <string name="genreLinkStopper">\]\,</string>
     <string name="episodeHeaderFormat">%s - S%d</string>
-    <string name="updateTVSeriesJobName">updateTVSeriesJob9647</string>
-    <string name="updateTVSeriesShortJobName">updateTVSeriesShortJob1955</string>
+    <string name="updateTVSeriesJobName">updateTVSeriesJob8915</string>
+    <string name="updateTVSeriesShortJobName">updateTVSeriesShortJob6253</string>
     <string name="percent">%</string>
     <string name="searchEditTextHint">Search a T.V. Series</string>
     <string name="addEditTextHint">Add a T.V. Series</string>
@@ -140,4 +140,5 @@
     <string name="listNotUpdated">TVS list couldn\'t be updated</string>
     <string name="dbNotUpdated">TVS database couldn\'t be updated</string>
     <string name="minusForYears">–</string>
+    <string name="onlyOneGenreFinder">\"genre\": \"(.*)\"</string>
 </resources>

@@ -176,10 +176,17 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                     }
                 }
                 if (htmlLine.contains(activity.getString(R.string.genreLinkFinder))) {
-                    htmlLine = TVSeriesScanner.nextLine();
-                    while (!htmlLine.trim().equals(activity.getString(R.string.genreLinkStopper))) {
-                        genres.add(htmlLine.substring(htmlLine.indexOf('\"') + 1, htmlLine.lastIndexOf('\"')));
+                    if (htmlLine.contains("[")) {
                         htmlLine = TVSeriesScanner.nextLine();
+                        while (!htmlLine.trim().equals(activity.getString(R.string.genreLinkStopper))) {
+                            genres.add(htmlLine.substring(htmlLine.indexOf('\"') + 1, htmlLine.lastIndexOf('\"')));
+                            htmlLine = TVSeriesScanner.nextLine();
+                        }
+                    } else {
+                        matcher = Pattern.compile(activity.getString(R.string.onlyOneGenreFinder)).matcher(htmlLine);
+                        if (matcher.find()) {
+                            genres.add(matcher.group(1));
+                        }
                     }
                 }
             }

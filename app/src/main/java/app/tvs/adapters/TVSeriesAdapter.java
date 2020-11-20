@@ -167,9 +167,7 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     tvSeriesViewHolder.stateTextView.setText(tvSeriesActivity.getString(R.string.FINISHED));
                 }
             }
-            if (tvseries.getState() != Global.STATES.FINISHED) {
-                tvSeriesViewHolder.clickToUpdateTextView.setVisibility(View.VISIBLE);
-            }
+            tvSeriesViewHolder.clickToUpdateTextView.setVisibility(tvseries.getState() != Global.STATES.FINISHED ? View.VISIBLE : View.INVISIBLE);
             tvSeriesViewHolder.stateTextView.setBackground(tvSeriesViewHolder.stateDrawable);
             tvSeriesViewHolder.stateTextView.setOnClickListener(v -> new UpdateTVSeriesHTMLReaderTask(tvSeriesActivity, tvseries).execute());
             if (tvSeriesActivity.isDeleteMode()) {

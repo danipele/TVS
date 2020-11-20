@@ -49,11 +49,11 @@ public abstract class HTMLReaderTask extends AsyncTask<Void, Void, String> {
 
     abstract protected String getToastMessage();
 
-    private String setFinalMessage() {
+    protected String setFinalMessage() {
         return activity.getString(R.string.added);
     }
 
-    private String setStartMessage() {
+    protected String setStartMessage() {
         return activity.getString(R.string.adding);
     }
 

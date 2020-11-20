@@ -333,6 +333,22 @@
     </android.support.constraint.ConstraintLayout>
 
     <TextView
+        android:id="@+id/clickUpdateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="2dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        android:textSize="5sp"
+        android:text="@string/clickToUpdate"
+        app:layout_constraintBottom_toTopOf="@+id/stateTextView"
+        app:layout_constraintEnd_toStartOf="@+id/goToSeasonElemButton"
+        tools:ignore="SmallSp" />
+
+    <TextView
         android:id="@+id/stateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

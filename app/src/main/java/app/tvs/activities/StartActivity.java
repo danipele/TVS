@@ -13,7 +13,6 @@ import android.preference.PreferenceManager;
 
 import app.tvs.Global;
 import app.tvs.db.Database;
-import app.tvs.jobs.UpdateTVSeriesJobService;
 import app.tvs.jobs.UpdateTVSeriesShortJobService;
 import app.tvseries.R;
 
@@ -26,7 +25,6 @@ public class StartActivity extends Activity {
 
         Global.database = Room.databaseBuilder(this, Database.class, getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
-        scheduleJob(UpdateTVSeriesJobService.class, 1000 * 60 * 60 * 15, getString(R.string.updateTVSeriesJobName), 8915);
         scheduleJob(UpdateTVSeriesShortJobService.class, 1000 * 60 * 60 * 24 * 3, getString(R.string.updateTVSeriesShortJobName), 6253);
 
         new Handler().postDelayed(this::startApp,700);

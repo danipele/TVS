@@ -25,6 +25,7 @@ import app.tvs.adapters.SortAdapter;
 import app.tvs.adapters.SearchAdapter;
 import app.tvs.entities.TVSeries;
 import app.tvs.entities.TVSeriesShort;
+import app.tvs.htmlReaderTasks.UpdateIMDBRatingHTMLReaderTask;
 import app.tvs.sorts.LastTimeEpisodeSeenSort;
 import app.tvs.sorts.Sorts;
 import app.tvseries.R;
@@ -43,6 +44,7 @@ public class TVSeriesActivity extends MainActivity {
     private List<TVSeriesShort> searchedForAddTVSeries;
     protected ImageView sortButton;
     protected ImageView searchButton;
+    protected ImageView updateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class TVSeriesActivity extends MainActivity {
             openSearchView();
             searchedTVSeries = Global.database.dao().getTVSeries();
         });
+        updateButton.setOnClickListener(v -> new UpdateIMDBRatingHTMLReaderTask(this).execute());
 
         TVSeriesSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -130,6 +133,7 @@ public class TVSeriesActivity extends MainActivity {
         updateTotals();
         sortButton.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
+        updateButton.setVisibility(View.VISIBLE);
         if (searchMode) {
             closeSearchView();
             searchMode = false;
@@ -173,6 +177,7 @@ public class TVSeriesActivity extends MainActivity {
         addSearchRecyclerView = findViewById(R.id.addSearchRecyclerView);
         sortButton = findViewById(R.id.sortButton);
         searchButton = findViewById(R.id.searchButton);
+        updateButton = findViewById(R.id.updateButton);
         sortRecycleView = findViewById(R.id.sortRecycleView);
         TVSeriesSearchEditText = TVSeriesSearchView.findViewById(R.id.search_src_text);
         TVSeriesSearchEditText.setTextColor(getColor(R.color.background));
@@ -215,6 +220,7 @@ public class TVSeriesActivity extends MainActivity {
         super.setButtonsClickable(false);
         sortButton.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.INVISIBLE);
+        updateButton.setVisibility(View.INVISIBLE);
         super.startDeleteButtonAction();
     }
 
@@ -222,6 +228,7 @@ public class TVSeriesActivity extends MainActivity {
     protected void endDeleteButtonAction() {
         sortButton.setVisibility(View.VISIBLE);
         searchButton.setVisibility(View.VISIBLE);
+        updateButton.setVisibility(View.VISIBLE);
         super.setButtonsClickable(true);
         super.endDeleteButtonAction();
         updateTotals();
@@ -237,6 +244,7 @@ public class TVSeriesActivity extends MainActivity {
         super.setButtonsClickable(bool);
         sortButton.setClickable(bool);
         searchButton.setClickable(bool);
+        updateButton.setClickable(bool);
     }
 
     private void updateTotals() {

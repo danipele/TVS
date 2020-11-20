@@ -26,6 +26,7 @@ import app.tvs.Global;
 import app.tvs.activities.SeasonsActivity;
 import app.tvs.activities.TVSeriesActivity;
 import app.tvs.entities.TVSeries;
+import app.tvs.htmlReaderTasks.UpdateTVSeriesHTMLReaderTask;
 import app.tvseries.R;
 
 public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -49,6 +50,7 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageView seenStateImageView;
         private GradientDrawable stateDrawable;
         private RecyclerView genreRecyclerView;
+        private TextView clickToUpdateTextView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,7 +71,7 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             seenStateImageView = itemView.findViewById(R.id.seenStateImageView);
             stateDrawable = (GradientDrawable) itemView.getContext().getDrawable(R.drawable.state_style);
             genreRecyclerView = itemView.findViewById(R.id.genreRecyclerView);
-
+            clickToUpdateTextView = itemView.findViewById(R.id.clickUpdateTextView);
         }
     }
 
@@ -165,7 +167,11 @@ public class TVSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     tvSeriesViewHolder.stateTextView.setText(tvSeriesActivity.getString(R.string.FINISHED));
                 }
             }
+            if (tvseries.getState() != Global.STATES.FINISHED) {
+                tvSeriesViewHolder.clickToUpdateTextView.setVisibility(View.VISIBLE);
+            }
             tvSeriesViewHolder.stateTextView.setBackground(tvSeriesViewHolder.stateDrawable);
+            tvSeriesViewHolder.stateTextView.setOnClickListener(v -> new UpdateTVSeriesHTMLReaderTask(tvSeriesActivity, tvseries).execute());
             if (tvSeriesActivity.isDeleteMode()) {
                 tvSeriesViewHolder.goToSeasonElemButton.setVisibility(View.INVISIBLE);
                 tvSeriesViewHolder.checkForDeleteTVSeriesCheckBox.setVisibility(View.VISIBLE);

@@ -40,6 +40,7 @@
     <string name="episodeItemAirdateFinder">&lt;div class=\"airdate\"&gt;</string>
     <string name="episodeItemAirdatePattern">(\\d{4})</string>
     <string name="addingSeasonError">Unable to add season. Check the network connection and try again.</string>
+    <string name="updateTVSeriesError">Unable to update TVSeries. Check the network connection and try again.</string>
     <string name="sharingTVSeriesId">TVSERIES_ID</string>
     <string name="sharingSeasonId">SEASON_ID</string>
     <string name="DbName">TVSeriesDB</string>
@@ -104,7 +105,7 @@
     <string name="genreLinkFinder">\"genre\":</string>
     <string name="genreLinkStopper">\]\,</string>
     <string name="episodeHeaderFormat">%s - S%d</string>
-    <string name="updateTVSeriesJobName">updateTVSeriesJob8915</string>
+    <string name="updateTVSeriesJobName">updateTVSeriesJob5362</string>
     <string name="updateTVSeriesShortJobName">updateTVSeriesShortJob6253</string>
     <string name="percent">%</string>
     <string name="searchEditTextHint">Search a T.V. Series</string>
@@ -141,4 +142,9 @@
     <string name="dbNotUpdated">TVS database couldn\'t be updated</string>
     <string name="minusForYears">–</string>
     <string name="onlyOneGenreFinder">\"genre\": \"(.*)\"</string>
+    <string name="update">update</string>
+    <string name="updating">Updating&#8230;</string>
+    <string name="updated">Updated</string>
+    <string name="nothingToUpdate">Nothing to update</string>
+    <string name="clickToUpdate">Click on the state below to update</string>
 </resources>

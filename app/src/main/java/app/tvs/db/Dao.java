@@ -29,6 +29,9 @@ public interface Dao {
     @Query("select * from TVSeries")
     List<TVSeries> getTVSeries();
 
+    @Query("select * from TVSeries where state = 2")
+    List<TVSeries> getFinishedTVSeries();
+
     @Query("select * from TVSeries order by name asc")
     List<TVSeries> getTVSeriesSortedAscByName();
 

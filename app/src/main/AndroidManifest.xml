@@ -28,7 +28,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name="app.tvs.jobs.UpdateTVSeriesJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name="app.tvs.jobs.UpdateTVSeriesShortJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 

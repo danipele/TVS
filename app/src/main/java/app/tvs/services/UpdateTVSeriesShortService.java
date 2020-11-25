@@ -18,53 +18,38 @@ import app.tvseries.R;
 
 public class UpdateTVSeriesShortService {
 
-    public static void update(Context context) {
-        String message = StringUtils.EMPTY;
-        try {
-            int addedNew = 0;
-            Database database = Global.database = Room.databaseBuilder(context, Database.class, context.getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
-            InputStream input = new BufferedInputStream(new InputSource(new GZIPInputStream(new URL(context.getString(R.string.dbFileLink)).openConnection().getInputStream())).getByteStream());
-            byte[] data = new byte[2097152];
-            int count;
-            String endMargins = StringUtils.EMPTY;
+    public static int update(Context context) throws Exception {
+        int addedNew = 0;
+        Database database = Global.database = Room.databaseBuilder(context, Database.class, context.getString(R.string.DbName)).allowMainThreadQueries().fallbackToDestructiveMigration().build();
+        InputStream input = new BufferedInputStream(new InputSource(new GZIPInputStream(new URL(context.getString(R.string.dbFileLink)).openConnection().getInputStream())).getByteStream());
+        byte[] data = new byte[2097152];
+        int count;
+        String endMargins = StringUtils.EMPTY;
 
-            NotificationService.addNotification(context.getString(R.string.startUpdate), context, context.getString(R.string.updateTVSeriesShortChannel), context.getString(R.string.updateTVSeriesShortName), context.getString(R.string.updateTVSeriesShortDescription));
-            String dataString, file = StringUtils.EMPTY;
-            String[] lines;
-            while ((count = input.read(data)) != -1) {
-                dataString = new String(data, 0, count, context.getString(R.string.UTF8));
-                lines = dataString.split(context.getString(R.string.newLine));
-                for (String line : lines) {
-                    if (line.equals(lines[lines.length - 1])) {
-                        endMargins = line;
-                    } else if(line.equals(lines[0])) {
-                        if (!line.equals(context.getString(R.string.dbFileHeader))) {
-                            if (line.length() >= 9 && line.substring(0, 9).matches(context.getString(R.string.startsWithIdMatcher))) {
-                                addedNew += updateTVSeriesShort(endMargins, database, context);
-                                addedNew += updateTVSeriesShort(line, database, context);
-                            } else {
-                                addedNew += updateTVSeriesShort(endMargins.concat(line), database, context);
-                            }
+        String dataString, file = StringUtils.EMPTY;
+        String[] lines;
+        while ((count = input.read(data)) != -1) {
+            dataString = new String(data, 0, count, context.getString(R.string.UTF8));
+            lines = dataString.split(context.getString(R.string.newLine));
+            for (String line : lines) {
+                if (line.equals(lines[lines.length - 1])) {
+                    endMargins = line;
+                } else if(line.equals(lines[0])) {
+                    if (!line.equals(context.getString(R.string.dbFileHeader))) {
+                        if (line.length() >= 9 && line.substring(0, 9).matches(context.getString(R.string.startsWithIdMatcher))) {
+                            addedNew += updateTVSeriesShort(endMargins, database, context);
+                            addedNew += updateTVSeriesShort(line, database, context);
+                        } else {
+                            addedNew += updateTVSeriesShort(endMargins.concat(line), database, context);
                         }
-                    } else {
-                        addedNew += updateTVSeriesShort(line, database, context);
                     }
+                } else {
+                    addedNew += updateTVSeriesShort(line, database, context);
                 }
             }
-
-
-            System.out.print(file);
-            input.close();
-            message = context.getString(R.string.dbUpdated) + " " + addedNew + " " + context.getString(R.string.TVSeriesWereUpdated);
-
         }
-        catch (Exception e) {
-            message = context.getString(R.string.dbNotUpdated);
-        }
-        finally {
-            NotificationService.addNotification(message, context, context.getString(R.string.updateTVSeriesShortChannel), context.getString(R.string.updateTVSeriesShortName), context.getString(R.string.updateTVSeriesShortDescription));
-        }
-
+        input.close();
+        return addedNew;
     }
 
     private static boolean TVSeriesConditions(String[] columns, Context context) {

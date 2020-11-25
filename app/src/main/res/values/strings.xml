@@ -41,6 +41,7 @@
     <string name="episodeItemAirdatePattern">(\\d{4})</string>
     <string name="addingSeasonError">Unable to add season. Check the network connection and try again.</string>
     <string name="updateTVSeriesError">Unable to update TVSeries. Check the network connection and try again.</string>
+    <string name="updateTVSeriesShortError">Unable to update TVSeriesShort. Check the network connection and try again.</string>
     <string name="sharingTVSeriesId">TVSERIES_ID</string>
     <string name="sharingSeasonId">SEASON_ID</string>
     <string name="DbName">TVSeriesDB</string>
@@ -147,4 +148,5 @@
     <string name="updated">Updated</string>
     <string name="nothingToUpdate">Nothing to update</string>
     <string name="clickToUpdate">Click on the state below to update</string>
+    <string name="updateDB">update db</string>
 </resources>

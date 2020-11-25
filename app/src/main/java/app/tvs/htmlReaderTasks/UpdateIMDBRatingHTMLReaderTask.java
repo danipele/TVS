@@ -12,7 +12,7 @@ import app.tvseries.R;
 
 public class UpdateIMDBRatingHTMLReaderTask extends HTMLReaderTask {
 
-    private int updated;
+    protected int updated;
 
     public UpdateIMDBRatingHTMLReaderTask(MainActivity activity) {
         super(activity);

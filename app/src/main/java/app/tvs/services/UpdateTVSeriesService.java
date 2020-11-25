@@ -44,6 +44,56 @@ public class UpdateTVSeriesService {
                 break;
             }
         }
+
+        List<Season> seasonsList = database.dao().getSeasonsWithIdTVSeries(tvSeries.getId());
+        for (Season season : seasonsList) {
+            int episodeIndex;
+            List<Episode> episodesList = database.dao().getEpisodesWithIdSeason(season.getId());
+            Scanner seasonScanner = new Scanner(new URL(tvSeries.getIMDBLink() + context.getString(R.string.forSeasonLink) + season.getIndex()).openStream());
+
+            while (seasonScanner.hasNext()) {
+                htmlLine = seasonScanner.nextLine();
+                if (htmlLine.contains(context.getString(R.string.episodeFinder))) {
+                    if (!htmlLine.contains(context.getString(R.string.episode0FinderInSeason))) {
+                        matcher = Pattern.compile(context.getString(R.string.episodeIndexMatcher)).matcher(htmlLine);
+                        if (matcher.find()) {
+                            episodeIndex = Integer.parseInt(matcher.group(1));
+                            boolean unreleased = true;
+                            htmlLine = seasonScanner.nextLine();
+                            while (!htmlLine.contains(context.getString(R.string.searchUntil))) {
+                                if (htmlLine.contains(context.getString(R.string.episodeItemFinder))) {
+                                    htmlLine = seasonScanner.nextLine();
+                                    if (!htmlLine.contains(context.getString(R.string.episodeItemEmptyPattern))) {
+                                        unreleased = false;
+                                        break;
+                                    }
+                                }
+                                htmlLine = seasonScanner.nextLine();
+                            }
+                            if (!unreleased) {
+                                for (Episode episode : episodesList) {
+                                    if (episodeIndex == episode.getIndex()) {
+                                        while (!htmlLine.contains(context.getString(R.string.IMDbRatingInSeasonFinder))) {
+                                            htmlLine = seasonScanner.nextLine();
+                                        }
+                                        matcher = Pattern.compile(context.getString(R.string.IMDbRatingInSeasonPattern)).matcher(htmlLine);
+                                        if (matcher.find()) {
+                                            float IMDBRating = Float.parseFloat(matcher.group(1));
+                                            if (episode.getIMDBRating() != IMDBRating) {
+                                                episode.setIMDBRating(IMDBRating);
+                                                updated = true;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            database.dao().updateEpisodesList(episodesList);
+        }
         database.dao().updateTVSeries(tvSeries);
         return updated ? 1 : 0;
     }

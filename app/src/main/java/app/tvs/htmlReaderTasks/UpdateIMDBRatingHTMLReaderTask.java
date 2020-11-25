@@ -29,9 +29,8 @@ public class UpdateIMDBRatingHTMLReaderTask extends HTMLReaderTask {
         try {
             List<TVSeries> TVSeriesList = Global.database.dao().getFinishedTVSeries();
 
-            for (TVSeries tvSeries : TVSeriesList) {
+            for (TVSeries tvSeries : TVSeriesList)
                 updated += UpdateTVSeriesService.updateIMDBRating(activity, tvSeries);
-            }
             Global.database.dao().updateTVSeriesList(TVSeriesList);
             return StringUtils.EMPTY;
         } catch (Exception e) {

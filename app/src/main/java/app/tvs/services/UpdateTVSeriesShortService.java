@@ -26,7 +26,7 @@ public class UpdateTVSeriesShortService {
         int count;
         String endMargins = StringUtils.EMPTY;
 
-        String dataString, file = StringUtils.EMPTY;
+        String dataString;
         String[] lines;
         while ((count = input.read(data)) != -1) {
             dataString = new String(data, 0, count, context.getString(R.string.UTF8));

@@ -162,7 +162,7 @@ public class EpisodesHTMLReaderTask extends HTMLReaderTask {
                 imageLink = activity.getString(R.string.noImageLink);
             }
 
-            if (name.isEmpty() || releaseDate.isEmpty() || duration.isEmpty() || IMDb == 0 || description.isEmpty()) {
+            if (name.isEmpty() || releaseDate.isEmpty() || duration.isEmpty() || IMDb == 0) {
                 throw new Exception();
             } else {
                 long now = new Date().getTime();

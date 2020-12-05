@@ -31,7 +31,7 @@ public class StartActivity extends Activity {
     private void startApp() {
         Intent intent = new Intent(this, TVSeriesActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.nothing, R.anim.nothing);f
+        overridePendingTransition(R.anim.nothing, R.anim.nothing);
         finish();
     }
 

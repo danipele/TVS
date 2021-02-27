@@ -196,6 +196,10 @@ public class TVSeriesHTMLReaderTask extends HTMLReaderTask {
                 imageLink = activity.getString(R.string.noImageLink);
             }
 
+            if (state == Global.STATES.FINISHED && nrEpisodesToDelete != 0) {
+                state = Global.STATES.ON_GOING;
+            }
+
             if (name.isEmpty() || startYear == 0 || endYear == 0 || nrSeasons == 0 || nrEpisodes == 0 || IMDBRating == 0 || genres.isEmpty()) {
                 throw new Exception();
             } else {

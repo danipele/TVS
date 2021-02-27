@@ -240,6 +240,10 @@ public class UpdateTVSeriesService {
             }
         }
         TVSeriesNrEpisodes -= nrEpisodesToDelete;
+
+        if (state == Global.STATES.FINISHED && nrEpisodesToDelete != 0) {
+            state = Global.STATES.ON_GOING;
+        }
         tvSeries.setState(state);
 
         List<Season> seasonsList = database.dao().getSeasonsWithIdTVSeries(tvSeries.getId());

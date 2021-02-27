@@ -7,6 +7,7 @@ import java.util.List;
 import app.tvs.Global;
 import app.tvs.activities.MainActivity;
 import app.tvs.entities.TVSeries;
+import app.tvs.services.NotificationService;
 import app.tvs.services.UpdateTVSeriesService;
 import app.tvseries.R;
 
@@ -32,8 +33,10 @@ public class UpdateIMDBRatingHTMLReaderTask extends HTMLReaderTask {
             for (TVSeries tvSeries : TVSeriesList)
                 updated += UpdateTVSeriesService.updateIMDBRating(activity, tvSeries);
             Global.database.dao().updateTVSeriesList(TVSeriesList);
+            NotificationService.addNotification(setFinalMessage(), activity, activity.getString(R.string.updateTVSeriesChannel), activity.getString(R.string.updateTVSeriesName), activity.getString(R.string.updateTVSeriesDescription));
             return StringUtils.EMPTY;
         } catch (Exception e) {
+            NotificationService.addNotification(getToastMessage(), activity, activity.getString(R.string.updateTVSeriesChannel), activity.getString(R.string.updateTVSeriesName), activity.getString(R.string.updateTVSeriesDescription));
             return getToastMessage();
         }
     }
